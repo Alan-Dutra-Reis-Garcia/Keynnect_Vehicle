@@ -1236,3 +1236,90 @@ body:not(.dark-mode) .top-nav-item.active {
     }
 }
 }
+
+/* Estilos para o botão "ver senha" */
+.password-input-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-input-container input {
+    padding-right: 50px; /* Espaço para o ícone */
+}
+
+.toggle-password-visibility {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1.1em;
+    padding: 10px; /* Aumenta a área de toque */
+    border-radius: 50%; /* Faz o botão de toque parecer redondo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.toggle-password-visibility:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Um leve hover */
+    color: var(--primary-color);
+}
+
+/* Garante tamanho mínimo de toque de 44px para botões e links */
+.btn,
+.secondary-btn,
+.full-width-btn,
+.social-btn {
+    min-height: 44px;
+    padding: 12px 20px; /* Ajuste o padding para garantir os 44px de altura visualmente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ajustes específicos para botões menores */
+.edit-btn,
+.delete-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px; /* Ajusta o padding para que o ícone fique centralizado e o botão tenha o tamanho mínimo */
+    display: flex; /* Para centralizar o ícone */
+    justify-content: center; /* Para centralizar o ícone */
+    align-items: center; /* Para centralizar o ícone */
+}
+
+/* Ajustes de espaçamento em mobile para evitar toques acidentais */
+@media (max-width: 768px) {
+    .top-nav-item {
+        padding: 10px 5px; /* Aumenta o padding para maior área de toque */
+        margin: 5px; /* Mantém um pequeno espaçamento entre eles */
+    }
+
+    .vehicle-card-item,
+    .summary-card,
+    .maintenance-item.card,
+    .calculator-card,
+    .history-item {
+        margin-bottom: 15px; /* Garante espaço entre os cards empilhados */
+    }
+
+    /* Opcional: Aumentar um pouco o espaçamento em inputs para facilitar o toque */
+    .input-group label {
+        margin-bottom: 8px;
+    }
+    .input-group input,
+    .input-group select {
+        padding: 14px 15px; /* Um pouco mais de padding */
+    }
+}
+
+/* Cores do toast no modo atenção - melhor contraste */
+.toast.attention {
+    background-color: var(--toast-attention);
+    color: #333; /* Texto escuro para o amarelo, pois o branco pode ter baixo contraste */
+}

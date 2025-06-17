@@ -157,6 +157,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${day}/${month}/${year}`;
     };
 
+    // Função auxiliar para gerenciar o estado de loading dos botões
+    const setLoadingState = (button, isLoading) => {
+        if (!button) return; // Garante que o botão existe
+
+        if (isLoading) {
+            button.dataset.originalContent = button.innerHTML; // Salva o conteúdo original
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...'; // Exibe spinner e texto
+            button.disabled = true; // Desabilita o botão
+            button.classList.add('loading'); // Adiciona classe para estilo de loading
+        } else {
+            if (button.dataset.originalContent) { // Verifica se há conteúdo original salvo
+                button.innerHTML = button.dataset.originalContent;
+            }
+            button.disabled = false; // Reabilita o botão
+            button.classList.remove('loading'); // Remove classe de loading
+        }
+    };
+
 
     // --- Funções de UI/Navegação ---
 
@@ -261,8 +279,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     title: 'Confirmar Exclusão',
                     message: `Tem certeza que deseja remover o veículo "${vehicle.name}"?`,
                     inputType: 'none',
-                    onSave: () => {
-                        deleteVehicle(vehicle.id, vehicle.name);
+                    onSave: async () => { // Adicionado async aqui para o loading
+                        setLoadingState(modalSaveBtn, true); // Ativa o loading do botão Salvar do modal
+                        try {
+                            await deleteVehicle(vehicle.id, vehicle.name);
+                        } finally {
+                            setLoadingState(modalSaveBtn, false); // Desativa o loading
+                        }
                     }
                 });
             });
@@ -643,6 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
             inputType: inputModality,
             inputValue: currentInputValue,
             onSave: async (newValue) => {
+                setLoadingState(modalSaveBtn, true); // Ativa o loading do botão Salvar do modal
                 let isValid = true;
                 let parsedValue = newValue;
 
@@ -676,7 +700,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     } catch (error) {
                         console.error('Erro ao atualizar manutenção:', error);
                         showToast('Erro ao atualizar manutenção: ' + error.message, 'error');
+                    } finally {
+                        setLoadingState(modalSaveBtn, false); // Desativa o loading
                     }
+                } else {
+                    setLoadingState(modalSaveBtn, false); // Desativa o loading se houver erro de validação
                 }
             },
             onCancel: () => {
@@ -784,8 +812,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Handlers ---
 
+    // Funcionalidade "Ver Senha"
+    const togglePasswordButtons = document.querySelectorAll('.toggle-password-visibility'); //
+
+    togglePasswordButtons.forEach(button => { //
+        button.addEventListener('click', () => { //
+            const passwordInput = button.previousElementSibling; // O input é o elemento anterior
+            const icon = button.querySelector('i'); //
+
+            if (passwordInput.type === 'password') { //
+                passwordInput.type = 'text'; //
+                icon.classList.remove('fa-eye'); //
+                icon.classList.add('fa-eye-slash'); //
+                button.setAttribute('aria-label', 'Esconder senha'); // Para acessibilidade
+            } else {
+                passwordInput.type = 'password'; //
+                icon.classList.remove('fa-eye-slash'); //
+                icon.classList.add('fa-eye'); //
+                button.setAttribute('aria-label', 'Mostrar senha'); // Para acessibilidade
+            }
+        });
+    });
+
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const loginButton = loginForm.querySelector('button[type="submit"]'); // Referência ao botão
+        setLoadingState(loginButton, true); // Ativa o loading
+
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
 
@@ -795,21 +848,27 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast('Login bem-sucedido!', 'success');
             showScreen(mainApp);
             showContentSection(dashboardScreen);
-            loadUserVehicles(currentUserId);
+            await loadUserVehicles(currentUserId); // Use await
         } catch (error) {
             console.error('Erro no login:', error);
             showToast('Erro no login: ' + getFirebaseErrorMessage(error.code), 'error');
+        } finally {
+            setLoadingState(loginButton, false); // Desativa o loading
         }
     });
 
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const signupButton = signupForm.querySelector('button[type="submit"]'); // Referência ao botão
+        setLoadingState(signupButton, true); // Ativa o loading
+
         const email = document.getElementById('signup-email').value;
         const password = document.getElementById('signup-password').value;
         const confirmPassword = document.getElementById('signup-confirm-password').value;
 
         if (password !== confirmPassword) {
             showToast('As senhas não coincidem!', 'error');
+            setLoadingState(signupButton, false); // Desativa o loading se houver erro de validação
             return;
         }
 
@@ -826,6 +885,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Erro no cadastro:', error);
             showToast('Erro no cadastro: ' + getFirebaseErrorMessage(error.code), 'error');
+        } finally {
+            setLoadingState(signupButton, false); // Desativa o loading
         }
     });
 
@@ -842,6 +903,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Login com Google
     if (googleLoginBtn) {
         googleLoginBtn.addEventListener('click', async () => {
+            setLoadingState(googleLoginBtn, true); // Ativa o loading
             const provider = new firebase.auth.GoogleAuthProvider();
             try {
                 const userCredential = await auth.signInWithPopup(provider);
@@ -859,10 +921,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast('Login com Google bem-sucedido!', 'success');
                 showScreen(mainApp);
                 showContentSection(dashboardScreen);
-                loadUserVehicles(currentUserId);
+                await loadUserVehicles(currentUserId); // Use await
             } catch (error) {
                 console.error('Erro no login com Google:', error);
                 showToast('Erro no login com Google: ' + getFirebaseErrorMessage(error.code), 'error');
+            } finally {
+                setLoadingState(googleLoginBtn, false); // Desativa o loading
             }
         });
     }
@@ -878,6 +942,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputType: 'email',
                 inputValue: '',
                 onSave: async (email) => {
+                    setLoadingState(modalSaveBtn, true); // Ativa o loading do botão Salvar do modal
                     const trimmedEmail = email.trim();
                     if (trimmedEmail) {
                         try {
@@ -886,9 +951,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         } catch (error) {
                             console.error('Erro ao enviar e-mail de redefinição:', error);
                             showToast('Erro ao tentar enviar e-mail de redefinição. Por favor, verifique o e-mail e tente novamente.', 'error');
+                        } finally {
+                            setLoadingState(modalSaveBtn, false); // Desativa o loading
                         }
                     } else {
                         showToast('Por favor, insira um e-mail.', 'attention');
+                        setLoadingState(modalSaveBtn, false); // Desativa o loading se houver erro de validação
                     }
                 },
                 onCancel: () => {
@@ -913,6 +981,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputType: 'text',
                 inputValue: currentSelectedVehicle.name,
                 onSave: async (newName) => {
+                    setLoadingState(modalSaveBtn, true); // Ativa o loading do botão Salvar do modal
                     const trimmedName = newName.trim();
                     if (trimmedName) {
                         try {
@@ -926,9 +995,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         } catch (error) {
                             console.error('Erro ao atualizar nome do veículo:', error);
                             showToast('Erro ao atualizar nome: ' + error.message, 'error');
+                        } finally {
+                            setLoadingState(modalSaveBtn, false); // Desativa o loading
                         }
                     } else {
                         showToast('O nome do veículo não pode ser vazio.', 'attention');
+                        setLoadingState(modalSaveBtn, false); // Desativa o loading se houver erro de validação
                     }
                 },
                 onCancel: () => {
@@ -952,6 +1024,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputType: 'text',
                 inputValue: currentSelectedVehicle.model,
                 onSave: async (newModel) => {
+                    setLoadingState(modalSaveBtn, true); // Ativa o loading do botão Salvar do modal
                     const trimmedModel = newModel.trim();
                     if (trimmedModel) {
                         try {
@@ -965,9 +1038,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         } catch (error) {
                             console.error('Erro ao atualizar modelo do veículo:', error);
                             showToast('Erro ao atualizar modelo: ' + error.message, 'error');
+                        } finally {
+                            setLoadingState(modalSaveBtn, false); // Desativa o loading
                         }
                     } else {
                         showToast('O modelo do veículo não pode ser vazio.', 'attention');
+                        setLoadingState(modalSaveBtn, false); // Desativa o loading se houver erro de validação
                     }
                 },
                 onCancel: () => {
@@ -990,6 +1066,7 @@ document.addEventListener('DOMContentLoaded', () => {
             inputType: 'number',
             inputValue: currentSelectedVehicle.km,
             onSave: async (newKmValue) => {
+                setLoadingState(modalSaveBtn, true); // Ativa o loading do botão Salvar do modal
                 const parsedKm = parseInt(newKmValue);
                 if (!isNaN(parsedKm) && parsedKm >= 0) {
                     try {
@@ -1003,9 +1080,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     } catch (error) {
                         console.error('Erro ao atualizar KM:', error);
                         showToast('Erro ao atualizar KM: ' + error.message, 'error');
+                    } finally {
+                        setLoadingState(modalSaveBtn, false); // Desativa o loading
                     }
                 } else {
                     showToast('KM inválido. Por favor, insira um número inteiro válido (apenas dígitos).', 'error');
+                    setLoadingState(modalSaveBtn, false); // Desativa o loading se houver erro de validação
                 }
             },
             onCancel: () => {
@@ -1079,9 +1159,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addVehicleForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const saveVehicleButton = addVehicleForm.querySelector('button[type="submit"]'); // Referência ao botão
+        setLoadingState(saveVehicleButton, true); // Ativa o loading
 
         if (!currentUserId) {
             showToast('Erro: Você precisa estar logado para adicionar um veículo.', 'error');
+            setLoadingState(saveVehicleButton, false); // Desativa o loading se houver erro de validação
             return;
         }
 
@@ -1091,6 +1174,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!vehicleName || !vehicleModel || isNaN(vehicleKm) || vehicleKm < 0) {
             showToast('Por favor, preencha o nome, modelo e KM atual do veículo.', 'attention');
+            setLoadingState(saveVehicleButton, false); // Desativa o loading se houver erro de validação
             return;
         }
 
@@ -1122,10 +1206,12 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast('Veículo adicionado com sucesso!', 'success');
             addVehicleForm.reset();
             showContentSection(dashboardScreen);
-            loadUserVehicles(currentUserId);
+            await loadUserVehicles(currentUserId); // Use await
         } catch (error) {
             console.error('Erro ao adicionar veículo:', error);
             showToast('Erro ao adicionar veículo: ' + error.message, 'error');
+        } finally {
+            setLoadingState(saveVehicleButton, false); // Desativa o loading
         }
     });
 
@@ -1190,6 +1276,7 @@ document.addEventListener('DOMContentLoaded', () => {
             message: 'Tem certeza que deseja sair?',
             inputType: 'none',
             onSave: async () => {
+                setLoadingState(modalSaveBtn, true); // Ativa o loading do botão Salvar do modal
                 try {
                     await auth.signOut();
                     currentUserId = null;
@@ -1200,6 +1287,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch (error) {
                     console.error('Erro ao fazer logout:', error);
                     showToast('Erro ao sair: ' + error.message, 'error');
+                } finally {
+                    setLoadingState(modalSaveBtn, false); // Desativa o loading
                 }
             },
             onCancel: () => {
