@@ -79,6 +79,11 @@ body:not(.dark-mode) {
     padding: 0;
 }
 
+html, body { /* Adicionado html aqui */
+    height: 100%; /* Garante que HTML e Body ocupem 100% da altura */
+    overflow: hidden; /* Evita rolagem principal por padrão */
+}
+
 body {
     font-family: 'PT Sans', sans-serif;
     background-color: var(--background-color);
@@ -93,6 +98,8 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    height: 100vh; /* Garante que o container ocupe a altura total da viewport */
+    overflow: hidden; /* Evita rolagem no container principal */
 }
 
 .screen {
@@ -119,6 +126,8 @@ body {
     visibility: visible;
     position: relative; /* Tela ativa volta ao fluxo normal */
     z-index: 2;
+    overflow-y: auto; /* Permite rolagem vertical apenas no conteúdo da tela ativa */
+    -webkit-overflow-scrolling: touch; /* Rolagem suave no iOS */
 }
 
 /* Telas de conteúdo (dashboard, schedule, etc.) para ter um container padrão */
@@ -331,6 +340,7 @@ body {
     transition: opacity 0.3s ease, visibility 0.3s ease;
     background-color: var(--background-color); /* Para cobrir outras telas */
     z-index: 1;
+    overflow: hidden; /* Adicionado para main-app */
 }
 
 #main-app.active {
@@ -931,12 +941,14 @@ body:not(.dark-mode) .top-nav-item.active {
 
 /* Responsividade */
 @media (max-width: 768px) {
-    body {
+    html, body {
         overflow: hidden; /* Evita toda rolagem no mobile */
+        -ms-content-zooming: none; /* Desabilita zoom no IE/Edge */
+        touch-action: pan-x pan-y; /* Desabilita zoom de pinça */
     }
     .app-container {
         height: 100vh;
-        overflow: hidden; /* Garante que o contêiner do aplicativo também evite a rolagem */
+        overflow: hidden; /* Garante que o container do aplicativo também evite a rolagem */
     }
 
     /* Ajustes para as telas de Login/Cadastro */
@@ -952,6 +964,7 @@ body:not(.dark-mode) .top-nav-item.active {
         width: 100%;
         height: 100%;
         overflow: hidden; /* Evita a rolagem */
+        touch-action: pan-x pan-y; /* Desabilita zoom de pinça */
     }
 
     .login-card {
@@ -1030,14 +1043,16 @@ body:not(.dark-mode) .top-nav-item.active {
         width: 100%;
         height: 100vh;
         overflow: hidden; /* Evita a rolagem no aplicativo principal */
+        touch-action: pan-x pan-y; /* Desabilita zoom de pinça */
     }
 
     /* Ajustes para as telas de conteúdo (Dashboard, etc.) */
     .screen.active-content, .screen.hidden-content {
         padding-top: 90px; /* Ajusta o padding para o cabeçalho fixo */
         height: 100vh; /* Garante que as telas de conteúdo ocupem a altura total */
-        overflow-y: auto; /* Permite a rolagem interna se o conteúdo transbordar */
+        overflow-y: auto; /* Permite a rolagem vertical se o conteúdo transbordar */
         -webkit-overflow-scrolling: touch; /* Rolagem suave no iOS */
+        touch-action: pan-y; /* Permite apenas rolagem vertical no conteúdo */
     }
     .container {
         padding: 0 10px; /* Reduz o padding lateral para aproveitar melhor a tela */
@@ -1116,7 +1131,7 @@ body:not(.dark-mode) .top-nav-item.active {
 
     /* Cards de Resumo (Manutenções Rápidas) */
     .summary-cards-section {
-        grid-template-columns: 1fr; /* Garante que os cards de resumo fiquem em lista vertical */
+        display: block; /* Força que cada card ocupe uma linha inteira */
         gap: 15px; /* Espaçamento entre os cards de resumo */
         margin-top: 15px; /* Um pouco menos de margem para cima */
         margin-bottom: 20px; /* Mais espaço para a próxima seção */
@@ -1126,6 +1141,8 @@ body:not(.dark-mode) .top-nav-item.active {
     .summary-card {
         padding: 15px; /* Um pouco menos de padding para compactar */
         gap: 15px; /* Aumenta o espaçamento entre elementos internos */
+        width: 100%; /* Garante que cada card ocupe 100% da largura */
+        margin-bottom: 15px; /* Adiciona margem inferior para separar os cards */
     }
 
     .summary-card .icon {
@@ -1230,15 +1247,13 @@ body:not(.dark-mode) .top-nav-item.active {
 
     /* Força empilhamento em telas pequenas */
     .vehicle-list,
-    .summary-cards-section,
-    .maintenance-sections {
+    .maintenance-sections { /* Removido .summary-cards-section daqui pois já foi tratado acima */
         display: block !important;
         grid-template-columns: 1fr !important;
     }
     .vehicle-card-item,
-    .summary-card,
     .maintenance-item,
-    .card {
+    .card { /* Removido .summary-card daqui */
         width: 100% !important;
         margin-bottom: 15px;
     }
