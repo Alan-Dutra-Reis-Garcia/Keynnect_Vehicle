@@ -931,46 +931,48 @@ body:not(.dark-mode) .top-nav-item.active {
 @media (max-width: 768px) {
     /* Ajustes para as telas de Login/Cadastro */
     .screen {
-        padding: 10px; /* Reduzir o padding geral da tela para bordas menores */
+        padding: 10px; /* Reduzir o padding geral da tela para bordas menores, como na imagem desejada */
     }
 
     .login-card {
         padding: 25px; /* Manter um bom padding interno, mas permitir que o card seja maior */
-        max-width: 95%; /* Permitir que o cartão ocupe quase a largura total */
+        max-width: 95%; /* Permitir que o cartão ocupe quase a largura total, como na imagem desejada */
         margin: 0 auto; /* Centralizar com margem automática */
     }
 
     .app-logo {
-        font-size: 2em; /* Manter um tamanho razoável */
-        margin-bottom: 20px;
+        font-size: 2.2em; /* Ligeiramente maior para melhor visualização */
+        margin-bottom: 25px; /* Mais espaçamento para os campos */
     }
 
     .login-card h2 {
-        font-size: 1.6em; /* Ajustar tamanho do título */
-        margin-bottom: 20px;
+        font-size: 1.8em; /* Ajustar tamanho do título para se aproximar da imagem desejada */
+        margin-bottom: 25px;
     }
 
     .input-group label {
-        font-size: 0.9em; /* Ajustar tamanho da label */
+        font-size: 1em; /* Ajustar tamanho da label para melhor legibilidade */
+        margin-bottom: 10px; /* Mais espaço para a label */
     }
 
     .input-group input,
     .input-group select {
-        padding: 10px 12px; /* Reduzir um pouco o padding dos inputs */
-        font-size: 0.95em; /* Ajustar tamanho da fonte dos inputs */
+        padding: 12px 15px; /* Padding padrão para os inputs para melhor toque */
+        font-size: 1em; /* Tamanho da fonte padrão para melhor legibilidade */
     }
 
     .btn {
-        padding: 10px 15px; /* Reduzir um pouco o padding dos botões */
-        font-size: 1em; /* Ajustar tamanho da fonte dos botões */
+        padding: 12px 20px; /* Padding padrão para os botões */
+        font-size: 1.1em; /* Tamanho da fonte padrão para os botões */
     }
 
     .social-btn {
-        padding: 10px 15px; /* Ajustar padding dos botões sociais */
+        padding: 12px 20px; /* Ajustar padding dos botões sociais */
     }
 
     .signup-text {
-        font-size: 0.9em; /* Ajustar tamanho da fonte do texto de cadastro */
+        font-size: 1em; /* Ajustar tamanho da fonte do texto de cadastro para melhor legibilidade */
+        margin-top: 20px; /* Reduzir margem superior para se aproximar do exemplo */
     }
 
     /* Ajustes para o cabeçalho principal */
@@ -994,7 +996,7 @@ body:not(.dark-mode) .top-nav-item.active {
     }
 
     .top-nav-item {
-        flex-basis: 48%; /* Exemplo: 2 itens por linha. Para 1 item por linha use 100% */
+        flex-basis: 48%; /* 2 itens por linha, como na imagem do dashboard */
         font-size: 0.9em; /* Aumentar um pouco para melhor legibilidade */
         padding: 8px 5px; /* Ajustar padding para melhor área de toque */
         margin: 5px; /* Pequena margem entre os itens */
@@ -1022,7 +1024,7 @@ body:not(.dark-mode) .top-nav-item.active {
     }
 
     .vehicle-list {
-        grid-template-columns: 1fr; /* Um card por linha em telas menores */
+        grid-template-columns: 1fr; /* Um card por linha em telas menores, ajustando a largura conforme a tela */
         gap: 15px; /* Reduzir o espaçamento entre os cards */
     }
 
