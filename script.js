@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signup-form');
     const showSignupLink = document.getElementById('show-signup');
     const showLoginLink = document.getElementById('show-login');
+    const googleLoginBtn = document.querySelector('.google-btn'); // Referência ao botão Google Login
 
     // Referências dos elementos do cabeçalho (agora fixos no DOM dentro de #main-app)
     const mainAppHeader = document.getElementById('main-app-header');
@@ -29,14 +30,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const profileScreen = document.getElementById('profile-screen');
     const vehicleDetailsScreen = document.getElementById('vehicle-details-screen');
     const backToDashboardBtn = document.getElementById('back-to-dashboard');
+    const addVehicleScreen = document.getElementById('add-vehicle-screen');
+    const backFromAddVehicleBtn = document.getElementById('back-from-add-vehicle');
+    const addVehicleForm = document.getElementById('add-vehicle-form');
+
+    // Referências para os campos do formulário de adicionar veículo
+    const newVehicleNameInput = document.getElementById('new-vehicle-name');
+    const newVehicleModelInput = document.getElementById('new-vehicle-model');
+    const newVehicleKmInput = document.getElementById('new-vehicle-km');
+    const newVehicleOilKmInput = document.getElementById('new-vehicle-oil-km');
+    const newVehicleOilDateInput = document.getElementById('new-vehicle-oil-date');
+    const newVehicleOilTypeSelect = document.getElementById('new-vehicle-oil-type');
+    const newVehicleTiresKmInput = document.getElementById('new-vehicle-tires-km');
+    const newVehicleTiresDateInput = document.getElementById('new-vehicle-tires-date');
+
 
     // Elementos da Tela de Detalhes do Veículo
     const detailsVehicleName = document.getElementById('details-vehicle-name');
+    const editVehicleNameBtn = document.getElementById('edit-vehicle-name-btn'); // Nova referência
     const detailsVehicleModel = document.getElementById('details-vehicle-model');
-    const currentKmDetailsSpan = document.getElementById('current-km-details'); // Span para o KM na tela de detalhes
-    const editKmDetailsBtn = document.getElementById('edit-km-details-btn'); // Botão de edição para o KM na tela de detalhes
-    const kmDisplayDetailsContainer = document.querySelector('.km-display-details'); // Container do KM nos detalhes
+    const editVehicleModelBtn = document.getElementById('edit-vehicle-model-btn'); // Nova referência
+    const currentKmDetailsSpan = document.getElementById('current-km-details');
+    const editKmDetailsBtn = document.getElementById('edit-km-details-btn');
+    const kmDisplayDetailsContainer = document.querySelector('.km-display-details');
     const summaryCardsDynamic = document.getElementById('summary-cards-dynamic');
+
+    // Elementos da Aba Histórico
+    const maintenanceHistoryList = document.getElementById('maintenance-history-list');
+
+    // Elementos da Aba Perfil
+    const profileDisplayName = document.getElementById('profile-display-name');
+    const profileEmail = document.getElementById('profile-email');
+    const editProfileBtn = document.getElementById('edit-profile-btn');
+
+    // Referência ao link "Esqueceu a senha?"
+    const forgotPasswordLink = document.getElementById('forgot-password-link'); // Nova referência
+
 
     // Referência ao container de toasts
     const toastContainer = document.getElementById('toast-container');
@@ -63,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const kmEndInput = document.getElementById('km-end');
     const kmResultDiv = document.getElementById('km-result');
 
-    const calculateKmlBtn = document.getElementById('calculate-kml-btn'); 
+    const calculateKmlBtn = document.getElementById('calculate-kml-btn');
     const kmlKmInput = document.getElementById('kml-km');
     const kmlLitersInput = document.getElementById('kml-liters');
     const kmlPriceInput = document.getElementById('kml-price');
@@ -95,85 +124,24 @@ document.addEventListener('DOMContentLoaded', () => {
         coolant: { km: 30000, months: 36 } // Fluido de arrefecimento
     };
 
+    let userVehicles = [];
+    let currentSelectedVehicle = null;
+    let currentUserId = null;
 
-    // --- Dados Mock (simulando um backend) ---
-    // Agora incluindo 'lastDate' para cálculos baseados em tempo
-    let userVehicles = [
-        {
-            id: 'v1',
-            name: 'Honda Civic 2022 do Alan',
-            model: 'Civic',
-            km: 8500,
-            maintenances: {
-                oilChange: { lastKm: 8000, lastDate: '2024-01-15', oilType: 'sintetico' },
-                tires: { lastKm: 7000, lastDate: '2024-03-01' }, // Rodízio e próxima troca serão calculados
-                alignment: { lastKm: 7500, lastDate: '2024-02-10' },
-                balanceamento: { lastKm: 7500, lastDate: '2024-02-10' },
-                filterOil: { lastKm: 8000, lastDate: '2024-01-15' },
-                filterFuel: { lastKm: 5000, lastDate: '2023-05-20' },
-                filterAir: { lastKm: 5000, lastDate: '2023-05-20' }
-            }
-        },
-        {
-            id: 'v2',
-            name: 'Toyota Corolla 2019 da Maria',
-            model: 'Corolla',
-            km: 45200,
-            maintenances: {
-                oilChange: { lastKm: 44000, lastDate: '2024-05-01', oilType: 'semisintetico' },
-                tires: { lastKm: 40000, lastDate: '2024-01-01' },
-                alignment: { lastKm: 42000, lastDate: '2024-03-15' },
-                balanceamento: { lastKm: 42000, lastDate: '2024-03-15' },
-                filterOil: { lastKm: 44000, lastDate: '2024-05-01' },
-                filterFuel: { lastKm: 30000, lastDate: '2023-02-01' },
-                filterAir: { lastKm: 30000, lastDate: '2023-02-01' }
-            }
-        },
-        {
-            id: 'v3',
-            name: 'VW Polo 2023 do João',
-            model: 'Polo',
-            km: 1200,
-            maintenances: {
-                oilChange: { lastKm: 0, lastDate: '2024-10-01', oilType: 'mineral' }, // Exemplo de carro novo
-                tires: { lastKm: 0, lastDate: '2024-10-01' },
-                alignment: { lastKm: 0, lastDate: '2024-10-01' },
-                balanceamento: { lastKm: 0, lastDate: '2024-10-01' },
-                filterOil: { lastKm: 0, lastDate: '2024-10-01' },
-                filterFuel: { lastKm: 0, lastDate: '2024-10-01' },
-                filterAir: { lastKm: 0, lastDate: '2024-10-01' }
-            }
-        }
-    ];
-
-    let currentSelectedVehicle = null; // Armazena o veículo atualmente visualizado nos detalhes
 
     // --- Funções Auxiliares de Tratamento de Números e Datas ---
 
-    /**
-     * Converte uma string de número formatada para a localidade (ex: "1.234,56") para um número JS padrão (ex: 1234.56).
-     * @param {string} stringNumber - A string do número a ser convertida.
-     * @returns {number} O número parseado, ou NaN se a conversão falhar.
-     */
     const parseLocaleNumber = (stringNumber) => {
         if (typeof stringNumber !== 'string') return NaN;
-        // Remove separadores de milhares (pontos)
         let cleanedNumber = stringNumber.replace(/\./g, '');
-        // Troca o separador decimal (vírgula) por ponto
         cleanedNumber = cleanedNumber.replace(/,/g, '.');
         return parseFloat(cleanedNumber);
     };
 
-    /**
-     * Adiciona um número de meses a uma data.
-     * @param {string} dateString - Data no formato 'YYYY-MM-DD'.
-     * @param {number} monthsToAdd - Número de meses a adicionar.
-     * @returns {string} Nova data no formato 'YYYY-MM-DD'.
-     */
     const addMonthsToDate = (dateString, monthsToAdd) => {
         if (!dateString) return null;
-        const date = new Date(dateString + 'T00:00:00'); // Garante fuso horário local
-        if (isNaN(date.getTime())) return null; // Retorna null se a data for inválida
+        const date = new Date(dateString + 'T00:00:00');
+        if (isNaN(date.getTime())) return null;
 
         date.setMonth(date.getMonth() + monthsToAdd);
 
@@ -183,11 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${year}-${month}-${day}`;
     };
 
-    /**
-     * Formata uma data para exibição localizada (DD/MM/YYYY).
-     * @param {string} dateString - Data no formato 'YYYY-MM-DD'.
-     * @returns {string} Data formatada.
-     */
     const formatDateForDisplay = (dateString) => {
         if (!dateString) return 'N/I';
         const [year, month, day] = dateString.split('-');
@@ -197,10 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Funções de UI/Navegação ---
 
-    /**
-     * Exibe uma tela principal do aplicativo (loginScreen, signupScreen, mainApp).
-     * @param {HTMLElement} screenToShow - A tela a ser exibida.
-     */
     const showScreen = (screenToShow) => {
         const allScreens = [loginScreen, signupScreen, mainApp];
         allScreens.forEach(screen => {
@@ -215,12 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    /**
-     * Exibe uma seção de conteúdo específica dentro do main-app.
-     * @param {HTMLElement} sectionToShow - A seção de conteúdo a ser exibida.
-     */
     const showContentSection = (sectionToShow) => {
-        const contentSections = document.querySelectorAll('#main-app > .screen'); // Seleciona apenas as seções filhas diretas
+        const contentSections = document.querySelectorAll('#main-app > .screen');
         contentSections.forEach(section => {
             if (section === sectionToShow) {
                 section.classList.add('active-content');
@@ -231,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Atualiza a navegação superior (agora topNavItems é uma NodeList fixa)
         topNavItems.forEach(item => {
             if (item.dataset.screen === sectionToShow.id) {
                 item.classList.add('active');
@@ -240,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Gerencia a visibilidade do KM de detalhes
         if (kmDisplayDetailsContainer) {
             if (sectionToShow === vehicleDetailsScreen && currentSelectedVehicle) {
                 kmDisplayDetailsContainer.style.display = 'flex';
@@ -248,13 +201,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 kmDisplayDetailsContainer.style.display = 'none';
             }
         }
+
+        if (sectionToShow === historyScreen) {
+            if (currentSelectedVehicle) {
+                loadMaintenanceHistory(currentSelectedVehicle.id);
+            } else {
+                maintenanceHistoryList.innerHTML = '<p class="no-vehicles">Selecione um veículo no Dashboard para ver seu histórico de manutenções.</p>';
+            }
+        }
     };
 
-    /**
-     * Renderiza os cards de veículos no Dashboard.
-     */
+    const loadUserVehicles = async (userId) => {
+        if (!userId) {
+            userVehicles = [];
+            renderVehicles();
+            return;
+        }
+        try {
+            const vehiclesSnapshot = await db.collection('users').doc(userId).collection('vehicles').orderBy('name').get();
+            userVehicles = vehiclesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderVehicles();
+            if (userVehicles.length === 0) {
+                showToast('Adicione seu primeiro veículo!', 'attention');
+            }
+        } catch (error) {
+            console.error('Erro ao carregar veículos:', error);
+            showToast('Erro ao carregar veículos. Tente novamente.', 'error');
+        }
+    };
+
+
     const renderVehicles = () => {
-        vehicleList.innerHTML = ''; // Limpa a lista existente
+        vehicleList.innerHTML = '';
         if (userVehicles.length === 0) {
             vehicleList.innerHTML = '<p class="no-vehicles">Nenhum veículo cadastrado. Adicione um para começar!</p>';
             return;
@@ -263,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
         userVehicles.forEach(vehicle => {
             const vehicleCard = document.createElement('div');
             vehicleCard.classList.add('vehicle-card-item');
-            vehicleCard.dataset.vehicleId = vehicle.id; // Armazena o ID do veículo
+            vehicleCard.dataset.vehicleId = vehicle.id;
             vehicleCard.innerHTML = `
                 <div class="vehicle-info">
                     <h3>${vehicle.name}</h3>
@@ -272,29 +250,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <button class="delete-btn" data-vehicle-id="${vehicle.id}"><i class="fas fa-trash-alt"></i></button>
             `;
-            // Event listener para ir para detalhes do veículo
             vehicleCard.querySelector('.vehicle-info').addEventListener('click', () => {
                 currentSelectedVehicle = vehicle;
                 updateVehicleDetailsScreen(vehicle);
                 showContentSection(vehicleDetailsScreen);
             });
-            // Event listener para excluir veículo
             vehicleCard.querySelector('.delete-btn').addEventListener('click', (e) => {
-                e.stopPropagation(); // Impede que o clique no botão ative o clique no card inteiro
-                // Usar modal para confirmação de exclusão
+                e.stopPropagation();
                 showCustomModal({
                     title: 'Confirmar Exclusão',
                     message: `Tem certeza que deseja remover o veículo "${vehicle.name}"?`,
-                    inputType: 'none', // Não precisa de input para confirmação
+                    inputType: 'none',
                     onSave: () => {
-                        userVehicles = userVehicles.filter(v => v.id !== vehicle.id);
-                        renderVehicles(); // Re-renderiza a lista de veículos
-                        showToast(`${vehicle.name} removido com sucesso!`, 'success'); // Feedback via toast
-                        // Se o veículo removido era o selecionado, volta para o dashboard
-                        if (currentSelectedVehicle && currentSelectedVehicle.id === vehicle.id) {
-                            showContentSection(dashboardScreen);
-                            currentSelectedVehicle = null;
-                        }
+                        deleteVehicle(vehicle.id, vehicle.name);
                     }
                 });
             });
@@ -302,15 +270,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    /**
-     * Calcula o próximo KM e Data sugeridos para uma manutenção.
-     * Retorna o que ocorrer primeiro (KM ou Data).
-     * @param {string} typeKey - A chave do tipo de manutenção no `maintenanceStandards` (e.g., 'oilChange', 'tires').
-     * @param {number} lastKm - O KM da última manutenção.
-     * @param {string} lastDate - A data da última manutenção (YYYY-MM-DD).
-     * @param {string} [subTypeKey] - Subtipo (e.g., 'mineral', 'rotation') se aplicável.
-     * @returns {{ nextKm: number, nextDate: string, display: string }} Objeto com KM, Data e string de exibição.
-     */
+    const deleteVehicle = async (vehicleId, vehicleName) => {
+        if (!currentUserId) {
+            showToast('Erro: Você precisa estar logado para remover um veículo.', 'error');
+            return;
+        }
+        try {
+            await db.collection('users').doc(currentUserId).collection('vehicles').doc(vehicleId).delete();
+            userVehicles = userVehicles.filter(v => v.id !== vehicleId);
+            renderVehicles();
+            showToast(`${vehicleName} removido com sucesso!`, 'success');
+            if (currentSelectedVehicle && currentSelectedVehicle.id === vehicleId) {
+                showContentSection(dashboardScreen);
+                currentSelectedVehicle = null;
+            }
+        } catch (error) {
+            console.error('Erro ao remover veículo:', error);
+            showToast('Erro ao remover veículo: ' + error.message, 'error');
+        }
+    };
+
+
     const calculateNextMaintenance = (typeKey, lastKm, lastDate, subTypeKey = null) => {
         let kmStandard = 0;
         let monthsStandard = 0;
@@ -318,11 +298,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (subTypeKey && maintenanceStandards[typeKey] && maintenanceStandards[typeKey][subTypeKey]) {
             kmStandard = maintenanceStandards[typeKey][subTypeKey].km;
             monthsStandard = maintenanceStandards[typeKey][subTypeKey].months;
-        } else if (maintenanceStandards[typeKey] && maintenanceStandards[typeKey].km) { // Se não tem subtipo, ou subtipo não encontrado
+        } else if (maintenanceStandards[typeKey] && maintenanceStandards[typeKey].km) {
             kmStandard = maintenanceStandards[typeKey].km;
             monthsStandard = maintenanceStandards[typeKey].months;
         } else {
-            // Padrão de fallback se a chave não for encontrada
             console.warn(`Padrão de manutenção para ${typeKey}${subTypeKey ? '.' + subTypeKey : ''} não encontrado. Usando padrão genérico.`);
             kmStandard = 10000;
             monthsStandard = 12;
@@ -340,34 +319,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentMonth = today.getMonth();
         const currentDay = today.getDate();
 
-        // Se a última data não existe (nunca foi feita a manutenção), os cálculos não são válidos ainda.
         if (lastKm === 0 && (!lastDate || lastDate === '')) {
             return { nextKm: 0, nextDate: null, display: 'Não calculado (N/I)' };
         }
 
-        // Determina o que vem primeiro: KM ou Data
         if (suggestedNextKm > 0 && suggestedNextDate) {
             const dateObj = new Date(suggestedNextDate + 'T00:00:00');
-            const kmDiff = suggestedNextKm - currentSelectedVehicle.km; // Quão longe está o KM sugerido do KM atual do veículo
+            const kmDiff = suggestedNextKm - currentSelectedVehicle.km;
             
-            // Simular se a data sugerida já passou ou está próxima
             const msPerDay = 1000 * 60 * 60 * 24;
-            const todayMs = Date.UTC(currentYear, currentMonth, currentDay); // Data de hoje em UTC para comparação
-            const suggestedDateMs = Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()); // Data sugerida em UTC
+            const todayMs = Date.UTC(currentYear, currentMonth, currentDay);
+            const suggestedDateMs = Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
 
             const daysUntilSuggestedDate = Math.ceil((suggestedDateMs - todayMs) / msPerDay);
 
-            if (kmDiff <= 0 && daysUntilSuggestedDate <= 0) { // Ambos passaram
+            if (isFinite(kmDiff) && kmDiff <= 0 && isFinite(daysUntilSuggestedDate) && daysUntilSuggestedDate <= 0) {
                 displayString = `VENCIDO (KM e Data)! Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
-            } else if (kmDiff <= 0) { // KM passou
+            } else if (isFinite(kmDiff) && kmDiff <= 0) {
                  displayString = `VENCIDO (KM)! Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km`;
-            } else if (daysUntilSuggestedDate <= 0) { // Data passou
+            } else if (isFinite(daysUntilSuggestedDate) && daysUntilSuggestedDate <= 0) {
                  displayString = `VENCIDO (Data)! Sug.: ${formatDateForDisplay(suggestedNextDate)}`;
-            } else { // Nenhum passou
-                // Compara qual deve ser feito primeiro
-                // Se a data está mais próxima (em termos de "urgência" comparada ao KM restante)
-                // Isto é uma simplificação. Em um sistema real, seria mais complexo.
-                if (daysUntilSuggestedDate < (kmDiff / 100)) { // Ex: se faltam menos de 100 dias e mais de 10000 km, prioriza a data
+            } else {
+                if (daysUntilSuggestedDate < (kmDiff / 100)) {
                      displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
                 } else {
                      displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
@@ -375,10 +348,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else if (suggestedNextKm > 0) {
             displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km`;
-            finalNextDate = null; // Garante que a data não seja exibida se só tem KM
+            finalNextDate = null;
         } else if (suggestedNextDate) {
             displayString = `Sug.: ${formatDateForDisplay(suggestedNextDate)}`;
-            finalNextKm = 0; // Garante que o KM não seja exibido se só tem data
+            finalNextKm = 0;
         } else {
             displayString = 'Não calculado (N/I)';
             finalNextKm = 0;
@@ -392,24 +365,17 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    /**
-     * Atualiza os elementos na tela de detalhes do veículo com os dados do veículo selecionado.
-     * @param {object} vehicle - O objeto veículo com seus dados.
-     */
     const updateVehicleDetailsScreen = (vehicle) => {
         detailsVehicleName.textContent = vehicle.name;
         detailsVehicleModel.textContent = vehicle.model;
-        currentKmDetailsSpan.textContent = vehicle.km.toLocaleString('pt-BR'); // Atualiza o KM na área de detalhes
+        currentKmDetailsSpan.textContent = vehicle.km.toLocaleString('pt-BR');
 
-        // --- CALCULA E EXIBE AS PRÓXIMAS MANUTENÇÕES AUTOMATICAMENTE ---
-        // Troca de Óleo
         const oilChangeCalc = calculateNextMaintenance('oilChange', vehicle.maintenances.oilChange.lastKm, vehicle.maintenances.oilChange.lastDate, vehicle.maintenances.oilChange.oilType);
         document.getElementById('oil-last-km').textContent = vehicle.maintenances.oilChange.lastKm !== 0 ? `${vehicle.maintenances.oilChange.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
         document.getElementById('oil-last-date').textContent = vehicle.maintenances.oilChange.lastDate ? formatDateForDisplay(vehicle.maintenances.oilChange.lastDate) : 'Não informado';
-        document.getElementById('oil-type-brand').textContent = vehicle.maintenances.oilChange.oilType ? `${vehicle.maintenances.oilChange.oilType.charAt(0).toUpperCase() + vehicle.maintenances.oilChange.oilType.slice(1)}` : 'Não informado';
+        document.getElementById('oil-type-brand').textContent = vehicle.maintenances.oilChange.oilType ? `${capitalizeFirstLetter(vehicle.maintenances.oilChange.oilType)}` : 'Não informado';
         document.getElementById('oil-next-change').textContent = oilChangeCalc.display;
 
-        // Pneus (Rodízio e Troca Geral)
         const tiresRotationCalc = calculateNextMaintenance('tires', vehicle.maintenances.tires.lastKm, vehicle.maintenances.tires.lastDate, 'rotation');
         const tiresChangeCalc = calculateNextMaintenance('tires', vehicle.maintenances.tires.lastKm, vehicle.maintenances.tires.lastDate, 'change');
         document.getElementById('pneus-last-km').textContent = vehicle.maintenances.tires.lastKm !== 0 ? `${vehicle.maintenances.tires.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
@@ -417,7 +383,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('pneus-rotation-suggested').textContent = tiresRotationCalc.display;
         document.getElementById('pneus-next-change').textContent = tiresChangeCalc.display + ' (Troca Geral)';
 
-        // Alinhamento & Balanceamento
         const alignmentCalc = calculateNextMaintenance('alignment', vehicle.maintenances.alignment.lastKm, vehicle.maintenances.alignment.lastDate);
         const balanceamentoCalc = calculateNextMaintenance('balanceamento', vehicle.maintenances.balanceamento.lastKm, vehicle.maintenances.balanceamento.lastDate);
         document.getElementById('alignment-last-km').textContent = vehicle.maintenances.alignment.lastKm !== 0 ? `${vehicle.maintenances.alignment.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
@@ -427,7 +392,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('balanceamento-last-date').textContent = vehicle.maintenances.balanceamento.lastDate !== 0 ? `${formatDateForDisplay(vehicle.maintenances.balanceamento.lastDate)}` : 'Não informado';
         document.getElementById('balanceamento-next').textContent = balanceamentoCalc.display;
 
-        // Filtros
         const filterOilCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterOil.lastKm, vehicle.maintenances.filterOil.lastDate, 'oil');
         const filterFuelCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterFuel.lastKm, vehicle.maintenances.filterFuel.lastDate, 'fuel');
         const filterAirCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterAir.lastKm, vehicle.maintenances.filterAir.lastDate, 'air');
@@ -463,7 +427,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('filter-air-next').textContent = filterAirCalc.display;
 
     
-        // Popular os cards de Manutenções Rápidas (usando os valores calculados)
         renderMaintenanceSummaryCards(vehicle.km, {
             oilChange: { lastKm: vehicle.maintenances.oilChange.lastKm, nextKm: oilChangeCalc.nextKm, nextDate: oilChangeCalc.nextDate },
             tires: { lastKm: vehicle.maintenances.tires.lastKm, rotationSuggestedKm: tiresRotationCalc.nextKm, rotationSuggestedDate: tiresRotationCalc.nextDate },
@@ -471,17 +434,11 @@ document.addEventListener('DOMContentLoaded', () => {
             filterAir: { lastKm: vehicle.maintenances.filterAir.lastKm, nextKm: filterAirCalc.nextKm, nextDate: filterAirCalc.nextDate }
         });
 
-        // Adicionar listeners de edição para os campos de "última" e "tipo"
         attachMaintenanceEditListeners();
     };
 
-    /**
-     * Renderiza os cards de Manutenções Rápidas com base no KM atual e próximos KMs sugeridos.
-     * @param {number} currentVehicleKm - O KM atual do veículo.
-     * @param {object} calculatedMaintenances - O objeto de manutenções com KMs e Datas JÁ calculados.
-     */
     const renderMaintenanceSummaryCards = (currentVehicleKm, calculatedMaintenances) => {
-        summaryCardsDynamic.innerHTML = ''; // Limpa os cards existentes
+        summaryCardsDynamic.innerHTML = '';
 
         const getStatusClass = (currentKm, nextKm, nextDate) => {
             const today = new Date();
@@ -490,12 +447,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const isKmOverdue = (nextKm !== 0 && currentKm >= nextKm);
             const isDateOverdue = (nextDateObj && today >= nextDateObj);
 
-            // Calcula a diferença para "atenção"
             const kmDifference = nextKm - currentKm;
             const daysDifference = nextDateObj ? Math.ceil((nextDateObj.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : Infinity;
 
             const isKmAttention = (nextKm !== 0 && kmDifference <= 1000 && kmDifference > 0);
-            const isDateAttention = (nextDateObj && daysDifference <= 30 && daysDifference > 0); // Próximos 30 dias
+            const isDateAttention = (nextDateObj && daysDifference <= 30 && daysDifference > 0);
 
             if (isKmOverdue || isDateOverdue) {
                 return 'status-overdue';
@@ -568,27 +524,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    /**
-     * Exibe uma notificação toast temporária.
-     * @param {string} message - A mensagem a ser exibida.
-     * @param {string} type - O tipo de notificação ('success', 'error', 'attention').
-     * @param {number} duration - Duração em milissegundos (padrão: 3000ms).
-     */
     const showToast = (message, type, duration = 3000) => {
         const toast = document.createElement('div');
         toast.classList.add('toast', type);
         toast.innerHTML = `<i class="icon fas ${getToastIcon(type)}"></i> <span>${message}</span>`;
         toastContainer.appendChild(toast);
 
-        void toast.offsetWidth; // Força o reflow para a transição funcionar
+        void toast.offsetWidth;
         toast.classList.add('show');
 
         setTimeout(() => {
             toast.classList.remove('show');
-            toast.classList.add('hide'); // Adiciona classe para transição de saída
+            toast.classList.add('hide');
 
             toast.addEventListener('transitionend', () => {
-                toast.remove(); // Remove o toast do DOM após a transição de saída
+                toast.remove();
             }, { once: true });
         }, duration);
     };
@@ -602,17 +552,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    /**
-     * Exibe um modal customizado com opções.
-     * @param {object} options - Opções para o modal.
-     * @param {string} options.title - Título do modal.
-     * @param {string} [options.message] - Mensagem opcional no corpo do modal.
-     * @param {string} [options.inputType='text'] - Tipo de input ('text', 'number', 'date', 'none').
-     * @param {string} [options.inputLabel] - Label para o campo de input.
-     * @param {string|number} [options.inputValue=''] - Valor inicial do campo de input.
-     * @param {function} options.onSave - Função de callback chamada ao clicar em "Salvar", recebe o valor do input.
-     * @param {function} [options.onCancel] - Função de callback opcional chamada ao clicar em "Cancelar".
-     */
     const showCustomModal = ({ title, message, inputType = 'text', inputLabel, inputValue = '', onSave, onCancel }) => {
         modalTitle.textContent = title;
         modalMessage.textContent = message || '';
@@ -625,7 +564,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modalInput.type = inputType;
             modalInput.value = (typeof inputValue === 'number' || inputType === 'text') ? inputValue.toString() : inputValue;
             modalInput.focus();
-            if (inputType !== 'date') { // Não seleciona texto em campos de data
+            if (inputType !== 'date') {
                 modalInput.select();
             }
         }
@@ -652,14 +591,10 @@ document.addEventListener('DOMContentLoaded', () => {
         modalInput.value = '';
     };
 
-    /**
-     * Anexa os event listeners para os botões de edição de manutenção na tela de detalhes do veículo.
-     */
     const attachMaintenanceEditListeners = () => {
         const editButtons = document.querySelectorAll('.maintenance-item .edit-btn');
 
         editButtons.forEach(button => {
-            // Remove listener anterior para evitar duplicação em re-renderizações
             if (button._listenerFn) {
                 button.removeEventListener('click', button._listenerFn);
             }
@@ -670,40 +605,32 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const listenerFn = (e) => handleMaintenanceEdit(maintenanceType, fieldName, label);
             button.addEventListener('click', listenerFn);
-            button._listenerFn = listenerFn; // Armazena a referência para poder remover depois
+            button._listenerFn = listenerFn;
         });
     };
 
 
-    /**
-     * Lida com a edição de campos de manutenção.
-     * @param {string} maintenanceType - A chave do tipo de manutenção (ex: 'tires', 'oilChange').
-     * @param {string} fieldName - O nome do campo a ser editado (ex: 'lastKm', 'lastDate', 'oilType').
-     * @param {string} displayLabel - O texto que aparece no modal para o campo (ex: 'Última troca de Pneus').
-     */
-    const handleMaintenanceEdit = (maintenanceType, fieldName, displayLabel) => {
-        if (!currentSelectedVehicle) {
-            showToast('Erro: Nenhum veículo selecionado.', 'error');
+    const handleMaintenanceEdit = async (maintenanceType, fieldName, displayLabel) => {
+        if (!currentSelectedVehicle || !currentUserId) {
+            showToast('Erro: Você precisa estar logado e ter um veículo selecionado para atualizar.', 'error');
             return;
         }
 
         let currentMaintenanceValue = currentSelectedVehicle.maintenances[maintenanceType][fieldName];
-        let inputModality = 'text'; // Padrão
-        let currentInputValue = currentMaintenanceValue || ''; // Valor inicial
+        let inputModality = 'text';
+        let currentInputValue = currentMaintenanceValue || '';
 
-        // Define a modalidade do input e o valor inicial com base no campo
         if (fieldName.toLowerCase().includes('km')) {
             inputModality = 'number';
             currentInputValue = currentMaintenanceValue !== 0 ? currentMaintenanceValue : '';
         } else if (fieldName.toLowerCase().includes('date')) {
             inputModality = 'date';
             currentInputValue = currentMaintenanceValue || '';
-        } else { // Para campos de texto como 'oilType'
+        } else {
             inputModality = 'text';
             currentInputValue = currentMaintenanceValue || '';
         }
         
-        // Verifica se o campo é editável (apenas 'lastKm', 'lastDate', 'oilType')
         const editableFields = ['lastKm', 'lastDate', 'oilType'];
         if (!editableFields.includes(fieldName)) {
             showToast(`"${displayLabel}" é calculado automaticamente e não pode ser editado diretamente.`, 'attention');
@@ -715,7 +642,7 @@ document.addEventListener('DOMContentLoaded', () => {
             inputLabel: 'Valor:',
             inputType: inputModality,
             inputValue: currentInputValue,
-            onSave: (newValue) => {
+            onSave: async (newValue) => {
                 let isValid = true;
                 let parsedValue = newValue;
 
@@ -726,14 +653,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         showToast(`Valor inválido para ${displayLabel}. Por favor, insira um número inteiro válido (positivo).`, 'error');
                     }
                 } else if (inputModality === 'date') {
-                    // Simples validação de formato de data YYYY-MM-DD
                     if (!/^\d{4}-\d{2}-\d{2}$/.test(newValue)) {
                         isValid = false;
                         showToast(`Data inválida para ${displayLabel}. Use o formato AAAA-MM-DD.`, 'error');
                     }
                 }
-                // Para 'text', qualquer valor é considerado válido, a menos que outras regras sejam adicionadas.
-                // Para 'oilType', poderíamos ter uma lista de validação em um app real.
                 if (maintenanceType === 'oilChange' && fieldName === 'oilType' && newValue.trim() === '') {
                     isValid = false;
                     showToast(`O tipo de óleo não pode ser vazio.`, 'error');
@@ -741,9 +665,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
                 if (isValid) {
-                    currentSelectedVehicle.maintenances[maintenanceType][fieldName] = parsedValue;
-                    updateVehicleDetailsScreen(currentSelectedVehicle); // Re-renderiza a tela (recalcula as próximas datas/km)
-                    showToast(`${displayLabel} atualizado!`, 'success');
+                    try {
+                        const updatePath = `maintenances.${maintenanceType}.${fieldName}`;
+                        await db.collection('users').doc(currentUserId).collection('vehicles').doc(currentSelectedVehicle.id).update({
+                            [updatePath]: parsedValue
+                        });
+                        currentSelectedVehicle.maintenances[maintenanceType][fieldName] = parsedValue;
+                        updateVehicleDetailsScreen(currentSelectedVehicle);
+                        showToast(`${displayLabel} atualizado!`, 'success');
+                    } catch (error) {
+                        console.error('Erro ao atualizar manutenção:', error);
+                        showToast('Erro ao atualizar manutenção: ' + error.message, 'error');
+                    }
                 }
             },
             onCancel: () => {
@@ -752,22 +685,148 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const getFirebaseErrorMessage = (errorCode) => {
+        switch (errorCode) {
+            case 'auth/invalid-email': return 'Email inválido.';
+            case 'auth/user-disabled': return 'Usuário desabilitado.';
+            case 'auth/user-not-found': return 'Usuário não encontrado. Crie uma conta.';
+            case 'auth/wrong-password': return 'Senha incorreta.';
+            case 'auth/email-already-in-use': return 'Este email já está em uso.';
+            case 'auth/weak-password': return 'Senha muito fraca. Mínimo de 6 caracteres.';
+            case 'auth/operation-not-allowed': return 'Operação não permitida.';
+            default: return 'Ocorreu um erro. Tente novamente.';
+        }
+    };
+
+
+    const loadMaintenanceHistory = async (vehicleId) => {
+        maintenanceHistoryList.innerHTML = '';
+
+        if (!currentUserId || !vehicleId) {
+            maintenanceHistoryList.innerHTML = '<p class="no-vehicles">Selecione um veículo para ver seu histórico.</p>';
+            return;
+        }
+
+        try {
+            const vehicleDoc = await db.collection('users').doc(currentUserId).collection('vehicles').doc(vehicleId).get();
+            if (!vehicleDoc.exists) {
+                maintenanceHistoryList.innerHTML = '<p class="no-vehicles">Veículo não encontrado.</p>';
+                return;
+            }
+
+            const vehicleData = vehicleDoc.data();
+            const maintenances = vehicleData.maintenances || {};
+            const historyItems = [];
+
+            for (const type in maintenances) {
+                const maintenance = maintenances[type];
+                if ((maintenance.lastKm && maintenance.lastKm !== 0) || (maintenance.lastDate && maintenance.lastDate !== '')) {
+                    let details = [];
+                    if (maintenance.lastKm && maintenance.lastKm !== 0) {
+                        details.push(`KM: ${maintenance.lastKm.toLocaleString('pt-BR')}`);
+                    }
+                    if (maintenance.oilType) {
+                        details.push(`Tipo de Óleo: ${capitalizeFirstLetter(maintenance.oilType)}`);
+                    }
+
+                    const eventDate = maintenance.lastDate || '2000-01-01'; // Fallback para ordenação se não houver data
+
+                    historyItems.push({
+                        date: eventDate,
+                        type: type,
+                        details: details.join(', ')
+                    });
+                }
+            }
+
+            if (historyItems.length === 0) {
+                maintenanceHistoryList.innerHTML = '<p class="no-vehicles">Nenhum histórico de manutenção encontrado para este veículo.</p>';
+                return;
+            }
+
+            historyItems.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            historyItems.forEach(item => {
+                const historyCard = document.createElement('div');
+                historyCard.classList.add('history-item', 'card');
+                let displayType = capitalizeFirstLetter(item.type.replace(/([A-Z])/g, ' $1'));
+                switch (item.type) {
+                    case 'oilChange': displayType = 'Troca de Óleo'; break;
+                    case 'tires': displayType = 'Manutenção de Pneus'; break;
+                    case 'alignment': displayType = 'Alinhamento'; break;
+                    case 'balanceamento': displayType = 'Balanceamento'; break;
+                    case 'filterOil': displayType = 'Troca Filtro de Óleo'; break;
+                    case 'filterFuel': displayType = 'Troca Filtro de Combustível'; break;
+                    case 'filterAir': displayType = 'Troca Filtro de Ar'; break;
+                    case 'brakes': displayType = 'Manutenção de Freios'; break;
+                    case 'sparkPlugs': displayType = 'Troca de Velas'; break;
+                    case 'timingBelt': displayType = 'Troca de Correia Dentada'; break;
+                    case 'coolant': displayType = 'Troca Fluido de Arrefecimento'; break;
+                }
+
+                historyCard.innerHTML = `
+                    <span class="history-date">${formatDateForDisplay(item.date)}</span>
+                    <span class="history-type">${displayType}</span>
+                    <span class="history-details">${item.details}</span>
+                `;
+                maintenanceHistoryList.appendChild(historyCard);
+            });
+
+        } catch (error) {
+            console.error('Erro ao carregar histórico de manutenções:', error);
+            showToast('Erro ao carregar histórico. Tente novamente.', 'error');
+        }
+    };
+
+    const capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
 
     // --- Event Handlers ---
 
-    // Login/Cadastro
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        showToast('Login bem-sucedido!', 'success');
-        showScreen(mainApp); // Mostra o mainApp
-        showContentSection(dashboardScreen); // Define o dashboard como a primeira seção do mainApp
-        renderVehicles(); // Renderiza os veículos no dashboard
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+
+        try {
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            currentUserId = userCredential.user.uid;
+            showToast('Login bem-sucedido!', 'success');
+            showScreen(mainApp);
+            showContentSection(dashboardScreen);
+            loadUserVehicles(currentUserId);
+        } catch (error) {
+            console.error('Erro no login:', error);
+            showToast('Erro no login: ' + getFirebaseErrorMessage(error.code), 'error');
+        }
     });
 
-    signupForm.addEventListener('submit', (e) => {
+    signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        showToast('Cadastro realizado com sucesso! Faça login.', 'success');
-        showScreen(loginScreen);
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm-password').value;
+
+        if (password !== confirmPassword) {
+            showToast('As senhas não coincidem!', 'error');
+            return;
+        }
+
+        try {
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            currentUserId = userCredential.user.uid;
+            await db.collection('users').doc(currentUserId).set({
+                email: email,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            showToast('Cadastro realizado com sucesso! Faça login.', 'success');
+            showScreen(loginScreen);
+        } catch (error) {
+            console.error('Erro no cadastro:', error);
+            showToast('Erro no cadastro: ' + getFirebaseErrorMessage(error.code), 'error');
+        }
     });
 
     showSignupLink.addEventListener('click', (e) => {
@@ -780,11 +839,148 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen(loginScreen);
     });
 
+    // Login com Google
+    if (googleLoginBtn) {
+        googleLoginBtn.addEventListener('click', async () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                const userCredential = await auth.signInWithPopup(provider);
+                currentUserId = userCredential.user.uid;
+                const userDocRef = db.collection('users').doc(currentUserId);
+                const userDoc = await userDocRef.get();
+                if (!userDoc.exists) {
+                    await userDocRef.set({
+                        email: userCredential.user.email,
+                        displayName: userCredential.user.displayName,
+                        photoURL: userCredential.user.photoURL,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                showToast('Login com Google bem-sucedido!', 'success');
+                showScreen(mainApp);
+                showContentSection(dashboardScreen);
+                loadUserVehicles(currentUserId);
+            } catch (error) {
+                console.error('Erro no login com Google:', error);
+                showToast('Erro no login com Google: ' + getFirebaseErrorMessage(error.code), 'error');
+            }
+        });
+    }
+
+    // Event listener para o link "Esqueceu a senha?"
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showCustomModal({
+                title: 'Recuperar Senha',
+                message: 'Por favor, insira seu e-mail cadastrado para receber um link de redefinição de senha.',
+                inputLabel: 'E-mail:',
+                inputType: 'email',
+                inputValue: '',
+                onSave: async (email) => {
+                    const trimmedEmail = email.trim();
+                    if (trimmedEmail) {
+                        try {
+                            await auth.sendPasswordResetEmail(trimmedEmail);
+                            showToast('Se o e-mail estiver cadastrado, um link de redefinição de senha foi enviado.', 'success');
+                        } catch (error) {
+                            console.error('Erro ao enviar e-mail de redefinição:', error);
+                            showToast('Erro ao tentar enviar e-mail de redefinição. Por favor, verifique o e-mail e tente novamente.', 'error');
+                        }
+                    } else {
+                        showToast('Por favor, insira um e-mail.', 'attention');
+                    }
+                },
+                onCancel: () => {
+                    showToast('Recuperação de senha cancelada.', 'attention');
+                }
+            });
+        });
+    }
+
+
+    // Event listener para o botão de edição do nome do veículo
+    if (editVehicleNameBtn) {
+        editVehicleNameBtn.addEventListener('click', () => {
+            if (!currentSelectedVehicle || !currentUserId) {
+                showToast('Erro: Nenhum veículo selecionado ou usuário não logado.', 'error');
+                return;
+            }
+
+            showCustomModal({
+                title: 'Editar Nome do Veículo',
+                inputLabel: 'Novo nome:',
+                inputType: 'text',
+                inputValue: currentSelectedVehicle.name,
+                onSave: async (newName) => {
+                    const trimmedName = newName.trim();
+                    if (trimmedName) {
+                        try {
+                            await db.collection('users').doc(currentUserId).collection('vehicles').doc(currentSelectedVehicle.id).update({
+                                name: trimmedName
+                            });
+                            currentSelectedVehicle.name = trimmedName;
+                            updateVehicleDetailsScreen(currentSelectedVehicle);
+                            renderVehicles(); // Atualiza o card no dashboard
+                            showToast('Nome do veículo atualizado com sucesso!', 'success');
+                        } catch (error) {
+                            console.error('Erro ao atualizar nome do veículo:', error);
+                            showToast('Erro ao atualizar nome: ' + error.message, 'error');
+                        }
+                    } else {
+                        showToast('O nome do veículo não pode ser vazio.', 'attention');
+                    }
+                },
+                onCancel: () => {
+                    showToast('Edição do nome do veículo cancelada.', 'attention');
+                }
+            });
+        });
+    }
+
+    // Event listener para o botão de edição do modelo do veículo
+    if (editVehicleModelBtn) {
+        editVehicleModelBtn.addEventListener('click', () => {
+            if (!currentSelectedVehicle || !currentUserId) {
+                showToast('Erro: Nenhum veículo selecionado ou usuário não logado.', 'error');
+                return;
+            }
+
+            showCustomModal({
+                title: 'Editar Modelo do Veículo',
+                inputLabel: 'Novo modelo:',
+                inputType: 'text',
+                inputValue: currentSelectedVehicle.model,
+                onSave: async (newModel) => {
+                    const trimmedModel = newModel.trim();
+                    if (trimmedModel) {
+                        try {
+                            await db.collection('users').doc(currentUserId).collection('vehicles').doc(currentSelectedVehicle.id).update({
+                                model: trimmedModel
+                            });
+                            currentSelectedVehicle.model = trimmedModel;
+                            updateVehicleDetailsScreen(currentSelectedVehicle);
+                            renderVehicles(); // Atualiza o card no dashboard
+                            showToast('Modelo do veículo atualizado com sucesso!', 'success');
+                        } catch (error) {
+                            console.error('Erro ao atualizar modelo do veículo:', error);
+                            showToast('Erro ao atualizar modelo: ' + error.message, 'error');
+                        }
+                    } else {
+                        showToast('O modelo do veículo não pode ser vazio.', 'attention');
+                    }
+                },
+                onCancel: () => {
+                    showToast('Edição do modelo do veículo cancelada.', 'attention');
+                }
+            });
+        });
+    }
 
     // Atualizar KM no cabeçalho de detalhes do veículo
     editKmDetailsBtn.addEventListener('click', () => {
-        if (!currentSelectedVehicle) {
-            showToast('Erro: Nenhum veículo selecionado para atualizar o KM.', 'error');
+        if (!currentSelectedVehicle || !currentUserId) {
+            showToast('Erro: Você precisa estar logado e ter um veículo selecionado para atualizar o KM.', 'error');
             return;
         }
 
@@ -793,13 +989,21 @@ document.addEventListener('DOMContentLoaded', () => {
             inputLabel: 'Novo KM atual:',
             inputType: 'number',
             inputValue: currentSelectedVehicle.km,
-            onSave: (newKmValue) => {
+            onSave: async (newKmValue) => {
                 const parsedKm = parseInt(newKmValue);
                 if (!isNaN(parsedKm) && parsedKm >= 0) {
-                    currentSelectedVehicle.km = parsedKm;
-                    updateVehicleDetailsScreen(currentSelectedVehicle);
-                    renderVehicles(); // Para atualizar o KM no card do dashboard
-                    showToast('KM atualizado para: ' + parsedKm.toLocaleString('pt-BR'), 'success');
+                    try {
+                        await db.collection('users').doc(currentUserId).collection('vehicles').doc(currentSelectedVehicle.id).update({
+                            km: parsedKm
+                        });
+                        currentSelectedVehicle.km = parsedKm;
+                        updateVehicleDetailsScreen(currentSelectedVehicle);
+                        renderVehicles();
+                        showToast('KM atualizado para: ' + parsedKm.toLocaleString('pt-BR'), 'success');
+                    } catch (error) {
+                        console.error('Erro ao atualizar KM:', error);
+                        showToast('Erro ao atualizar KM: ' + error.message, 'error');
+                    }
                 } else {
                     showToast('KM inválido. Por favor, insira um número inteiro válido (apenas dígitos).', 'error');
                 }
@@ -818,7 +1022,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const updateThemeIcon = () => {
-        if (toggleThemeBtn) { // Verifica se o botão existe (está no DOM)
+        if (toggleThemeBtn) {
             if (body.classList.contains('dark-mode')) {
                 toggleThemeBtn.innerHTML = '<i class="fas fa-sun"></i>';
             } else {
@@ -828,7 +1032,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    // Navegação superior
     const handleTopNavClick = (e) => {
         const targetItem = e.target.closest('.top-nav-item');
         if (targetItem) {
@@ -857,7 +1060,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    // Botão Voltar do Detalhes do Veículo
     backToDashboardBtn.addEventListener('click', () => {
         showContentSection(dashboardScreen);
         currentSelectedVehicle = null;
@@ -866,7 +1068,68 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Calculadora de KM Rodado
+    addVehicleBtn.addEventListener('click', () => {
+        showContentSection(addVehicleScreen);
+        addVehicleForm.reset();
+    });
+
+    backFromAddVehicleBtn.addEventListener('click', () => {
+        showContentSection(dashboardScreen);
+    });
+
+    addVehicleForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!currentUserId) {
+            showToast('Erro: Você precisa estar logado para adicionar um veículo.', 'error');
+            return;
+        }
+
+        const vehicleName = newVehicleNameInput.value.trim();
+        const vehicleModel = newVehicleModelInput.value.trim();
+        const vehicleKm = parseInt(newVehicleKmInput.value);
+
+        if (!vehicleName || !vehicleModel || isNaN(vehicleKm) || vehicleKm < 0) {
+            showToast('Por favor, preencha o nome, modelo e KM atual do veículo.', 'attention');
+            return;
+        }
+
+        const oilKm = newVehicleOilKmInput.value ? parseInt(newVehicleOilKmInput.value) : 0;
+        const oilDate = newVehicleOilDateInput.value || '';
+        const oilType = newVehicleOilTypeSelect.value || '';
+
+        const tiresKm = newVehicleTiresKmInput.value ? parseInt(newVehicleTiresKmInput.value) : 0;
+        const tiresDate = newVehicleTiresDateInput.value || '';
+
+        const newVehicleData = {
+            name: vehicleName,
+            model: vehicleModel,
+            km: vehicleKm,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            maintenances: {
+                oilChange: { lastKm: oilKm, lastDate: oilDate, oilType: oilType },
+                tires: { lastKm: tiresKm, lastDate: tiresDate },
+                alignment: { lastKm: 0, lastDate: '' },
+                balanceamento: { lastKm: 0, lastDate: '' },
+                filterOil: { lastKm: 0, lastDate: '' },
+                filterFuel: { lastKm: 0, lastDate: '' },
+                filterAir: { lastKm: 0, lastDate: '' }
+            }
+        };
+
+        try {
+            await db.collection('users').doc(currentUserId).collection('vehicles').add(newVehicleData);
+            showToast('Veículo adicionado com sucesso!', 'success');
+            addVehicleForm.reset();
+            showContentSection(dashboardScreen);
+            loadUserVehicles(currentUserId);
+        } catch (error) {
+            console.error('Erro ao adicionar veículo:', error);
+            showToast('Erro ao adicionar veículo: ' + error.message, 'error');
+        }
+    });
+
+
     calculateKmBtn.addEventListener('click', () => {
         const startDateStr = kmStartDateInput.value;
         const endDateStr = kmEndDateInput.value;
@@ -901,7 +1164,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('Cálculo de KM rodado realizado!', 'success');
     });
 
-    // Calculadora de KM/Litro
     calculateKmlBtn.addEventListener('click', () => {
         const km = parseLocaleNumber(kmlKmInput.value);
         const liters = parseLocaleNumber(kmlLitersInput.value);
@@ -922,17 +1184,23 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('Cálculo de KM/Litro realizado!', 'success');
     });
 
-    // Botão Sair do Perfil
     logoutBtn.addEventListener('click', () => {
         showCustomModal({
             title: 'Sair da Conta',
             message: 'Tem certeza que deseja sair?',
             inputType: 'none',
-            onSave: () => {
-                // Lógica para deslogar (limpar dados de sessão, etc.)
-                currentSelectedVehicle = null; // Limpa o veículo selecionado
-                showScreen(loginScreen); // Volta para a tela de login
-                showToast('Você saiu da sua conta.', 'success');
+            onSave: async () => {
+                try {
+                    await auth.signOut();
+                    currentUserId = null;
+                    userVehicles = [];
+                    currentSelectedVehicle = null;
+                    showScreen(loginScreen);
+                    showToast('Você saiu da sua conta.', 'success');
+                } catch (error) {
+                    console.error('Erro ao fazer logout:', error);
+                    showToast('Erro ao sair: ' + error.message, 'error');
+                }
             },
             onCancel: () => {
                 showToast('Ação de sair cancelada.', 'attention');
@@ -942,21 +1210,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Inicialização ---
-    // Exibe a tela de login por padrão
-    showScreen(loginScreen);
-    if (kmDisplayDetailsContainer) { // Garante que o container existe
-        kmDisplayDetailsContainer.style.display = 'none'; // Garante que o KM nos detalhes esteja escondido inicialmente
+    // Manter o estado de login e popular perfil
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            currentUserId = user.uid;
+            profileEmail.textContent = user.email || 'Não Informado';
+            profileDisplayName.textContent = user.displayName || 'Não Informado';
+            showScreen(mainApp);
+            showContentSection(dashboardScreen);
+            await loadUserVehicles(currentUserId);
+        } else {
+            currentUserId = null;
+            userVehicles = [];
+            currentSelectedVehicle = null;
+            profileEmail.textContent = 'Não Informado';
+            profileDisplayName.textContent = 'Não Informado';
+            showScreen(loginScreen);
+        }
+    });
+
+    if (kmDisplayDetailsContainer) {
+        kmDisplayDetailsContainer.style.display = 'none';
     }
     
-    // NOTA IMPORTANTE: Como mainAppHeader e seus filhos estão no DOM desde o início (em #main-app),
-    // seus listeners podem ser anexados aqui na inicialização global.
     toggleThemeBtn.addEventListener('click', handleThemeToggle);
     topNavItemsContainer.addEventListener('click', handleTopNavClick);
-    updateThemeIcon(); // Inicializa o ícone do tema.
-
-
-    // Adicionar um ouvinte para o botão "Adicionar Novo Veículo" (apenas para demonstração)
-    addVehicleBtn.addEventListener('click', () => {
-        showToast('Funcionalidade "Adicionar Novo Veículo" seria implementada aqui!', 'attention');
-    });
+    updateThemeIcon();
 });

@@ -27,7 +27,7 @@
                         <input type="password" id="login-password" placeholder="********" required>
                     </div>
                     <button type="submit" class="btn primary-btn">Entrar</button>
-                    <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                    <a href="#" class="forgot-password" id="forgot-password-link">Esqueceu a senha?</a>
                 </form>
                 <div class="divider">
                     <span>OU</span>
@@ -94,12 +94,62 @@
                 </div>
             </section>
 
+            <section id="add-vehicle-screen" class="screen hidden-content">
+                <div class="container">
+                    <button class="back-btn" id="back-from-add-vehicle"><i class="fas fa-arrow-left"></i> Voltar</button>
+                    <h1>Adicionar Novo Veículo</h1>
+                    <form id="add-vehicle-form" class="card">
+                        <div class="input-group">
+                            <label for="new-vehicle-name">Nome do Veículo (ex: Meu Civic, Carro do Trabalho)</label>
+                            <input type="text" id="new-vehicle-name" placeholder="Ex: Honda Civic" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="new-vehicle-model">Modelo (ex: Civic Touring 2022)</label>
+                            <input type="text" id="new-vehicle-model" placeholder="Ex: Civic Touring 2022" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="new-vehicle-km">KM Atual</label>
+                            <input type="number" id="new-vehicle-km" placeholder="Ex: 15000" required min="0">
+                        </div>
+                        <h3 style="margin-top: 20px; margin-bottom: 15px;">Últimas Manutenções (Opcional)</h3>
+                        <div class="input-group">
+                            <label for="new-vehicle-oil-km">Última troca de Óleo (KM)</label>
+                            <input type="number" id="new-vehicle-oil-km" placeholder="Ex: 14500" min="0">
+                        </div>
+                         <div class="input-group">
+                            <label for="new-vehicle-oil-date">Última troca de Óleo (Data)</label>
+                            <input type="date" id="new-vehicle-oil-date">
+                        </div>
+                        <div class="input-group">
+                            <label for="new-vehicle-oil-type">Tipo de Óleo (mineral, semisintetico, sintetico)</label>
+                            <select id="new-vehicle-oil-type">
+                                <option value="">Selecione o tipo</option>
+                                <option value="mineral">Mineral</option>
+                                <option value="semisintetico">Semissintético</option>
+                                <option value="sintetico">Sintético</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="new-vehicle-tires-km">Última Manutenção Pneus (KM)</label>
+                            <input type="number" id="new-vehicle-tires-km" placeholder="Ex: 10000" min="0">
+                        </div>
+                        <div class="input-group">
+                            <label for="new-vehicle-tires-date">Última Manutenção Pneus (Data)</label>
+                            <input type="date" id="new-vehicle-tires-date">
+                        </div>
+                        <button type="submit" class="btn primary-btn">Salvar Veículo</button>
+                    </form>
+                </div>
+            </section>
+
             <section id="vehicle-details-screen" class="screen hidden-content">
                 <div class="container">
                     <button class="back-btn" id="back-to-dashboard"><i class="fas fa-arrow-left"></i> Voltar</button>
                     <div class="vehicle-details-header">
                         <h2 id="details-vehicle-name"></h2>
+                        <button id="edit-vehicle-name-btn" class="edit-btn small-edit-btn"><i class="fas fa-edit"></i></button>
                         <p id="details-vehicle-model"></p>
+                        <button id="edit-vehicle-model-btn" class="edit-btn small-edit-btn"><i class="fas fa-edit"></i></button>
                         <div class="km-display-details">
                             <span id="current-km-details"></span> KM
                             <button id="edit-km-details-btn" class="edit-btn small-edit-btn"><i class="fas fa-edit"></i></button>
@@ -208,19 +258,9 @@
             <section id="history-screen" class="screen hidden-content">
                 <div class="container">
                     <h1>Histórico de Serviços</h1>
-                    <p>Visualize o histórico completo de manutenções e serviços.</p>
+                    <p>Visualize o histórico completo de manutenções e serviços para o veículo selecionado.</p>
                     <div class="history-list" id="maintenance-history-list">
-                         <div class="history-item card">
-                            <span class="history-date">10/06/2025</span>
-                            <span class="history-type">Troca de Óleo</span>
-                            <span class="history-details">Óleo Sintético 5W-30 (Castrol), Filtro de Óleo, Filtro de Ar - KM: 8.500</span>
-                        </div>
-                        <div class="history-item card">
-                            <span class="history-date">01/07/2024</span>
-                            <span class="history-type">Alinhamento e Balanceamento</span>
-                            <span class="history-details">KM: 7.500</span>
-                        </div>
-                    </div>
+                         </div>
                 </div>
             </section>
 
@@ -230,9 +270,9 @@
                     <p>Gerencie suas informações de perfil e configurações do aplicativo.</p>
                     <div class="card placeholder-card">
                         <h3>Minhas Informações</h3>
-                        <p>Nome: Usuário Teste</p>
-                        <p>Email: usuario@teste.com</p>
-                        <button class="btn secondary-btn">Editar Perfil</button>
+                        <p>Nome: <span id="profile-display-name">Não Informado</span></p>
+                        <p>Email: <span id="profile-email">Não Informado</span></p>
+                        <button class="btn secondary-btn" id="edit-profile-btn">Editar Perfil</button>
                     </div>
                     <button class="btn logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</button>
                 </div>
@@ -257,7 +297,26 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Sua configuração do projeto Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyByv-aqKWqDDaId6oZTKhghWs9aiJY8doQ",
+            authDomain: "keynnect-vehicle.firebaseapp.com",
+            projectId: "keynnect-vehicle",
+            storageBucket: "keynnect-vehicle.firebasestorage.app",
+            messagingSenderId: "410654266678",
+            appId: "1:410654266678:web:abf4207ebe18e69efa0f97"
+            // measurementId: "G-WDBL7HFKY6" // Opcional, se você não for usar Analytics diretamente no cliente
+        };
 
+        // Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
