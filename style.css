@@ -996,7 +996,7 @@ body:not(.dark-mode) .top-nav-item.active {
         padding-top: 90px; /* Ajustar padding para o cabeçalho fixo */
     }
     .container {
-        padding: 0 15px; /* Mantém um padding lateral consistente para o conteúdo dentro do app */
+        padding: 0 10px; /* Reduzir padding lateral para aproveitar mais a tela */
     }
 
     /* Ajustes do Cabeçalho Principal (Top Nav) */
@@ -1040,96 +1040,124 @@ body:not(.dark-mode) .top-nav-item.active {
 
     /* Ajustes para Dashboard e Detalhes do Veículo */
     .section-title {
-        font-size: 1.4em;
-        margin-top: 20px;
-        margin-bottom: 15px;
+        font-size: 1.6em; /* Aumenta um pouco o título da seção */
+        margin-top: 25px; /* Mais espaço acima */
+        margin-bottom: 20px; /* Mais espaço abaixo */
     }
 
     .vehicle-list {
-        grid-template-columns: 1fr; /* Um card por linha */
-        gap: 15px;
+        grid-template-columns: 1fr; /* Garante que os cards de veículos fiquem em lista vertical */
+        gap: 15px; /* Espaçamento entre os cards de veículos */
     }
 
     .vehicle-card-item {
-        padding: 12px;
-        gap: 10px;
+        padding: 15px; /* Aumenta o preenchimento interno do card do veículo */
+        gap: 15px; /* Aumenta o espaçamento entre elementos internos do card */
     }
 
     .vehicle-info h3 {
-        font-size: 1.1em;
+        font-size: 1.2em; /* Tamanho da fonte do nome do veículo */
     }
 
     .vehicle-info p {
-        font-size: 0.85em;
+        font-size: 0.9em; /* Tamanho da fonte dos detalhes do veículo */
     }
 
+    /* Cards de Resumo (Manutenções Rápidas) */
     .summary-cards-section {
-        grid-template-columns: 1fr;
-        gap: 15px;
+        grid-template-columns: 1fr; /* Garante que os cards de resumo fiquem em lista vertical */
+        gap: 15px; /* Espaçamento entre os cards de resumo */
     }
 
     .summary-card {
-        padding: 15px;
-        gap: 10px;
+        padding: 20px; /* Aumenta o preenchimento interno do card de resumo */
+        gap: 15px; /* Aumenta o espaçamento entre elementos internos */
     }
 
     .summary-card .icon {
-        font-size: 2em;
+        font-size: 2.5em; /* Garante que o ícone seja proeminente */
     }
 
     .summary-card h3 {
-        font-size: 1.1em;
+        font-size: 1.3em; /* Tamanho da fonte do título do card de resumo */
     }
 
     .summary-card p {
-        font-size: 0.85em;
+        font-size: 0.9em; /* Tamanho da fonte do parágrafo do card de resumo */
     }
 
+    /* Seções de Manutenção (itens individuais) */
+    .maintenance-sections {
+        gap: 15px; /* Espaçamento entre os cards de manutenção */
+    }
+    .maintenance-item.card {
+        padding: 20px; /* Aumenta o preenchimento interno dos itens de manutenção */
+    }
     .maintenance-item h3 {
-        font-size: 1.3em;
+        font-size: 1.5em; /* Tamanho da fonte do título da manutenção */
+        margin-bottom: 10px;
     }
-
     .maintenance-item p {
-        font-size: 0.9em;
+        font-size: 1em; /* Torna o texto maior e mais legível */
+        margin-bottom: 10px; /* Mais espaço entre os parágrafos */
+    }
+    .maintenance-item span {
+        font-weight: 700; /* Valores importantes mais em destaque */
+    }
+    .edit-btn.small-edit-btn {
+        font-size: 1.1em; /* Ícones de edição maiores para facilitar o toque */
     }
 
-    .calculators-section h2, .history-section h2 {
-        font-size: 1.5em;
+    /* Calculadoras */
+    .calculators-section {
+        gap: 15px; /* Espaçamento entre os cards das calculadoras */
+    }
+    .calculator-card {
+        padding: 20px; /* Aumenta o preenchimento interno do card da calculadora */
+    }
+    .calculator-card h3 {
+        font-size: 1.4em; /* Tamanho da fonte do título da calculadora */
+        margin-bottom: 15px;
+    }
+    .input-group input[type="date"],
+    .input-group input[type="number"] {
+        padding: 12px; /* Padding dos inputs das calculadoras */
+        font-size: 1.1em; /* Tamanho da fonte dos inputs das calculadoras */
+    }
+    .result {
+        padding: 15px; /* Padding do resultado da calculadora */
+        font-size: 1.1em; /* Tamanho da fonte do resultado da calculadora */
     }
 
-    /* Ajustes para Toasts e Modais */
+    /* Seção de Histórico */
+    .history-list {
+        gap: 10px; /* Espaçamento entre os itens do histórico */
+    }
+    .history-item {
+        padding: 15px; /* Preenchimento interno do item do histórico */
+        font-size: 1em; /* Tamanho da fonte do texto do histórico */
+    }
+    .history-item .history-date {
+        font-size: 1.1em; /* Data do histórico mais proeminente */
+    }
+
+    /* KM Display na tela de Detalhes do Veículo */
+    .km-display-details {
+        font-size: 1.4em; /* KM display maior */
+        margin-top: 15px;
+    }
+    .km-display-details .edit-btn {
+        font-size: 1.2em; /* Ícone de edição para KM maior */
+    }
+
+    /* Toasts e Modais (ajustes já feitos - mantidos) */
     #toast-container {
-        top: auto;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        right: auto;
-        align-items: center;
-        width: 95%;
-        max-width: 95%;
+        top: auto; bottom: 10px; left: 50%; transform: translateX(-50%); right: auto;
+        align-items: center; width: 95%; max-width: 95%;
     }
-
-    .toast {
-        min-width: unset;
-        width: 100%;
-        padding: 10px 15px;
-    }
-
-    .modal-content {
-        width: 95%;
-        padding: 20px;
-    }
-
-    .modal-content h3 {
-        font-size: 1.5em;
-    }
-
-    .modal-content p {
-        font-size: 1em;
-    }
-
-    .modal-buttons {
-        flex-direction: column;
-        gap: 10px;
-    }
+    .toast { min-width: unset; width: 100%; padding: 10px 15px; }
+    .modal-content { width: 95%; padding: 20px; }
+    .modal-content h3 { font-size: 1.5em; }
+    .modal-content p { font-size: 1em; }
+    .modal-buttons { flex-direction: column; gap: 10px; }
 }
