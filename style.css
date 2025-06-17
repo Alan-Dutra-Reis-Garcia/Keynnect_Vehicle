@@ -196,7 +196,7 @@ body {
     -webkit-appearance: none; /* Remove estilo padrão do select no Webkit */
     -moz-appearance: none;    /* Remove estilo padrão do select no Firefox */
     appearance: none;         /* Remove estilo padrão do select */
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333333%22%20d%3D%22M287%2069.9L146.2%20209.6%205.5%2069.9c-1.8-1.8-4.2-2.7-6.5-2.7s-4.7%200.9-6.5%202.7c-3.6%203.6-3.6%209.5%200%2013.1L139.7%20229c1.8%201.8%204.2%202.7%206.5%202.7s4.7-0.9%206.5-2.7l140.7-146c3.6-3.6%203.6-9.5%200-13.1-3.7-3.6-9.6-3.6-13.2%200z%22%2F%3E%3C%2Fsvg%3E');
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333333%22%20d%3D%22M287%2069.9L146.2%20209.6%205.5%2069.9c-1.8-1.8-4.2-2.7-6.5-2.7s-4.7%200.9-6.5%202.7c-3.6%203.6-3.6%209.5%200%2013.1L139.7%20229c1.8%201.8%204.2%202.7%206.5%202.7s4.7-0.9%206.5-2.7l140.7-146c3.6-3.6%203.6-9.5%200-13.1-3.7-3.6-9.6-3.6-13.2%200z%22%2F%3E%3C%2Fsvg%3E'); /* Cor fixa para a seta */
     background-repeat: no-repeat;
     background-position: right 15px center;
     background-size: 12px;
@@ -929,6 +929,51 @@ body:not(.dark-mode) .top-nav-item.active {
 
 /* Responsividade */
 @media (max-width: 768px) {
+    /* Ajustes para as telas de Login/Cadastro */
+    .screen {
+        padding: 10px; /* Reduzir o padding geral da tela para bordas menores */
+    }
+
+    .login-card {
+        padding: 25px; /* Manter um bom padding interno, mas permitir que o card seja maior */
+        max-width: 95%; /* Permitir que o cartão ocupe quase a largura total */
+        margin: 0 auto; /* Centralizar com margem automática */
+    }
+
+    .app-logo {
+        font-size: 2em; /* Manter um tamanho razoável */
+        margin-bottom: 20px;
+    }
+
+    .login-card h2 {
+        font-size: 1.6em; /* Ajustar tamanho do título */
+        margin-bottom: 20px;
+    }
+
+    .input-group label {
+        font-size: 0.9em; /* Ajustar tamanho da label */
+    }
+
+    .input-group input,
+    .input-group select {
+        padding: 10px 12px; /* Reduzir um pouco o padding dos inputs */
+        font-size: 0.95em; /* Ajustar tamanho da fonte dos inputs */
+    }
+
+    .btn {
+        padding: 10px 15px; /* Reduzir um pouco o padding dos botões */
+        font-size: 1em; /* Ajustar tamanho da fonte dos botões */
+    }
+
+    .social-btn {
+        padding: 10px 15px; /* Ajustar padding dos botões sociais */
+    }
+
+    .signup-text {
+        font-size: 0.9em; /* Ajustar tamanho da fonte do texto de cadastro */
+    }
+
+    /* Ajustes para o cabeçalho principal */
     .main-app-header {
         flex-direction: column;
         height: auto;
@@ -942,70 +987,125 @@ body:not(.dark-mode) .top-nav-item.active {
 
     .top-nav-items {
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: space-around; /* Distribuir itens uniformemente */
         width: 100%;
         margin-top: 10px;
-        gap: 5px; /* Reduz o espaço entre os ícones em mobile */
+        gap: 0px; /* Remover gap para flex-basis 100% funcionar melhor */
     }
 
     .top-nav-item {
-        flex-basis: 100%; /* Cada item ocupa 100% da largura para lista vertical */
-        font-size: 1em; /* Tamanho de fonte ajustado para mobile */
-        padding: 10px 0; /* Preenchimento ajustado para melhor toque */
+        flex-basis: 48%; /* Exemplo: 2 itens por linha. Para 1 item por linha use 100% */
+        font-size: 0.9em; /* Aumentar um pouco para melhor legibilidade */
+        padding: 8px 5px; /* Ajustar padding para melhor área de toque */
+        margin: 5px; /* Pequena margem entre os itens */
     }
     .top-nav-item i {
-        font-size: 1.8em; /* Ícone um pouco maior em mobile */
-        margin-bottom: 5px; /* Mais espaço abaixo do ícone */
+        font-size: 1.5em; /* Ícone maior para melhor visualização */
+        margin-bottom: 3px;
     }
 
     .toggle-theme-btn {
         margin-top: 10px;
         margin-bottom: 15px; /* Espaço para separar dos itens de navegação */
         order: -1; /* Mover para o topo */
-        /* align-self removido para permitir centralização pelo pai */
     }
 
-    .login-card {
-        padding: 20px;
+    /* Ajustes para o Dashboard e Detalhes do Veículo */
+    .container {
+        padding: 0 10px; /* Reduzir padding lateral para aproveitar mais a tela */
     }
 
-    .app-logo {
-        font-size: 2em;
-    }
-
-    .login-card h2 {
-        font-size: 1.5em;
+    .section-title {
+        font-size: 1.4em; /* Ajustar tamanho dos títulos de seção */
+        margin-top: 20px;
+        margin-bottom: 15px;
     }
 
     .vehicle-list {
         grid-template-columns: 1fr; /* Um card por linha em telas menores */
+        gap: 15px; /* Reduzir o espaçamento entre os cards */
+    }
+
+    .vehicle-card-item {
+        padding: 12px; /* Reduzir padding interno do card do veículo */
+        gap: 10px; /* Reduzir gap interno */
+    }
+
+    .vehicle-info h3 {
+        font-size: 1.1em; /* Ajustar tamanho da fonte do nome do veículo */
+    }
+
+    .vehicle-info p {
+        font-size: 0.85em; /* Ajustar tamanho da fonte dos detalhes do veículo */
     }
 
     .summary-cards-section {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Um card por linha */
+        gap: 15px;
     }
 
-    .maintenance-sections, .calculators-section {
-        grid-template-columns: 1fr;
+    .summary-card {
+        padding: 15px; /* Reduzir padding do card de resumo */
+        gap: 10px;
     }
 
+    .summary-card .icon {
+        font-size: 2em; /* Reduzir um pouco o ícone dos cards de resumo */
+    }
+
+    .summary-card h3 {
+        font-size: 1.1em; /* Ajustar tamanho da fonte do título do card de resumo */
+    }
+
+    .summary-card p {
+        font-size: 0.85em; /* Ajustar tamanho da fonte do parágrafo do card de resumo */
+    }
+
+    .maintenance-item h3 {
+        font-size: 1.3em; /* Ajustar tamanho dos títulos de manutenção */
+    }
+
+    .maintenance-item p {
+        font-size: 0.9em; /* Ajustar tamanho da fonte dos parágrafos de manutenção */
+    }
+
+    .calculators-section h2, .history-section h2 {
+        font-size: 1.5em; /* Ajustar tamanho dos títulos de calculadora e histórico */
+    }
+
+    /* Ajustes para Toasts e Modais */
     #toast-container {
         top: auto;
-        bottom: 20px;
+        bottom: 10px; /* Mover um pouco mais para baixo */
         left: 50%;
         transform: translateX(-50%);
         right: auto;
         align-items: center;
+        width: 95%; /* Ocupar mais largura em mobile */
+        max-width: 95%;
     }
 
     .toast {
-        min-width: 90%; /* Ocupa quase toda a largura em mobile */
-        text-align: center;
-        justify-content: center;
+        min-width: unset; /* Remover min-width para ocuar a largura da tela */
+        width: 100%; /* Ocupar 100% da largura do container */
         padding: 10px 15px;
     }
 
     .modal-content {
+        width: 95%; /* Permitir que o modal ocupe mais largura */
         padding: 20px;
+    }
+
+    .modal-content h3 {
+        font-size: 1.5em;
+    }
+
+    .modal-content p {
+        font-size: 1em;
+    }
+
+    .modal-buttons {
+        flex-direction: column; /* Empilhar botões no modal em telas pequenas */
+        gap: 10px;
     }
 }
