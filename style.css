@@ -183,7 +183,8 @@ body {
     color: var(--text-color);
 }
 
-.input-group input {
+.input-group input,
+.input-group select { /* Adicionado select para ter o mesmo estilo */
     width: 100%;
     padding: 12px 15px;
     border: 1px solid var(--border-color);
@@ -192,9 +193,18 @@ body {
     color: var(--text-color);
     font-size: 1em;
     transition: border-color 0.2s ease;
+    -webkit-appearance: none; /* Remove estilo padrão do select no Webkit */
+    -moz-appearance: none;    /* Remove estilo padrão do select no Firefox */
+    appearance: none;         /* Remove estilo padrão do select */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333333%22%20d%3D%22M287%2069.9L146.2%20209.6%205.5%2069.9c-1.8-1.8-4.2-2.7-6.5-2.7s-4.7%200.9-6.5%202.7c-3.6%203.6-3.6%209.5%200%2013.1L139.7%20229c1.8%201.8%204.2%202.7%206.5%202.7s4.7-0.9%206.5-2.7l140.7-146c3.6-3.6%203.6-9.5%200-13.1-3.7-3.6-9.6-3.6-13.2%200z%22%2F%3E%3C%2Fsvg%3E'); /* Cor fixa para a seta */
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+    padding-right: 40px; /* Espaço para o ícone da seta */
 }
 
-.input-group input:focus {
+.input-group input:focus,
+.input-group select:focus {
     outline: none;
     border-color: var(--primary-color);
 }
@@ -924,6 +934,11 @@ body:not(.dark-mode) .top-nav-item.active {
         height: auto; /* Altura flexível para acomodar os itens empilhados */
         padding-top: 10px;
         padding-bottom: 10px;
+        /* Remover justify-content: space-between para centralizar tudo */
+        justify-content: center;
+        /* Adicionar padding lateral para evitar que o conteúdo encoste nas bordas */
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .top-nav-items {
@@ -935,13 +950,20 @@ body:not(.dark-mode) .top-nav-item.active {
     }
 
     .top-nav-item {
-        flex-basis: 22%; /* Tenta distribuir os 4 itens em 2 linhas (aprox) */
+        flex-basis: 23%; /* Ajuste para tentar 4 itens por linha, ou 2 por linha se o gap for maior */
         font-size: 0.7em;
+        padding: 5px 0; /* Ajustar padding para mobile */
     }
     .top-nav-item i {
         font-size: 1.5em; /* Ícone um pouco menor em mobile */
     }
 
+    /* Posicionar o botão de tema no cabeçalho em mobile */
+    .toggle-theme-btn {
+        margin-top: 10px; /* Espaço entre o botão de tema e os itens de navegação */
+        order: -1; /* Mover para o topo */
+        align-self: flex-end; /* Alinhar à direita */
+    }
 
     .login-card {
         padding: 20px;
