@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keynnect Vehicle</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="dark-mode">
+
+    <div class="app-container">
+        <section id="login-screen" class="screen active">
+            <div class="login-card">
+                <div class="app-logo">
+                    <i class="fas fa-car-alt"></i> Keynnect
+                </div>
+                <h2>Bem-vindo!</h2>
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="login-email">E-mail</label>
+                        <input type="email" id="login-email" placeholder="seuemail@exemplo.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" placeholder="********" required>
+                    </div>
+                    <button type="submit" class="btn primary-btn">Entrar</button>
+                    <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                </form>
+                <div class="divider">
+                    <span>OU</span>
+                </div>
+                <button class="btn social-btn google-btn"><i class="fab fa-google"></i> Entrar com Google</button>
+                <p class="signup-text">Não tem uma conta? <a href="#" id="show-signup">Cadastre-se</a></p>
+            </div>
+        </section>
+
+        <section id="signup-screen" class="screen hidden">
+            <div class="login-card">
+                <div class="app-logo">
+                    <i class="fas fa-car-alt"></i> Keynnect
+                </div>
+                <h2>Crie sua conta</h2>
+                <form id="signup-form">
+                    <div class="input-group">
+                        <label for="signup-email">E-mail</label>
+                        <input type="email" id="signup-email" placeholder="seuemail@exemplo.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-password">Senha</label>
+                        <input type="password" id="signup-password" placeholder="********" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-confirm-password">Confirmar Senha</label>
+                        <input type="password" id="signup-confirm-password" placeholder="********" required>
+                    </div>
+                    <button type="submit" class="btn primary-btn">Cadastrar</button>
+                </form>
+                <p class="signup-text">Já tem uma conta? <a href="#" id="show-login">Entrar</a></p>
+            </div>
+        </section>
+
+        <div id="main-app" class="hidden">
+            <header class="main-app-header" id="main-app-header">
+                <div class="top-nav-items">
+                    <a href="#" class="top-nav-item active" data-screen="dashboard-screen">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="top-nav-item" data-screen="schedule-screen">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Agendar</span>
+                    </a>
+                    <a href="#" class="top-nav-item" data-screen="history-screen">
+                        <i class="fas fa-history"></i>
+                        <span>Histórico</span>
+                    </a>
+                    <a href="#" class="top-nav-item" data-screen="profile-screen">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </a>
+                </div>
+                <button id="toggle-theme-btn" class="toggle-theme-btn"><i class="fas fa-sun"></i></button>
+            </header>
+
+            <section id="dashboard-screen" class="screen active-content">
+                <div class="container">
+                    <h1>Dashboard</h1>
+                    <div id="vehicle-list" class="vehicle-list">
+                        </div>
+                    <button id="add-vehicle-btn" class="btn secondary-btn full-width-btn"><i class="fas fa-plus"></i> Adicionar Novo Veículo</button>
+                </div>
+            </section>
+
+            <section id="vehicle-details-screen" class="screen hidden-content">
+                <div class="container">
+                    <button class="back-btn" id="back-to-dashboard"><i class="fas fa-arrow-left"></i> Voltar</button>
+                    <div class="vehicle-details-header">
+                        <h2 id="details-vehicle-name"></h2>
+                        <p id="details-vehicle-model"></p>
+                        <div class="km-display-details">
+                            <span id="current-km-details"></span> KM
+                            <button id="edit-km-details-btn" class="edit-btn small-edit-btn"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </div>
+
+                    <h2 class="section-title">Manutenções Rápidas</h2>
+                    <div id="summary-cards-dynamic" class="summary-cards-section">
+                        </div>
+
+                    <h3 class="section-title">Manutenções Acompanhadas</h3>
+                    <div class="maintenance-sections">
+                        <div class="maintenance-item card">
+                            <h3><i class="fas fa-tire"></i> Pneus</h3>
+                            <p>Última troca: <span id="pneus-last-change"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="tires" data-field-name="lastKm" data-label="Última troca de Pneus (KM)"><i class="fas fa-pen"></i></button></p>
+                            <p>Rodízio Sugerido: <span id="pneus-rotation-suggested"></span></p> <p>Próxima troca: <span id="pneus-next-change"></span></p> </div>
+                        <div class="maintenance-item card">
+                            <h3><i class="fas fa-align-center"></i> Alinhamento & Balanceamento</h3>
+                            <p>Último alinhamento: <span id="alignment-last"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="alignment" data-field-name="lastKm" data-label="Último Alinhamento (KM)"><i class="fas fa-pen"></i></button></p>
+                            <p>Próximo sugerido: <span id="alignment-next"></span></p> <p>Último balanceamento: <span id="balanceamento-last"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="balanceamento" data-field-name="lastKm" data-label="Último Balanceamento (KM)"><i class="fas fa-pen"></i></button></p>
+                            <p>Próximo sugerido: <span id="balanceamento-next"></span></p> </div>
+                        <div class="maintenance-item card">
+                            <h3><i class="fas fa-oil-can"></i> Troca de Óleo</h3>
+                            <p>Data da última: <span id="oil-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="oilChange" data-field-name="lastKm" data-label="Última Troca de Óleo (KM)"><i class="fas fa-pen"></i></button></p>
+                            <p>Tipo/Marca do óleo: <span id="oil-type-brand"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="oilChange" data-field-name="oilType" data-label="Tipo/Marca do Óleo"><i class="fas fa-pen"></i></button></p>
+                            <p>Próxima troca: <span id="oil-next-change"></span></p> </div>
+                        <div class="maintenance-item card">
+                            <h3><i class="fas fa-filter"></i> Filtros</h3>
+                            <p>Última troca de óleo: <span id="filter-oil-last"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterOil" data-field-name="lastKm" data-label="Última Troca Filtro de Óleo (KM)"><i class="fas fa-pen"></i></button></p>
+                            <p>Próxima sugerida: <span id="filter-oil-next"></span></p> <p>Última troca de combustível: <span id="filter-fuel-last"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterFuel" data-field-name="lastKm" data-label="Última Troca Filtro de Combustível (KM)"><i class="fas fa-pen"></i></button></p>
+                            <p>Próxima sugerida: <span id="filter-fuel-next"></span></p> <p>Última troca de ar: <span id="filter-air-last"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterAir" data-field-name="lastKm" data-label="Última Troca Filtro de Ar (KM)"><i class="fas fa-pen"></i></button></p>
+                            <p>Próxima sugerida: <span id="filter-air-next"></span></p> </div>
+                    </div>
+
+                    <h3 class="section-title">Calculadoras</h3>
+                    <div class="calculators-section">
+                        <div class="card calculator-card">
+                            <h3><i class="fas fa-road"></i> KM Rodado</h3>
+                            <div class="input-group">
+                                <label for="km-start-date">Data Inicial:</label>
+                                <input type="date" id="km-start-date">
+                            </div>
+                            <div class="input-group">
+                                <label for="km-start">KM Inicial:</label>
+                                <input type="number" id="km-start" placeholder="Ex: 5000">
+                            </div>
+                            <div class="input-group">
+                                <label for="km-end-date">Data Final:</label>
+                                <input type="date" id="km-end-date">
+                            </div>
+                            <div class="input-group">
+                                <label for="km-end">KM Final:</label>
+                                <input type="number" id="km-end" placeholder="Ex: 8500">
+                            </div>
+                            <button id="calculate-km-btn" class="btn">Calcular</button>
+                            <div class="result" id="km-result"></div>
+                        </div>
+                        <div class="card calculator-card">
+                            <h3><i class="fas fa-gas-pump"></i> KM/Litro</h3>
+                            <div class="input-group">
+                                <label for="kml-km">KM Rodados:</label>
+                                <input type="number" id="kml-km" placeholder="Ex: 400">
+                            </div>
+                            <div class="input-group">
+                                <label for="kml-liters">Litros Abastecidos:</label>
+                                <input type="number" id="kml-liters" step="0.1" placeholder="Ex: 30.5">
+                            </div>
+                            <div class="input-group">
+                                <label for="kml-price">Preço por Litro (R$):</label>
+                                <input type="number" id="kml-price" step="0.01" placeholder="Ex: 5.50">
+                            </div>
+                            <button id="calculate-kml-btn" class="btn">Calcular</button>
+                            <div class="result" id="kml-result"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="schedule-screen" class="screen hidden-content">
+                <div class="container">
+                    <h1>Agendamento</h1>
+                    <p>Aqui você verá e gerenciará seus agendamentos de serviço.</p>
+                    <div class="card placeholder-card">
+                        <h3>Próximos Agendamentos</h3>
+                        <p>Nenhum agendamento futuro no momento.</p>
+                        <button class="btn primary-btn">Agendar Novo Serviço</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="history-screen" class="screen hidden-content">
+                <div class="container">
+                    <h1>Histórico de Serviços</h1>
+                    <p>Visualize o histórico completo de manutenções e serviços.</p>
+                    <div class="history-list" id="maintenance-history-list">
+                         <div class="history-item card">
+                            <span class="history-date">10/06/2025</span>
+                            <span class="history-type">Troca de Óleo</span>
+                            <span class="history-details">Óleo Sintético 5W-30 (Castrol), Filtro de Óleo, Filtro de Ar - KM: 8.500</span>
+                        </div>
+                        <div class="history-item card">
+                            <span class="history-date">01/07/2024</span>
+                            <span class="history-type">Alinhamento e Balanceamento</span>
+                            <span class="history-details">KM: 7.500</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="profile-screen" class="screen hidden-content">
+                <div class="container">
+                    <h1>Perfil</h1>
+                    <p>Gerencie suas informações de perfil e configurações do aplicativo.</p>
+                    <div class="card placeholder-card">
+                        <h3>Minhas Informações</h3>
+                        <p>Nome: Usuário Teste</p>
+                        <p>Email: usuario@teste.com</p>
+                        <button class="btn secondary-btn">Editar Perfil</button>
+                    </div>
+                    <button class="btn logout-btn" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <div id="custom-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="modal-title"></h3>
+            <p id="modal-message"></p>
+            <div class="input-group" id="modal-input-group">
+                <label for="modal-input" id="modal-input-label"></label>
+                <input type="text" id="modal-input" class="modal-input"> <!-- AQUI -->
+            </div>
+            <div class="modal-buttons">
+                <button id="modal-cancel-btn" class="btn secondary-btn">Cancelar</button>
+                <button id="modal-save-btn" class="btn primary-btn">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
