@@ -79,7 +79,7 @@ body:not(.dark-mode) {
     padding: 0;
 }
 
-html, body { /* Adicionado html aqui */
+html, body {
     height: 100%; /* Garante que HTML e Body ocupem 100% da altura */
     overflow: hidden; /* Evita rolagem principal por padrão */
 }
@@ -1131,7 +1131,8 @@ body:not(.dark-mode) .top-nav-item.active {
 
     /* Cards de Resumo (Manutenções Rápidas) */
     .summary-cards-section {
-        display: block; /* Força que cada card ocupe uma linha inteira */
+        display: grid; /* Volta para grid */
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas de tamanho igual */
         gap: 15px; /* Espaçamento entre os cards de resumo */
         margin-top: 15px; /* Um pouco menos de margem para cima */
         margin-bottom: 20px; /* Mais espaço para a próxima seção */
@@ -1141,8 +1142,8 @@ body:not(.dark-mode) .top-nav-item.active {
     .summary-card {
         padding: 15px; /* Um pouco menos de padding para compactar */
         gap: 15px; /* Aumenta o espaçamento entre elementos internos */
-        width: 100%; /* Garante que cada card ocupe 100% da largura */
-        margin-bottom: 15px; /* Adiciona margem inferior para separar os cards */
+        width: auto; /* Deixa o grid controlar a largura */
+        margin-bottom: 0; /* Remove a margem inferior para o grid lidar com o espaçamento */
     }
 
     .summary-card .icon {
@@ -1245,15 +1246,15 @@ body:not(.dark-mode) .top-nav-item.active {
     .modal-content p { font-size: 1em; }
     .modal-buttons { flex-direction: column; gap: 10px; }
 
-    /* Força empilhamento em telas pequenas */
+    /* Força empilhamento em telas pequenas (exceto summary-cards-section) */
     .vehicle-list,
-    .maintenance-sections { /* Removido .summary-cards-section daqui pois já foi tratado acima */
+    .maintenance-sections {
         display: block !important;
         grid-template-columns: 1fr !important;
     }
     .vehicle-card-item,
     .maintenance-item,
-    .card { /* Removido .summary-card daqui */
+    .card {
         width: 100% !important;
         margin-bottom: 15px;
     }
