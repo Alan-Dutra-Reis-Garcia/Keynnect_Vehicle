@@ -293,10 +293,6 @@ body {
     background-color: var(--border-color);
 }
 
-.social-btn i {
-    font-size: 1.2em;
-}
-
 .google-btn {
     background-color: #4285F4;
     color: white;
@@ -932,6 +928,10 @@ body:not(.dark-mode) .top-nav-item.active {
     /* Ajustes para as telas de Login/Cadastro */
     #login-screen, #signup-screen {
         padding: 0; /* Remove completamente o padding externo destas telas */
+        min-height: 100vh; /* Garante que ocupe a altura total da tela */
+        justify-content: flex-start; /* Alinha o conteúdo ao topo para dar mais espaço */
+        padding-top: 5vh; /* Um pouco de padding no topo para não colar */
+        padding-bottom: 5vh; /* Padding na parte de baixo */
     }
 
     .login-card {
@@ -941,6 +941,11 @@ body:not(.dark-mode) .top-nav-item.active {
         border-radius: 0; /* Bordas retas para preencher a tela */
         box-shadow: none; /* Remove a sombra para um visual mais integrado */
         margin: 0; /* Garante que não haja margens externas */
+        display: flex; /* Adiciona flexbox ao card */
+        flex-direction: column; /* Organiza os itens em coluna */
+        justify-content: center; /* Centraliza verticalmente se o espaço permitir */
+        align-items: center; /* Centraliza horizontalmente os itens dentro do card */
+        flex-grow: 1; /* Permite que o card cresça para preencher o espaço disponível na tela */
     }
 
     /* Refinamento de fontes e espaçamentos dentro do login card para se aproximar do exemplo */
@@ -952,6 +957,11 @@ body:not(.dark-mode) .top-nav-item.active {
     .login-card h2 {
         font-size: 2em; /* Tamanho do título "Bem-vindo!" */
         margin-bottom: 30px; /* Espaço abaixo do título */
+    }
+
+    .input-group {
+        width: 100%; /* Garante que o input group ocupe a largura total do card */
+        margin-bottom: 20px;
     }
 
     .input-group label {
@@ -969,26 +979,27 @@ body:not(.dark-mode) .top-nav-item.active {
         padding: 15px 20px; /* Padding dos botões */
         font-size: 1.2em; /* Tamanho da fonte dos botões */
         margin-top: 15px;
+        margin-bottom: 5px; /* Espaço para o link de 'esqueceu a senha' */
     }
 
     .forgot-password {
         font-size: 1em; /* Tamanho da fonte "Esqueceu a senha?" */
-        margin-top: 20px;
+        margin-top: 10px;
     }
 
     .divider {
-        margin: 40px 0; /* Espaço para o divisor "OU" */
+        margin: 30px 0; /* Espaço para o divisor "OU" */
     }
 
     .social-btn {
         padding: 15px 20px;
         font-size: 1.1em;
-        margin-top: 30px; /* Espaço acima dos botões sociais */
+        margin-top: 20px; /* Espaço acima dos botões sociais */
     }
 
     .signup-text {
         font-size: 1em;
-        margin-top: 30px; /* Espaço abaixo dos botões sociais */
+        margin-top: 25px; /* Espaço abaixo dos botões sociais */
     }
 
     /* Ajustes para as telas de conteúdo (Dashboard, etc.) */
@@ -1045,6 +1056,13 @@ body:not(.dark-mode) .top-nav-item.active {
         margin-bottom: 20px; /* Mais espaço abaixo */
     }
 
+    .no-vehicles {
+        text-align: center;
+        font-style: italic;
+        color: var(--text-color);
+        margin-top: 30px;
+    }
+
     .vehicle-list {
         grid-template-columns: 1fr; /* Garante que os cards de veículos fiquem em lista vertical */
         gap: 15px; /* Espaçamento entre os cards de veículos */
@@ -1067,23 +1085,39 @@ body:not(.dark-mode) .top-nav-item.active {
     .summary-cards-section {
         grid-template-columns: 1fr; /* Garante que os cards de resumo fiquem em lista vertical */
         gap: 15px; /* Espaçamento entre os cards de resumo */
+        margin-top: 15px; /* Um pouco menos de margem para cima */
+        margin-bottom: 20px; /* Mais espaço para a próxima seção */
+        align-items: stretch; /* Faz os itens de grid terem a mesma altura */
     }
 
     .summary-card {
-        padding: 20px; /* Aumenta o preenchimento interno do card de resumo */
+        padding: 15px; /* Um pouco menos de padding para compactar */
         gap: 15px; /* Aumenta o espaçamento entre elementos internos */
     }
 
     .summary-card .icon {
-        font-size: 2.5em; /* Garante que o ícone seja proeminente */
+        font-size: 2em; /* Ícone um pouco menor para economizar espaço */
+        min-width: 2em; /* Garante que o ícone mantenha um tamanho mínimo */
+        text-align: center;
+    }
+
+    .summary-card .card-content {
+        flex-grow: 1; /* Permite que o conteúdo ocupe o máximo de espaço */
+        text-align: left; /* Garante que o texto esteja alinhado à esquerda */
     }
 
     .summary-card h3 {
-        font-size: 1.3em; /* Tamanho da fonte do título do card de resumo */
+        font-size: 1.2em; /* Título um pouco menor */
+        margin-bottom: 3px; /* Menos espaço abaixo do título */
     }
 
     .summary-card p {
-        font-size: 0.9em; /* Tamanho da fonte do parágrafo do card de resumo */
+        font-size: 0.85em; /* Texto menor para as informações */
+        margin: 0; /* Remove margem padrão dos parágrafos */
+        line-height: 1.3; /* Ajusta altura da linha para compactar o texto */
+        white-space: nowrap; /* Evita que o texto quebre linha */
+        overflow: hidden; /* Esconde o excesso se o texto for muito longo */
+        text-overflow: ellipsis; /* Adiciona "..." se o texto for cortado */
     }
 
     /* Seções de Manutenção (itens individuais) */
