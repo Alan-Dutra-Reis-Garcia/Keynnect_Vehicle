@@ -404,23 +404,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- CALCULA E EXIBE AS PRÓXIMAS MANUTENÇÕES AUTOMATICAMENTE ---
         // Troca de Óleo
         const oilChangeCalc = calculateNextMaintenance('oilChange', vehicle.maintenances.oilChange.lastKm, vehicle.maintenances.oilChange.lastDate, vehicle.maintenances.oilChange.oilType);
-        document.getElementById('oil-last-date').textContent = vehicle.maintenances.oilChange.lastKm !== 0 ? `${vehicle.maintenances.oilChange.lastKm.toLocaleString('pt-BR')} km, ${formatDateForDisplay(vehicle.maintenances.oilChange.lastDate)}` : 'Não informado';
+        document.getElementById('oil-last-km').textContent = vehicle.maintenances.oilChange.lastKm !== 0 ? `${vehicle.maintenances.oilChange.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
+        document.getElementById('oil-last-date').textContent = vehicle.maintenances.oilChange.lastDate ? formatDateForDisplay(vehicle.maintenances.oilChange.lastDate) : 'Não informado';
         document.getElementById('oil-type-brand').textContent = vehicle.maintenances.oilChange.oilType ? `${vehicle.maintenances.oilChange.oilType.charAt(0).toUpperCase() + vehicle.maintenances.oilChange.oilType.slice(1)}` : 'Não informado';
         document.getElementById('oil-next-change').textContent = oilChangeCalc.display;
 
         // Pneus (Rodízio e Troca Geral)
         const tiresRotationCalc = calculateNextMaintenance('tires', vehicle.maintenances.tires.lastKm, vehicle.maintenances.tires.lastDate, 'rotation');
         const tiresChangeCalc = calculateNextMaintenance('tires', vehicle.maintenances.tires.lastKm, vehicle.maintenances.tires.lastDate, 'change');
-        document.getElementById('pneus-last-change').textContent = vehicle.maintenances.tires.lastKm !== 0 ? `${vehicle.maintenances.tires.lastKm.toLocaleString('pt-BR')} km, ${formatDateForDisplay(vehicle.maintenances.tires.lastDate)}` : 'Não informado';
+        document.getElementById('pneus-last-km').textContent = vehicle.maintenances.tires.lastKm !== 0 ? `${vehicle.maintenances.tires.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
+        document.getElementById('pneus-last-date').textContent = vehicle.maintenances.tires.lastDate ? formatDateForDisplay(vehicle.maintenances.tires.lastDate) : 'Não informado';
         document.getElementById('pneus-rotation-suggested').textContent = tiresRotationCalc.display;
         document.getElementById('pneus-next-change').textContent = tiresChangeCalc.display + ' (Troca Geral)';
 
         // Alinhamento & Balanceamento
         const alignmentCalc = calculateNextMaintenance('alignment', vehicle.maintenances.alignment.lastKm, vehicle.maintenances.alignment.lastDate);
         const balanceamentoCalc = calculateNextMaintenance('balanceamento', vehicle.maintenances.balanceamento.lastKm, vehicle.maintenances.balanceamento.lastDate);
-        document.getElementById('alignment-last').textContent = vehicle.maintenances.alignment.lastKm !== 0 ? `${vehicle.maintenances.alignment.lastKm.toLocaleString('pt-BR')} km, ${formatDateForDisplay(vehicle.maintenances.alignment.lastDate)}` : 'Não informado';
+        document.getElementById('alignment-last-km').textContent = vehicle.maintenances.alignment.lastKm !== 0 ? `${vehicle.maintenances.alignment.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
+        document.getElementById('alignment-last-date').textContent = vehicle.maintenances.alignment.lastDate ? `${formatDateForDisplay(vehicle.maintenances.alignment.lastDate)}` : 'Não informado';
         document.getElementById('alignment-next').textContent = alignmentCalc.display;
-        document.getElementById('balanceamento-last').textContent = vehicle.maintenances.balanceamento.lastKm !== 0 ? `${vehicle.maintenances.balanceamento.lastKm.toLocaleString('pt-BR')} km, ${formatDateForDisplay(vehicle.maintenances.balanceamento.lastDate)}` : 'Não informado';
+        document.getElementById('balanceamento-last-km').textContent = vehicle.maintenances.balanceamento.lastKm !== 0 ? `${vehicle.maintenances.balanceamento.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
+        document.getElementById('balanceamento-last-date').textContent = vehicle.maintenances.balanceamento.lastDate !== 0 ? `${formatDateForDisplay(vehicle.maintenances.balanceamento.lastDate)}` : 'Não informado';
         document.getElementById('balanceamento-next').textContent = balanceamentoCalc.display;
 
         // Filtros
@@ -428,21 +432,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const filterFuelCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterFuel.lastKm, vehicle.maintenances.filterFuel.lastDate, 'fuel');
         const filterAirCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterAir.lastKm, vehicle.maintenances.filterAir.lastDate, 'air');
 
-        document.getElementById('filter-oil-last').textContent =
+        document.getElementById('filter-oil-last-km').textContent =
             vehicle.maintenances.filterOil.lastKm !== 0
-                ? `${vehicle.maintenances.filterOil.lastKm.toLocaleString('pt-BR')} km, ${formatDateForDisplay(vehicle.maintenances.filterOil.lastDate)}`
+                ? `${vehicle.maintenances.filterOil.lastKm.toLocaleString('pt-BR')} km`
+                : 'Não informado';
+        document.getElementById('filter-oil-last-date').textContent =
+            vehicle.maintenances.filterOil.lastDate
+                ? formatDateForDisplay(vehicle.maintenances.filterOil.lastDate)
                 : 'Não informado';
         document.getElementById('filter-oil-next').textContent = filterOilCalc.display;
 
-        document.getElementById('filter-fuel-last').textContent =
+        document.getElementById('filter-fuel-last-km').textContent =
             vehicle.maintenances.filterFuel.lastKm !== 0
-                ? `${vehicle.maintenances.filterFuel.lastKm.toLocaleString('pt-BR')} km, ${formatDateForDisplay(vehicle.maintenances.filterFuel.lastDate)}`
+                ? `${vehicle.maintenances.filterFuel.lastKm.toLocaleString('pt-BR')} km`
+                : 'Não informado';
+        document.getElementById('filter-fuel-last-date').textContent =
+            vehicle.maintenances.filterFuel.lastDate
+                ? formatDateForDisplay(vehicle.maintenances.filterFuel.lastDate)
                 : 'Não informado';
         document.getElementById('filter-fuel-next').textContent = filterFuelCalc.display;
 
-        document.getElementById('filter-air-last').textContent =
+        document.getElementById('filter-air-last-km').textContent =
             vehicle.maintenances.filterAir.lastKm !== 0
-                ? `${vehicle.maintenances.filterAir.lastKm.toLocaleString('pt-BR')} km, ${formatDateForDisplay(vehicle.maintenances.filterAir.lastDate)}`
+                ? `${vehicle.maintenances.filterAir.lastKm.toLocaleString('pt-BR')} km`
+                : 'Não informado';
+        document.getElementById('filter-air-last-date').textContent =
+            vehicle.maintenances.filterAir.lastDate
+                ? formatDateForDisplay(vehicle.maintenances.filterAir.lastDate)
                 : 'Não informado';
         document.getElementById('filter-air-next').textContent = filterAirCalc.display;
 
