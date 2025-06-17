@@ -925,6 +925,88 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 
+/* Estilos para a tela de Serviços */
+.filters-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+    background-color: var(--card-background);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.service-providers-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.service-card {
+    background-color: var(--card-background);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.service-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3em;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+.service-card p {
+    font-size: 0.9em;
+    color: var(--text-color);
+    margin: 0;
+}
+
+/* Estilos para o Modal de Detalhes do Serviço */
+#service-details-modal .modal-content {
+    text-align: left;
+}
+
+#service-details-modal .modal-content h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#service-details-modal .modal-content p {
+    margin-bottom: 10px;
+}
+
+#service-details-modal .modal-buttons {
+    margin-top: 30px;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Estilo específico para o ícone do WhatsApp no botão, com maior especificidade e !important */
+#service-details-modal #service-details-whatsapp .fab.fa-whatsapp {
+    color: white !important; /* Força a cor branca */
+    filter: none !important; /* Garante que nenhum filtro seja aplicado */
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
     /* Ajustes para as telas de Login/Cadastro */

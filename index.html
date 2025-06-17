@@ -73,6 +73,10 @@
                         <i class="fas fa-calendar-alt"></i>
                         <span>Agendar</span>
                     </a>
+                    <a href="#" class="top-nav-item" data-screen="services-screen">
+                        <i class="fas fa-tools"></i>
+                        <span>Serviços</span>
+                    </a>
                     <a href="#" class="top-nav-item" data-screen="history-screen">
                         <i class="fas fa-history"></i>
                         <span>Histórico</span>
@@ -255,6 +259,44 @@
                 </div>
             </section>
 
+            <section id="services-screen" class="screen hidden-content">
+                <div class="container">
+                    <h1>Prestadores de Serviços</h1>
+                    <div class="filters-container">
+                        <div class="input-group">
+                            <label for="service-type-filter">Tipo de Serviço:</label>
+                            <select id="service-type-filter">
+                                <option value="">Todos</option>
+                                <option value="Móvel">Móvel</option>
+                                <option value="Fixo">Fixo</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="service-branch-filter">Ramo:</label>
+                            <select id="service-branch-filter">
+                                <option value="">Todos</option>
+                                <option value="Borracharia">Borracharia</option>
+                                <option value="Lava Jato">Lava Jato</option>
+                                <option value="Estética">Estética</option>
+                                <option value="Mecânica">Mecânica</option>
+                                <option value="Elétrica">Elétrica</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="service-state-filter">Estado:</label>
+                            <input type="text" id="service-state-filter" placeholder="Ex: PR">
+                        </div>
+                        <div class="input-group">
+                            <label for="service-city-filter">Cidade:</label>
+                            <input type="text" id="service-city-filter" placeholder="Ex: Maringá">
+                        </div>
+                    </div>
+                    <div id="service-providers-list" class="service-providers-list">
+                        </div>
+                </div>
+            </section>
+
             <section id="history-screen" class="screen hidden-content">
                 <div class="container">
                     <h1>Histórico de Serviços</h1>
@@ -297,6 +339,22 @@
         </div>
     </div>
 
+    <div id="service-details-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="service-details-name"></h3>
+            <p><strong>Telefone:</strong> <span id="service-details-phone"></span></p>
+            <p><strong>Endereço:</strong> <span id="service-details-address"></span></p>
+            <p><strong>Horário de Atendimento:</strong> <span id="service-details-hours"></span></p>
+            <p><strong>Site:</strong> <a id="service-details-website" href="#" target="_blank"></a></p>
+            <div class="modal-buttons">
+                <a id="service-details-whatsapp" href="#" target="_blank" class="btn primary-btn whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
+                </a>
+                <button id="service-details-close-btn" class="btn secondary-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
@@ -309,7 +367,7 @@
             storageBucket: "keynnect-vehicle.firebasestorage.app",
             messagingSenderId: "410654266678",
             appId: "1:410654266678:web:abf4207ebe18e69efa0f97"
-            // measurementId: "G-WDBL7HFKY6" // Opcional, se você não for usar Analytics diretamente no cliente
+            // measurementId: "G-WDBL7HFKY6" // Opcional, se você for usar Analytics diretamente no cliente
         };
 
         // Inicialize o Firebase

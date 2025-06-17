@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Elementos das seções de conteúdo (para navegação interna do main-app)
     const dashboardScreen = document.getElementById('dashboard-screen');
     const scheduleScreen = document.getElementById('schedule-screen');
+    const servicesScreen = document.getElementById('services-screen'); // Nova referência
     const historyScreen = document.getElementById('history-screen');
     const profileScreen = document.getElementById('profile-screen');
     const vehicleDetailsScreen = document.getElementById('vehicle-details-screen');
@@ -120,8 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         brakes: { km: 20000, months: 24 }, // Pastilhas
         sparkPlugs: { km: 40000, months: 48 }, // Velas de ignição
-        timingBelt: { km: 60000, months: 60 }, // Correia dentada (exemplo)
-        coolant: { km: 30000, months: 36 } // Fluido de arrefecimento
+        timingBelt: { km: 60000, months: 60 } // Correia dentada (exemplo)
     };
 
     let userVehicles = [];
@@ -208,6 +208,10 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 maintenanceHistoryList.innerHTML = '<p class="no-vehicles">Selecione um veículo no Dashboard para ver seu histórico de manutenções.</p>';
             }
+        }
+
+        if (sectionToShow === servicesScreen) { // Adiciona lógica para servicesScreen
+            renderServiceProviders();
         }
     };
 
@@ -782,6 +786,98 @@ document.addEventListener('DOMContentLoaded', () => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
+    // --- Services Screen Logic ---
+    const serviceProviders = [
+        {
+            name: "Borracharia Móvel do Neguinho",
+            phone: "(44) 99949-6361",
+            address: "Atendimento Móvel em Maringá - PR",
+            hours: "08:00 às 18:00",
+            website: null,
+            whatsapp: "5544999496361",
+            image: "https://iili.io/FnTQzOB.png",
+            type: "Móvel",
+            branch: "Borracharia",
+            city: "Maringá",
+            state: "PR"
+        },
+        // Adicionar mais prestadores de serviço aqui
+    ];
+
+    const serviceTypeFilter = document.getElementById('service-type-filter');
+    const serviceBranchFilter = document.getElementById('service-branch-filter');
+    const serviceStateFilter = document.getElementById('service-state-filter');
+    const serviceCityFilter = document.getElementById('service-city-filter');
+    const serviceProvidersList = document.getElementById('service-providers-list');
+    const serviceDetailsModal = document.getElementById('service-details-modal');
+    const serviceDetailsCloseBtn = document.getElementById('service-details-close-btn');
+
+    const renderServiceProviders = () => {
+        const filteredProviders = serviceProviders.filter(provider => {
+            const matchesType = !serviceTypeFilter.value || provider.type === serviceTypeFilter.value;
+            const matchesBranch = !serviceBranchFilter.value || provider.branch === serviceBranchFilter.value;
+            const matchesState = !serviceStateFilter.value || provider.state.toLowerCase().includes(serviceStateFilter.value.toLowerCase());
+            const matchesCity = !serviceCityFilter.value || provider.city.toLowerCase().includes(serviceCityFilter.value.toLowerCase());
+            return matchesType && matchesBranch && matchesState && matchesCity;
+        });
+
+        serviceProvidersList.innerHTML = '';
+        if (filteredProviders.length === 0) {
+            serviceProvidersList.innerHTML = '<p class="no-vehicles">Nenhum prestador de serviço encontrado com os filtros selecionados.</p>';
+            return;
+        }
+
+        filteredProviders.forEach(provider => {
+            const serviceCard = document.createElement('div');
+            serviceCard.classList.add('service-card');
+            serviceCard.innerHTML = `
+                <img src="${provider.image}" alt="${provider.name}">
+                <h3>${provider.name}</h3>
+                <p>${provider.branch} - ${provider.city}, ${provider.state}</p>
+            `;
+            serviceCard.addEventListener('click', () => showServiceDetails(provider));
+            serviceProvidersList.appendChild(serviceCard);
+        });
+    };
+
+    const showServiceDetails = (provider) => {
+        document.getElementById('service-details-name').textContent = provider.name;
+        document.getElementById('service-details-phone').textContent = provider.phone;
+        document.getElementById('service-details-address').textContent = provider.address;
+        document.getElementById('service-details-hours').textContent = provider.hours;
+
+        const websiteLink = document.getElementById('service-details-website');
+        if (provider.website) {
+            websiteLink.textContent = provider.website;
+            websiteLink.href = provider.website.startsWith('http') ? provider.website : `http://${provider.website}`;
+            websiteLink.style.display = 'inline';
+        } else {
+            websiteLink.textContent = 'Não tem';
+            websiteLink.href = '#';
+            websiteLink.style.display = 'inline'; // Manter visível mesmo se não houver site
+        }
+
+        const whatsappLink = document.getElementById('service-details-whatsapp');
+        if (provider.whatsapp) {
+            whatsappLink.href = `https://wa.me/${provider.whatsapp}`;
+            whatsappLink.style.display = 'inline-flex';
+        } else {
+            whatsappLink.style.display = 'none';
+        }
+        serviceDetailsModal.classList.add('show');
+    };
+
+    serviceDetailsCloseBtn.addEventListener('click', () => {
+        serviceDetailsModal.classList.remove('show');
+    });
+
+    // Event listeners para os filtros
+    serviceTypeFilter.addEventListener('change', renderServiceProviders);
+    serviceBranchFilter.addEventListener('change', renderServiceProviders);
+    serviceStateFilter.addEventListener('input', renderServiceProviders);
+    serviceCityFilter.addEventListener('input', renderServiceProviders);
+
+
     // --- Event Handlers ---
 
     loginForm.addEventListener('submit', async (e) => {
@@ -1045,6 +1141,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 case 'schedule-screen':
                     screenToShow = scheduleScreen;
+                    break;
+                case 'services-screen': // Adiciona o caso para services-screen
+                    screenToShow = servicesScreen;
                     break;
                 case 'history-screen':
                     screenToShow = historyScreen;
