@@ -196,7 +196,7 @@ body {
     -webkit-appearance: none; /* Remove estilo padrão do select no Webkit */
     -moz-appearance: none;    /* Remove estilo padrão do select no Firefox */
     appearance: none;         /* Remove estilo padrão do select */
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333333%22%20d%3D%22M287%2069.9L146.2%20209.6%205.5%2069.9c-1.8-1.8-4.2-2.7-6.5-2.7s-4.7%200.9-6.5%202.7c-3.6%203.6-3.6%209.5%200%2013.1L139.7%20229c1.8%201.8%204.2%202.7%206.5%202.7s4.7-0.9%206.5-2.7l140.7-146c3.6-3.6%203.6-9.5%200-13.1-3.7-3.6-9.6-3.6-13.2%200z%22%2F%3E%3C%2Fsvg%3E'); /* Cor fixa para a seta */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333333%22%20d%3D%22M287%2069.9L146.2%20209.6%205.5%2069.9c-1.8-1.8-4.2-2.7-6.5-2.7s-4.7%200.9-6.5%202.7c-3.6%203.6-3.6%209.5%200%2013.1L139.7%20229c1.8%201.8%204.2%202.7%206.5%202.7s4.7-0.9%206.5-2.7l140.7-146c3.6-3.6%203.6-9.5%200-13.1-3.7-3.6-9.6-3.6-13.2%200z%22%2F%3E%3C%2Fsvg%3E');
     background-repeat: no-repeat;
     background-position: right 15px center;
     background-size: 12px;
@@ -931,38 +931,38 @@ body:not(.dark-mode) .top-nav-item.active {
 @media (max-width: 768px) {
     .main-app-header {
         flex-direction: column;
-        height: auto; /* Altura flexível para acomodar os itens empilhados */
+        height: auto;
         padding-top: 10px;
         padding-bottom: 10px;
-        /* Remover justify-content: space-between para centralizar tudo */
         justify-content: center;
-        /* Adicionar padding lateral para evitar que o conteúdo encoste nas bordas */
+        align-items: center; /* Centraliza itens horizontalmente */
         padding-left: 10px;
         padding-right: 10px;
     }
 
     .top-nav-items {
-        flex-wrap: wrap; /* Permite que os itens quebrem linha */
+        flex-wrap: wrap;
         justify-content: center;
         width: 100%;
-        margin-top: 10px; /* Espaço entre o botão de tema e os itens de navegação */
-        gap: 10px; /* Reduz o espaço entre os ícones em mobile */
+        margin-top: 10px;
+        gap: 5px; /* Reduz o espaço entre os ícones em mobile */
     }
 
     .top-nav-item {
-        flex-basis: 23%; /* Ajuste para tentar 4 itens por linha, ou 2 por linha se o gap for maior */
-        font-size: 0.7em;
-        padding: 5px 0; /* Ajustar padding para mobile */
+        flex-basis: 100%; /* Cada item ocupa 100% da largura para lista vertical */
+        font-size: 1em; /* Tamanho de fonte ajustado para mobile */
+        padding: 10px 0; /* Preenchimento ajustado para melhor toque */
     }
     .top-nav-item i {
-        font-size: 1.5em; /* Ícone um pouco menor em mobile */
+        font-size: 1.8em; /* Ícone um pouco maior em mobile */
+        margin-bottom: 5px; /* Mais espaço abaixo do ícone */
     }
 
-    /* Posicionar o botão de tema no cabeçalho em mobile */
     .toggle-theme-btn {
-        margin-top: 10px; /* Espaço entre o botão de tema e os itens de navegação */
+        margin-top: 10px;
+        margin-bottom: 15px; /* Espaço para separar dos itens de navegação */
         order: -1; /* Mover para o topo */
-        align-self: flex-end; /* Alinhar à direita */
+        /* align-self removido para permitir centralização pelo pai */
     }
 
     .login-card {
