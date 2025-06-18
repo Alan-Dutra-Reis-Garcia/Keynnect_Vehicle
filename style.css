@@ -665,6 +665,10 @@ body:not(.dark-mode) .top-nav-item.active {
     margin-bottom: 20px;
     text-align: center;
     color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .calculator-card {
@@ -1279,42 +1283,20 @@ body:not(.dark-mode) .top-nav-item.active {
     .modal-content p { font-size: 1em; }
     .modal-buttons { flex-direction: column; gap: 10px; }
 
-    /* 🔧 Ajustes para telas menores (smartphones) */
-    /* Força empilhamento em telas pequenas */
-    @media (max-width: 768px) {
-    .vehicle-list,
-    .summary-cards-section,
-    .maintenance-sections {
-        display: block !important;
-        grid-template-columns: 1fr !important;
-    }
-    .vehicle-card-item,
-    .summary-card,
-    .maintenance-item,
-    .card {
-        width: 100% !important;
-        margin-bottom: 15px;
-    }
-    .top-nav-items {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
+    /* Estilos para a tela de Serviços */
+    .filters-container {
+        grid-template-columns: 1fr; /* Empilha os filtros */
         gap: 10px;
+        padding: 15px;
     }
-    .top-nav-item {
-        flex: 1 1 40%;
-        min-width: 120px;
-        max-width: 50%;
+    .service-providers-list {
+        grid-template-columns: 1fr; /* Empilha os cards de serviço */
+        gap: 15px;
     }
-    .login-card {
-        width: 100%;
-        max-width: 100%;
+    .service-card {
+        padding: 15px;
     }
-    .container {
-        padding: 0 10px;
+    .service-card img {
+        height: 120px; /* Ajusta a altura da imagem */
     }
-    .summary-card .icon {
-        font-size: 2em;
-    }
-}
 }
