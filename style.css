@@ -86,6 +86,7 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
     line-height: 1.6;
     width: 100%;
+    min-height: 100vh; /* Garante que ocupe a altura total da tela */
     overflow-x: hidden; /* importante para evitar rolagem horizontal */
 }
 
@@ -97,10 +98,10 @@ body {
 
 .screen {
     width: 100%;
-    min-height: 100vh; /* Ocupa a tela inteira */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* Alinha ao topo para mobile */
     align-items: center;
     padding: 20px;
     box-sizing: border-box;
@@ -110,47 +111,58 @@ body {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    background-color: var(--background-color); /* Para cobrir outras telas */
-    z-index: 1; /* Garante que a tela ativa esteja por cima */
+    background-color: var(--background-color);
+    z-index: 1;
 }
 
 .screen.active {
     opacity: 1;
     visibility: visible;
-    position: relative; /* Tela ativa volta ao fluxo normal */
+    position: relative;
     z-index: 2;
 }
 
 /* Telas de conteúdo (dashboard, schedule, etc.) para ter um container padrão */
 .screen.active-content, .screen.hidden-content {
-    position: relative; /* Não precisa do absoluto para elas se o main-app já está visível */
+    position: relative;
     opacity: 1;
     visibility: visible;
-    padding-top: 100px; /* Mais espaço para o novo cabeçalho superior com navegação */
-    padding-bottom: 20px; /* Padding padrão para baixo */
-    justify-content: flex-start; /* Alinha o conteúdo ao topo */
+    padding-top: 100px; /* Espaço para o cabeçalho fixo */
+    padding-bottom: 20px;
+    justify-content: flex-start;
 }
 
 .screen.hidden-content {
-    display: none; /* Esconde completamente as telas de conteúdo não ativas */
+    display: none;
 }
-
 
 .container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 0 15px;
-    width: 100%; /* Para que o container se ajuste */
+    padding: 0 15px; /* Padding padrão para laterais */
+    width: 100%;
 }
 
-/* Telas de Login/Cadastro */
+/* Telas de Login/Cadastro - Estilos Mobile-First */
+#login-screen, #signup-screen {
+    padding: 0; /* Remove padding externo para preencher a tela */
+    justify-content: flex-start; /* Alinha o conteúdo ao topo */
+    padding-top: 5vh; /* Um pouco de padding no topo */
+    padding-bottom: 5vh; /* Padding na parte de baixo */
+}
+
 .login-card {
     background-color: var(--card-background);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 30px 25px; /* Padding interno adaptado */
+    border-radius: 0; /* Bordas retas para preencher a tela */
+    box-shadow: none; /* Remove a sombra */
     width: 100%;
-    max-width: 400px;
+    max-width: unset; /* Remove o limite de largura máxima */
+    margin: 0; /* Garante que não haja margens externas */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1; /* Permite que o card cresça */
     text-align: center;
 }
 
@@ -168,41 +180,43 @@ body {
 
 .login-card h2 {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.8em;
-    margin-bottom: 25px;
+    font-size: 2em; /* Tamanho ajustado para mobile */
+    margin-bottom: 30px;
     color: var(--text-color);
 }
 
 .input-group {
     margin-bottom: 20px;
     text-align: left;
+    width: 100%; /* Garante que ocupe a largura total do card */
 }
 
 .input-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 10px; /* Mais espaço */
     font-weight: 600;
     color: var(--text-color);
+    font-size: 1.1em; /* Tamanho da fonte ajustado */
 }
 
 .input-group input,
-.input-group select { /* Adicionado select para ter o mesmo estilo */
+.input-group select {
     width: 100%;
-    padding: 12px 15px;
+    padding: 15px; /* Mais padding */
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background-color: var(--background-color);
     color: var(--text-color);
-    font-size: 1em;
+    font-size: 1.1em; /* Tamanho da fonte ajustado */
     transition: border-color 0.2s ease;
-    -webkit-appearance: none; /* Remove estilo padrão do select no Webkit */
-    -moz-appearance: none;    /* Remove estilo padrão do select no Firefox */
-    appearance: none;         /* Remove estilo padrão do select */
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333333%22%20d%3D%22M287%2069.9L146.2%20209.6%205.5%2069.9c-1.8-1.8-4.2-2.7-6.5-2.7s-4.7%200.9-6.5%202.7c-3.6%203.6-3.6%209.5%200%2013.1L139.7%20229c1.8%201.8%204.2%202.7%206.5%202.7s4.7-0.9%206.5-2.7l140.7-146c3.6-3.6%203.6-9.5%200-13.1-3.7-3.6-9.6-3.6-13.2%200z%22%2F%3E%3C%2Fsvg%3E'); /* Cor fixa para a seta */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333333%22%20d%3D%22M287%2069.9L146.2%20209.6%205.5%2069.9c-1.8-1.8-4.2-2.7-6.5-2.7s-4.7%200.9-6.5%202.7c-3.6%203.6-3.6%209.5%200%2013.1L139.7%20229c1.8%201.8%204.2%202.7%206.5%202.7s4.7-0.9%206.5-2.7l140.7-146c3.6-3.6%203.6-9.5%200-13.1-3.7-3.6-9.6-3.6-13.2%200z%22%2F%3E%3C%2Fsvg%3E');
     background-repeat: no-repeat;
     background-position: right 15px center;
     background-size: 12px;
-    padding-right: 40px; /* Espaço para o ícone da seta */
+    padding-right: 40px;
 }
 
 .input-group input:focus,
@@ -215,14 +229,14 @@ body {
     background-color: var(--primary-color);
     color: var(--button-text);
     border: none;
-    padding: 12px 20px;
+    padding: 15px 20px; /* Mais padding para mobile */
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1.1em;
+    font-size: 1.2em; /* Maior fonte para mobile */
     font-weight: 600;
     width: 100%;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top: 10px;
+    margin-top: 15px; /* Mais espaço */
 }
 
 .btn:hover {
@@ -248,10 +262,10 @@ body {
 
 .forgot-password {
     display: block;
-    margin-top: 15px;
+    margin-top: 10px;
     color: var(--primary-color);
     text-decoration: none;
-    font-size: 0.9em;
+    font-size: 1em; /* Tamanho ajustado */
 }
 
 .divider {
@@ -280,11 +294,12 @@ body {
 }
 
 .social-btn {
-    background-color: var(--header-background); /* Uma cor que se destaque mas não seja primária */
+    background-color: var(--header-background);
     color: var(--text-color);
     border: 1px solid var(--border-color);
     margin-top: 20px;
-    padding: 12px 20px;
+    padding: 15px 20px; /* Mais padding para mobile */
+    font-size: 1.1em; /* Maior fonte para mobile */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -303,10 +318,10 @@ body {
     background-color: #357ae8;
 }
 
-
 .signup-text {
     margin-top: 25px;
     color: var(--text-color);
+    font-size: 1em; /* Tamanho ajustado */
 }
 
 .signup-text a {
@@ -316,53 +331,56 @@ body {
 }
 
 
-/* MAIN APP - Container que aparece após login */
+/* MAIN APP */
 #main-app {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     width: 100%;
-    position: absolute; /* Para que não ocupe espaço quando hidden */
+    position: absolute;
     top: 0;
     left: 0;
     height: 100vh;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    background-color: var(--background-color); /* Para cobrir outras telas */
+    background-color: var(--background-color);
     z-index: 1;
 }
 
 #main-app.active {
     opacity: 1;
     visibility: visible;
-    position: relative; /* Volta ao fluxo quando ativo */
+    position: relative;
     z-index: 2;
 }
 
 
-/* Cabeçalho superior com navegação (fixo no HTML, visibilidade controlada pelo JS/CSS) */
+/* Cabeçalho superior com navegação - Mobile-First */
 .main-app-header {
     background-color: var(--header-background);
-    padding: 10px 20px;
-    border-radius: 0 0 10px 10px;
+    padding: 10px 10px; /* Padding reduzido para mobile */
+    border-radius: 0; /* Sem border-radius em mobile */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
     display: flex;
-    justify-content: space-between; /* Espaça os itens */
+    flex-direction: column; /* Empilha itens em mobile */
+    justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    height: 80px; /* Altura fixa para o cabeçalho com navegação */
-    /* Estas propriedades serão controladas pelo #main-app.hidden / #main-app.active */
-    /* visibility: inherit; opacity: inherit; */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra mais suave */
+    height: auto; /* Altura automática para se ajustar ao conteúdo empilhado */
 }
 
 .top-nav-items {
     display: flex;
-    gap: 20px; /* Espaço entre os ícones de navegação */
+    flex-wrap: wrap; /* Permite quebrar linha */
+    justify-content: space-around; /* Distribui itens igualmente */
+    width: 100%;
+    margin-top: 10px;
+    gap: 5px; /* Espaço menor entre os itens */
 }
 
 .top-nav-item {
@@ -371,21 +389,23 @@ body {
     align-items: center;
     color: var(--text-color);
     text-decoration: none;
-    font-size: 0.9em;
-    padding: 5px;
+    font-size: 0.85em; /* Fonte menor para caber */
+    padding: 8px 5px;
     border-radius: 8px;
     transition: background-color 0.2s ease, color 0.2s ease;
+    flex: 1 1 30%; /* Tenta 3 itens por linha */
+    max-width: 32%; /* Ajuste para ter 3 por linha, com pequenas margens */
+    text-align: center;
 }
 
 .top-nav-item i {
-    font-size: 1.8em; /* Ícone maior */
+    font-size: 1.5em; /* Ícone menor */
     margin-bottom: 3px;
 }
 
 .top-nav-item.active {
     color: var(--primary-color);
-    /* Note: Adjusted rgba for the new primary color */
-    background-color: rgba(39, 174, 96, 0.1); /* RGB para #27ae60 */
+    background-color: rgba(39, 174, 96, 0.1);
 }
 body:not(.dark-mode) .top-nav-item.active {
      background-color: rgba(0, 123, 255, 0.1);
@@ -402,14 +422,16 @@ body:not(.dark-mode) .top-nav-item.active {
     color: var(--text-color);
     border: 1px solid var(--border-color);
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 1.2em;
+    width: 38px; /* Tamanho um pouco menor */
+    height: 38px;
+    font-size: 1.1em;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 10px; /* Margem para separar do nav */
+    order: -1; /* Posiciona no topo do flex container (cabeçalho) */
 }
 
 .toggle-theme-btn:hover {
@@ -423,7 +445,7 @@ body:not(.dark-mode) .top-nav-item.active {
 .section-title {
     font-family: 'Poppins', sans-serif;
     font-size: 1.6em;
-    margin-top: 30px;
+    margin-top: 25px; /* Ajuste para mobile */
     margin-bottom: 20px;
     color: var(--text-color);
     text-align: center;
@@ -437,9 +459,9 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 .vehicle-list {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
+    display: flex; /* Usar flexbox para empilhar */
+    flex-direction: column; /* Empilha por padrão */
+    gap: 15px; /* Espaçamento entre os cards */
     margin-top: 20px;
 }
 
@@ -454,7 +476,8 @@ body:not(.dark-mode) .top-nav-item.active {
     cursor: pointer;
     transition: transform 0.2s ease;
     border-left: 5px solid var(--primary-color);
-    position: relative; /* Para posicionar o botão de exclusão */
+    position: relative;
+    width: 100%; /* Ocupa largura total em mobile */
 }
 
 .vehicle-card-item:hover {
@@ -481,8 +504,8 @@ body:not(.dark-mode) .top-nav-item.active {
 
 .vehicle-info {
     flex-grow: 1;
-    text-align: left; /* Garante que o texto esteja alinhado à esquerda */
-    padding-right: 30px; /* Espaço para o botão de exclusão */
+    text-align: left;
+    padding-right: 30px;
 }
 
 .vehicle-info h3 {
@@ -498,13 +521,13 @@ body:not(.dark-mode) .top-nav-item.active {
     margin: 0;
 }
 
-/* Cards de Resumo - DENTRO DA TELA DE DETALHES DO VEÍCULO */
+/* Cards de Resumo - DENTRO DA TELA de Detalhes do Veículo (Mobile-First) */
 .summary-cards-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex; /* Usar flexbox para empilhar */
+    flex-direction: column; /* Empilha por padrão */
     gap: 20px;
     margin-bottom: 30px;
-    margin-top: 20px; /* Espaço após o cabeçalho de detalhes */
+    margin-top: 20px;
 }
 
 .card {
@@ -513,6 +536,7 @@ body:not(.dark-mode) .top-nav-item.active {
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
+    width: 100%; /* Ocupa largura total em mobile */
 }
 
 .card:hover {
@@ -523,25 +547,30 @@ body:not(.dark-mode) .top-nav-item.active {
     display: flex;
     align-items: center;
     gap: 15px;
-    border-left: 5px solid; /* Cor da borda lateral definida pelo status */
+    border-left: 5px solid;
 }
 
 .summary-card .icon {
-    font-size: 2.5em;
+    font-size: 2em; /* Ícone um pouco menor para mobile */
     color: var(--primary-color);
+    min-width: 2em; /* Garante que o ícone mantenha um tamanho mínimo */
+    text-align: center;
 }
 
 .summary-card h3 {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.3em;
+    font-size: 1.2em; /* Tamanho ajustado para mobile */
     margin-bottom: 5px;
     color: var(--text-color);
 }
 
 .summary-card p {
-    font-size: 0.9em;
+    font-size: 0.85em; /* Texto menor para mobile */
     margin: 0;
-    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
 }
 
 /* Cores dos status (manutenções rápidas) */
@@ -558,8 +587,8 @@ body:not(.dark-mode) .top-nav-item.active {
 .vehicle-details-header {
     text-align: center;
     margin-bottom: 30px;
-    padding-top: 20px; /* Espaço após o botão voltar */
-    display: flex; /* Para centralizar o conteúdo do cabeçalho */
+    padding-top: 20px;
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
@@ -575,7 +604,7 @@ body:not(.dark-mode) .top-nav-item.active {
     gap: 5px;
     margin-bottom: 20px;
     transition: color 0.2s ease;
-    align-self: flex-start; /* Alinha o botão à esquerda dentro do container flex */
+    align-self: flex-start;
 }
 
 .back-btn:hover {
@@ -594,12 +623,12 @@ body:not(.dark-mode) .top-nav-item.active {
     color: var(--text-color);
 }
 
-.km-display-details { /* Novo estilo para o KM dentro da tela de detalhes */
+.km-display-details {
     font-family: 'PT Sans', sans-serif;
-    font-size: 1.2em;
+    font-size: 1.4em; /* Maior para mobile */
     font-weight: 600;
     color: var(--primary-color);
-    margin-top: 10px;
+    margin-top: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -609,12 +638,12 @@ body:not(.dark-mode) .top-nav-item.active {
     margin-right: 5px;
 }
 
-.edit-btn { /* Reutiliza o estilo do edit-btn */
+.edit-btn {
     background: none;
     border: none;
     color: var(--edit-button-color);
     cursor: pointer;
-    font-size: 1.0em; /* Um pouco menor aqui */
+    font-size: 1.1em; /* Maior para toque */
     margin-left: 5px;
     transition: color 0.2s ease;
 }
@@ -622,16 +651,20 @@ body:not(.dark-mode) .top-nav-item.active {
     color: var(--primary-color);
 }
 .small-edit-btn {
-    font-size: 0.9em;
+    font-size: 1em; /* Ajuste para mobile */
 }
 
 
-/* Seções de Manutenção */
+/* Seções de Manutenção (Mobile-First) */
 .maintenance-sections {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
+    display: flex;
+    flex-direction: column; /* Empilha por padrão */
+    gap: 15px; /* Espaçamento entre os cards */
     margin-bottom: 30px;
+}
+
+.maintenance-item.card {
+    padding: 20px;
 }
 
 .maintenance-item h3 {
@@ -646,17 +679,20 @@ body:not(.dark-mode) .top-nav-item.active {
 
 .maintenance-item p {
     margin-bottom: 8px;
-    font-size: 0.95em;
+    font-size: 1em; /* Maior para legibilidade */
     color: var(--text-color);
 }
 
 .maintenance-item span {
-    font-weight: 600;
+    font-weight: 700; /* Mais destaque */
 }
 
-/* Calculadoras */
+/* Calculadoras (Mobile-First) */
 .calculators-section {
     margin-bottom: 30px;
+    display: flex;
+    flex-direction: column; /* Empilha por padrão */
+    gap: 20px;
 }
 
 .calculators-section h2 {
@@ -665,10 +701,14 @@ body:not(.dark-mode) .top-nav-item.active {
     margin-bottom: 20px;
     text-align: center;
     color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .calculator-card {
-    margin-bottom: 20px;
+    margin-bottom: 0; /* Removido margem inferior, já que o gap do flexbox cuida disso */
 }
 
 .calculator-card h3 {
@@ -684,30 +724,31 @@ body:not(.dark-mode) .top-nav-item.active {
 .input-group input[type="date"],
 .input-group input[type="number"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px; /* Mais padding para toque */
     border: 1px solid var(--border-color);
     border-radius: 5px;
     background-color: var(--background-color);
     color: var(--text-color);
-    font-size: 1em;
+    font-size: 1.1em; /* Maior fonte */
 }
 
 .input-group input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(var(--invert-icon, 0.8)); /* Inverte a cor do ícone do calendário no modo escuro */
+    filter: invert(var(--invert-icon, 0.8));
 }
 
 .result {
     margin-top: 15px;
-    padding: 10px;
+    padding: 15px; /* Mais padding */
     background-color: var(--header-background);
     border-radius: 5px;
     font-weight: 600;
     color: var(--text-color);
     text-align: center;
+    font-size: 1.1em; /* Maior fonte */
 }
 
 
-/* Histórico de Manutenções (já existia) */
+/* Histórico de Manutenções (Mobile-First) */
 .history-section h2 {
     font-family: 'Poppins', sans-serif;
     font-size: 2em;
@@ -722,15 +763,15 @@ body:not(.dark-mode) .top-nav-item.active {
 
 .history-list {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: column; /* Empilha por padrão */
+    gap: 10px;
 }
 
 .history-item {
     padding: 15px;
     display: flex;
     flex-direction: column;
-    font-size: 0.95em;
+    font-size: 1em; /* Tamanho ajustado */
     border-left: 5px solid var(--primary-color);
 }
 
@@ -738,6 +779,7 @@ body:not(.dark-mode) .top-nav-item.active {
     font-weight: 700;
     color: var(--primary-color);
     margin-bottom: 5px;
+    font-size: 1.1em; /* Mais proeminente */
 }
 
 .history-item .history-type {
@@ -750,7 +792,7 @@ body:not(.dark-mode) .top-nav-item.active {
     color: var(--text-color);
 }
 
-/* Placeholder Cards para as novas telas */
+/* Placeholder Cards */
 .placeholder-card {
     text-align: center;
     padding: 30px;
@@ -770,7 +812,7 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 .logout-btn {
-    background-color: #dc3545; /* Vermelho para sair */
+    background-color: #dc3545;
     margin-top: 30px;
 }
 .logout-btn:hover {
@@ -778,30 +820,36 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 
-/* Container de Notificações Toast */
+/* Container de Notificações Toast (Mobile-First) */
 #toast-container {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 2000; /* Acima de tudo */
+    bottom: 10px; /* Alinha na parte inferior */
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza horizontalmente */
+    right: auto;
+    top: auto;
+    z-index: 2000;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    pointer-events: none; /* Permite cliques através do container */
+    pointer-events: none;
+    width: 95%; /* Ocupa quase toda a largura */
+    max-width: 400px; /* Limite de largura para desktops */
+    align-items: center; /* Centraliza toasts menores */
 }
 
 .toast {
     background-color: #333;
     color: var(--toast-text);
-    padding: 12px 20px;
+    padding: 10px 15px; /* Padding ajustado */
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(20px); /* Move para baixo para animação */
     transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-    min-width: 250px;
-    max-width: 350px;
-    pointer-events: auto; /* Permite interagir com o toast se necessário */
+    min-width: unset;
+    width: 100%; /* Ocupa largura total do container */
+    pointer-events: auto;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -814,7 +862,7 @@ body:not(.dark-mode) .top-nav-item.active {
 
 .toast.hide {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(20px); /* Move para baixo ao esconder */
 }
 
 .toast.success {
@@ -825,14 +873,14 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 .toast.attention {
     background-color: var(--toast-attention);
-    color: #333; /* Texto escuro para toast amarelo */
+    color: #333;
 }
 
 .toast .icon {
     font-size: 1.2em;
 }
 
-/* Modal Customizado */
+/* Modal Customizado (Mobile-First) */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -843,7 +891,7 @@ body:not(.dark-mode) .top-nav-item.active {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1500; /* Acima das telas normais, abaixo do toast */
+    z-index: 1500;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -857,13 +905,13 @@ body:not(.dark-mode) .top-nav-item.active {
 .modal-content {
     background-color: var(--modal-background);
     color: var(--modal-text-color);
-    padding: 30px;
+    padding: 25px; /* Padding ajustado */
     border-radius: 10px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    width: 90%;
+    width: 90%; /* Largura maior para mobile */
     max-width: 450px;
     text-align: center;
-    transform: translateY(-50px); /* Começa um pouco acima */
+    transform: translateY(-50px);
     opacity: 0;
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
@@ -875,22 +923,22 @@ body:not(.dark-mode) .top-nav-item.active {
 
 .modal-content h3 {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.8em;
+    font-size: 1.5em; /* Tamanho ajustado */
     margin-bottom: 15px;
 }
 
 .modal-content p {
-    font-size: 1.1em;
+    font-size: 1em; /* Tamanho ajustado */
     margin-bottom: 20px;
 }
 
 .modal-input-group {
-    margin-bottom: 25px;
+    margin-bottom: 20px; /* Menos margem */
 }
 
 .modal-input-group label {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-weight: 600;
     color: var(--modal-text-color);
 }
@@ -913,34 +961,34 @@ body:not(.dark-mode) .top-nav-item.active {
 
 .modal-buttons {
     display: flex;
-    justify-content: space-around;
-    gap: 15px;
+    flex-direction: column; /* Empilha botões em mobile */
+    gap: 10px;
     margin-top: 20px;
 }
 
 .modal-buttons .btn {
-    flex: 1; /* Para que os botões ocupem o espaço igualmente */
+    flex: 1;
     padding: 10px 15px;
     font-size: 1em;
 }
 
 
-/* Estilos para a tela de Serviços */
+/* Estilos para a tela de Serviços (Mobile-First) */
 .filters-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column; /* Empilha filtros por padrão */
+    gap: 10px;
+    margin-bottom: 25px; /* Espaço ajustado */
     background-color: var(--card-background);
-    padding: 20px;
+    padding: 15px; /* Padding ajustado */
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .service-providers-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+    display: flex;
+    flex-direction: column; /* Empilha cards de serviço por padrão */
+    gap: 15px;
 }
 
 .service-card {
@@ -954,6 +1002,7 @@ body:not(.dark-mode) .top-nav-item.active {
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s ease;
+    width: 100%; /* Ocupa largura total */
 }
 
 .service-card:hover {
@@ -962,7 +1011,7 @@ body:not(.dark-mode) .top-nav-item.active {
 
 .service-card img {
     width: 100%;
-    height: 150px;
+    height: 120px; /* Altura ajustada para mobile */
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 10px;
@@ -996,325 +1045,249 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 #service-details-modal .modal-buttons {
-    margin-top: 30px;
+    margin-top: 25px; /* Menos margem para mobile */
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
 }
 
-/* Estilo específico para o ícone do WhatsApp no botão, com maior especificidade e !important */
+/* Estilo específico para o ícone do WhatsApp no botão */
 #service-details-modal #service-details-whatsapp .fab.fa-whatsapp {
-    color: white !important; /* Força a cor branca */
-    filter: none !important; /* Garante que nenhum filtro seja aplicado */
+    color: white !important;
+    filter: none !important;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    /* Ajustes para as telas de Login/Cadastro */
+
+/* --- Media Queries para Telas Maiores (Desktop/Tablet) --- */
+@media (min-width: 769px) {
+    /* Telas de Login/Cadastro - Desktop */
     #login-screen, #signup-screen {
-        padding: 0; /* Remove completamente o padding externo destas telas */
-        min-height: 100vh; /* Garante que ocupe a altura total da tela */
-        justify-content: flex-start; /* Alinha o conteúdo ao topo para dar mais espaço */
-        padding-top: 5vh; /* Um pouco de padding no topo para não colar */
-        padding-bottom: 5vh; /* Padding na parte de baixo */
+        padding: 20px; /* Retorna ao padding padrão */
+        justify-content: center; /* Centraliza verticalmente */
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
 
     .login-card {
-        padding: 30px 25px; /* Padding interno do card */
-        width: 100%; /* O card ocupa 100% da largura da tela */
-        max-width: unset; /* Remove o limite de largura máxima */
-        border-radius: 0; /* Bordas retas para preencher a tela */
-        box-shadow: none; /* Remove a sombra para um visual mais integrado */
-        margin: 0; /* Garante que não haja margens externas */
-        display: flex; /* Adiciona flexbox ao card */
-        flex-direction: column; /* Organiza os itens em coluna */
-        justify-content: center; /* Centraliza verticalmente se o espaço permitir */
-        align-items: center; /* Centraliza horizontalmente os itens dentro do card */
-        flex-grow: 1; /* Permite que o card cresça para preencher o espaço disponível na tela */
-    }
-
-    /* Refinamento de fontes e espaçamentos dentro do login card para se aproximar do exemplo */
-    .app-logo {
-        font-size: 2.5em; /* Tamanho da fonte do logo */
-        margin-bottom: 30px; /* Espaço abaixo do logo */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        max-width: 400px; /* Restaura a largura máxima */
     }
 
     .login-card h2 {
-        font-size: 2em; /* Tamanho do título "Bem-vindo!" */
-        margin-bottom: 30px; /* Espaço abaixo do título */
-    }
-
-    .input-group {
-        width: 100%; /* Garante que o input group ocupe a largura total do card */
-        margin-bottom: 20px;
+        font-size: 1.8em;
     }
 
     .input-group label {
-        font-size: 1.1em; /* Tamanho das labels dos inputs */
-        margin-bottom: 10px; /* Espaço abaixo das labels */
+        font-size: 1em;
+        margin-bottom: 8px;
     }
 
     .input-group input,
     .input-group select {
-        padding: 15px; /* Padding dos inputs */
-        font-size: 1.1em; /* Tamanho da fonte dos inputs */
+        padding: 12px 15px;
+        font-size: 1em;
     }
 
     .btn {
-        padding: 15px 20px; /* Padding dos botões */
-        font-size: 1.2em; /* Tamanho da fonte dos botões */
-        margin-top: 15px;
-        margin-bottom: 5px; /* Espaço para o link de 'esqueceu a senha' */
+        padding: 12px 20px;
+        font-size: 1.1em;
+        margin-top: 10px;
     }
 
     .forgot-password {
-        font-size: 1em; /* Tamanho da fonte "Esqueceu a senha?" */
-        margin-top: 10px;
-    }
-
-    .divider {
-        margin: 30px 0; /* Espaço para o divisor "OU" */
+        font-size: 0.9em;
+        margin-top: 15px;
     }
 
     .social-btn {
-        padding: 15px 20px;
+        padding: 12px 20px;
         font-size: 1.1em;
-        margin-top: 20px; /* Espaço acima dos botões sociais */
+        margin-top: 20px;
     }
 
     .signup-text {
-        font-size: 1em;
-        margin-top: 25px; /* Espaço abaixo dos botões sociais */
+        font-size: 0.9em;
+        margin-top: 25px;
     }
 
-    /* Ajustes para as telas de conteúdo (Dashboard, etc.) */
-    .screen.active-content, .screen.hidden-content {
-        padding-top: 90px; /* Ajustar padding para o cabeçalho fixo */
-    }
-    .container {
-        padding: 0 10px; /* Reduzir padding lateral para aproveitar mais a tela */
-    }
-
-    /* Ajustes do Cabeçalho Principal (Top Nav) */
+    /* Cabeçalho superior com navegação - Desktop */
     .main-app-header {
-        flex-direction: column;
-        height: auto;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        justify-content: center;
-        align-items: center;
-        padding-left: 10px;
-        padding-right: 10px;
-        box-shadow: none; /* Remove sombra para um visual mais integrado */
-        border-radius: 0; /* Remove border-radius */
+        flex-direction: row; /* Retorna para linha */
+        justify-content: space-between; /* Espaça os itens */
+        height: 80px; /* Altura fixa */
+        padding: 10px 20px;
+        border-radius: 0 0 10px 10px; /* Restaura border-radius */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .top-nav-items {
-        flex-wrap: wrap;
-        justify-content: space-around;
-        width: 100%;
-        margin-top: 10px;
-        gap: 0px;
+        flex-wrap: nowrap; /* Não quebra linha */
+        gap: 20px; /* Espaço maior entre os itens */
+        width: auto;
+        margin-top: 0;
     }
 
     .top-nav-item {
-        flex-basis: 48%; /* Exemplo: 2 itens por linha. Para 1 item por linha use 100% */
         font-size: 0.9em;
-        padding: 8px 5px;
-        margin: 5px;
+        padding: 5px;
+        flex: none; /* Remove flex-basis */
+        max-width: unset;
     }
+
     .top-nav-item i {
-        font-size: 1.5em;
-        margin-bottom: 3px;
+        font-size: 1.8em; /* Ícone maior */
     }
 
     .toggle-theme-btn {
-        margin-top: 10px;
-        margin-bottom: 15px;
-        order: -1;
+        width: 40px; /* Tamanho original */
+        height: 40px;
+        font-size: 1.2em;
+        margin-bottom: 0;
+        order: unset; /* Retorna à ordem normal */
     }
 
-    /* Ajustes para Dashboard e Detalhes do Veículo */
-    .section-title {
-        font-size: 1.6em; /* Aumenta um pouco o título da seção */
-        margin-top: 25px; /* Mais espaço acima */
-        margin-bottom: 20px; /* Mais espaço abaixo */
-    }
-
-    .no-vehicles {
-        text-align: center;
-        font-style: italic;
-        color: var(--text-color);
-        margin-top: 30px;
-    }
-
+    /* Cards e Listas - Desktop */
     .vehicle-list {
-        grid-template-columns: 1fr; /* Garante que os cards de veículos fiquem em lista vertical */
-        gap: 15px; /* Espaçamento entre os cards de veículos */
+        display: grid; /* Retorna ao grid */
+        grid-template-columns: 1fr; /* Pode ser alterado para mais colunas se houver espaço */
+        gap: 20px;
     }
 
-    .vehicle-card-item {
-        padding: 15px; /* Aumenta o preenchimento interno do card do veículo */
-        gap: 15px; /* Aumenta o espaçamento entre elementos internos do card */
-    }
-
-    .vehicle-info h3 {
-        font-size: 1.2em; /* Tamanho da fonte do nome do veículo */
-    }
-
-    .vehicle-info p {
-        font-size: 0.9em; /* Tamanho da fonte dos detalhes do veículo */
-    }
-
-    /* Cards de Resumo (Manutenções Rápidas) */
     .summary-cards-section {
-        grid-template-columns: 1fr; /* Garante que os cards de resumo fiquem em lista vertical */
-        gap: 30px; /* Espaçamento entre os cards de resumo */
-        margin-top: 30px; /* Um pouco menos de margem para cima */
-        margin-bottom: 40px; /* Mais espaço para a próxima seção */
-        align-items: stretch; /* Faz os itens de grid terem a mesma altura */
-    }
-
-    .summary-card {
-        padding: 15px; /* Um pouco menos de padding para compactar */
-        gap: 15px; /* Aumenta o espaçamento entre elementos internos */
+        display: grid; /* Retorna ao grid */
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
     }
 
     .summary-card .icon {
-        font-size: 2em; /* Ícone um pouco menor para economizar espaço */
-        min-width: 2em; /* Garante que o ícone mantenha um tamanho mínimo */
-        text-align: center;
+        font-size: 2.5em; /* Tamanho original */
     }
-
-    .summary-card .card-content {
-        flex-grow: 1; /* Permite que o conteúdo ocupe o máximo de espaço */
-        text-align: left; /* Garante que o texto esteja alinhado à esquerda */
-    }
-
     .summary-card h3 {
-        font-size: 1.2em; /* Título um pouco menor */
-        margin-bottom: 3px; /* Menos espaço abaixo do título */
+        font-size: 1.3em;
     }
-
     .summary-card p {
-        font-size: 0.85em; /* Texto menor para as informações */
-        margin: 0; /* Remove margem padrão dos parágrafos */
-        white-space: nowrap; /* Evita que o texto quebre linha */
-        overflow: hidden; /* Esconde o excesso se o texto for muito longo */
-        text-overflow: ellipsis; /* Adiciona "..." se o texto for cortado */
-        line-height: 1.3; /* Ajusta altura da linha para compactar o texto */
+        font-size: 0.9em;
+        white-space: normal; /* Permite quebrar linha novamente */
     }
 
-    /* Seções de Manutenção (itens individuais) */
     .maintenance-sections {
-        gap: 15px; /* Espaçamento entre os cards de manutenção */
-    }
-    .maintenance-item.card {
-        padding: 20px; /* Aumenta o preenchimento interno dos itens de manutenção */
-    }
-    .maintenance-item h3 {
-        font-size: 1.5em; /* Tamanho da fonte do título da manutenção */
-        margin-bottom: 10px;
-    }
-    .maintenance-item p {
-        font-size: 1em; /* Torna o texto maior e mais legível */
-        margin-bottom: 10px; /* Mais espaço entre os parágrafos */
-    }
-    .maintenance-item span {
-        font-weight: 700; /* Valores importantes mais em destaque */
-    }
-    .edit-btn.small-edit-btn {
-        font-size: 1.1em; /* Ícones de edição maiores para facilitar o toque */
+        display: grid;
+        grid-template-columns: 1fr; /* Pode ser ajustado para duas colunas em telas maiores */
+        gap: 20px;
     }
 
-    /* Calculadoras */
     .calculators-section {
-        gap: 15px; /* Espaçamento entre os cards das calculadoras */
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 2 colunas para calculadoras */
+        gap: 20px;
     }
+
     .calculator-card {
-        padding: 20px; /* Aumenta o preenchimento interno do card da calculadora */
+        margin-bottom: 0;
     }
-    .calculator-card h3 {
-        font-size: 1.4em; /* Tamanho da fonte do título da calculadora */
-        margin-bottom: 15px;
-    }
+
     .input-group input[type="date"],
     .input-group input[type="number"] {
-        padding: 12px; /* Padding dos inputs das calculadoras */
-        font-size: 1.1em; /* Tamanho da fonte dos inputs das calculadoras */
+        padding: 10px;
+        font-size: 1em;
     }
+
     .result {
-        padding: 15px; /* Padding do resultado da calculadora */
-        font-size: 1.1em; /* Tamanho da fonte do resultado da calculadora */
+        padding: 10px;
+        font-size: 1em;
     }
 
-    /* Seção de Histórico */
     .history-list {
-        gap: 10px; /* Espaçamento entre os itens do histórico */
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
+
     .history-item {
-        padding: 15px; /* Preenchimento interno do item do histórico */
-        font-size: 1em; /* Tamanho da fonte do texto do histórico */
+        font-size: 0.95em;
     }
+
     .history-item .history-date {
-        font-size: 1.1em; /* Data do histórico mais proeminente */
+        font-size: 1em;
     }
 
-    /* KM Display na tela de Detalhes do Veículo */
     .km-display-details {
-        font-size: 1.4em; /* KM display maior */
-        margin-top: 15px;
-    }
-    .km-display-details .edit-btn {
-        font-size: 1.2em; /* Ícone de edição para KM maior */
+        font-size: 1.2em;
+        margin-top: 10px;
     }
 
-    /* Toasts e Modais (ajustes já feitos - mantidos) */
+    .edit-btn {
+        font-size: 1.0em;
+    }
+    .small-edit-btn {
+        font-size: 0.9em;
+    }
+
+    /* Toasts e Modais - Desktop */
     #toast-container {
-        top: auto; bottom: 10px; left: 50%; transform: translateX(-50%); right: auto;
-        align-items: center; width: 95%; max-width: 95%;
+        top: 20px; /* Retorna ao topo */
+        right: 20px; /* Retorna à direita */
+        left: auto;
+        transform: none; /* Remove transformação */
+        max-width: 350px;
+        align-items: flex-end; /* Alinha toasts à direita */
     }
-    .toast { min-width: unset; width: 100%; padding: 10px 15px; }
-    .modal-content { width: 95%; padding: 20px; }
-    .modal-content h3 { font-size: 1.5em; }
-    .modal-content p { font-size: 1em; }
-    .modal-buttons { flex-direction: column; gap: 10px; }
+    .toast {
+        padding: 12px 20px;
+        transform: translateY(-20px); /* Animação para cima */
+    }
+    .toast.hide {
+        transform: translateY(-20px);
+    }
 
-    /* 🔧 Ajustes para telas menores (smartphones) */
-    /* Força empilhamento em telas pequenas */
-    @media (max-width: 768px) {
-    .vehicle-list,
-    .summary-cards-section,
-    .maintenance-sections {
-        display: block !important;
-        grid-template-columns: 1fr !important;
+    .modal-content {
+        padding: 30px;
+        width: 90%; /* Mantém uma boa largura */
+        max-width: 450px; /* Largura máxima */
     }
-    .vehicle-card-item,
-    .summary-card,
-    .maintenance-item,
-    .card {
-        width: 100% !important;
-        margin-bottom: 15px;
+
+    .modal-content h3 {
+        font-size: 1.8em;
     }
-    .top-nav-items {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
+    .modal-content p {
+        font-size: 1.1em;
     }
-    .top-nav-item {
-        flex: 1 1 40%;
-        min-width: 120px;
-        max-width: 50%;
+    .modal-input-group {
+        margin-bottom: 25px;
     }
-    .login-card {
-        width: 100%;
-        max-width: 100%;
+    .modal-buttons {
+        flex-direction: row; /* Retorna botões em linha */
+        gap: 15px;
+        margin-top: 20px;
     }
-    .container {
-        padding: 0 10px;
+
+    /* Estilos para a tela de Serviços - Desktop */
+    .filters-container {
+        display: grid; /* Retorna ao grid */
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+        padding: 20px;
     }
-    .summary-card .icon {
-        font-size: 2em;
+    .service-providers-list {
+        display: grid; /* Retorna ao grid */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    .service-card img {
+        height: 150px; /* Altura original */
+    }
+    #service-details-modal .modal-buttons {
+        margin-top: 30px;
+        gap: 20px;
     }
 }
+
+/* Para telas muito pequenas, garante que a navegação não fique apertada */
+@media (max-width: 400px) {
+    .top-nav-item {
+        flex: 1 1 45%; /* Tenta 2 itens por linha */
+        max-width: 48%; /* Ajuste para ter 2 por linha */
+    }
 }
