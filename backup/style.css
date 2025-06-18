@@ -1317,47 +1317,4 @@ body:not(.dark-mode) .top-nav-item.active {
         font-size: 2em;
     }
 }
-
-/* Media query para telas muito pequenas (smartphones menores) */
-@media (max-width: 480px) {
-    .app-logo {
-        font-size: 2em;
-    }
-    .login-card h2 {
-        font-size: 1.5em;
-    }
-    .input-group input,
-    .input-group select,
-    .btn,
-    .social-btn {
-        font-size: 1em;
-    }
-    .top-nav-item {
-        flex-basis: 100%; /* Um item por linha em telas muito pequenas */
-        margin: 5px 0;
-    }
-    .top-nav-item i {
-        font-size: 1.3em;
-    }
-    .section-title {
-        font-size: 1.4em;
-    }
-    .summary-card h3,
-    .maintenance-item h3,
-    .calculator-card h3 {
-        font-size: 1.2em;
-    }
-    .summary-card .icon {
-        font-size: 1.8em;
-    }
-    .km-display-details {
-        font-size: 1.2em;
-    }
-     .history-item, .history-item .history-date {
-        font-size: 0.9em;
-    }
-     .modal-content h3 { font-size: 1.3em; }
-     .modal-content p { font-size: 0.9em; }
-     .modal-buttons .btn { font-size: 0.9em; padding: 8px 12px; }
-}
 }
