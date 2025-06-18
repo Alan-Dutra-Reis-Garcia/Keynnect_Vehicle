@@ -1268,7 +1268,7 @@ body:not(.dark-mode) .top-nav-item.active {
         font-size: 1.2em; /* Ícone de edição para KM maior */
     }
 
-    /* Toasts e Modais */
+    /* Toasts e Modais (ajustes já feitos - mantidos) */
     #toast-container {
         top: auto; bottom: 10px; left: 50%; transform: translateX(-50%); right: auto;
         align-items: center; width: 95%; max-width: 95%;
@@ -1279,7 +1279,9 @@ body:not(.dark-mode) .top-nav-item.active {
     .modal-content p { font-size: 1em; }
     .modal-buttons { flex-direction: column; gap: 10px; }
 
-    /* Força empilhamento em telas pequenas (redundante mas seguro) */
+    /* 🔧 Ajustes para telas menores (smartphones) */
+    /* Força empilhamento em telas pequenas */
+    @media (max-width: 768px) {
     .vehicle-list,
     .summary-cards-section,
     .maintenance-sections {
@@ -1314,4 +1316,5 @@ body:not(.dark-mode) .top-nav-item.active {
     .summary-card .icon {
         font-size: 2em;
     }
+}
 }
