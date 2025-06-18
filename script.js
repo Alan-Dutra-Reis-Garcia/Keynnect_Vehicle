@@ -62,10 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Elementos da Aba Perfil
     const profileDisplayName = document.getElementById('profile-display-name');
     const profileEmail = document.getElementById('profile-email');
-    // const editProfileBtn = document.getElementById('edit-profile-btn'); // Removido: botão não tem função associada no script
+    const editProfileBtn = document.getElementById('edit-profile-btn');
 
     // Referência ao link "Esqueceu a senha?"
-    const forgotPasswordLink = document.getElementById('forgot-password-link');
+    const forgotPasswordLink = document.getElementById('forgot-password-link'); // Nova referência
+
 
     // Referência ao container de toasts
     const toastContainer = document.getElementById('toast-container');
@@ -118,9 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
             fuel: { km: 20000, months: 24 },
             air: { km: 15000, months: 12 }
         },
-        // brakes: { km: 20000, months: 24 }, // Removido: Não usado em updateVehicleDetailsScreen nem renderMaintenanceSummaryCards
-        // sparkPlugs: { km: 40000, months: 48 }, // Removido: Não usado em updateVehicleDetailsScreen nem renderMaintenanceSummaryCards
-        // timingBelt: { km: 60000, months: 60 } // Removido: Não usado em updateVehicleDetailsScreen nem renderMaintenanceSummaryCards
+        brakes: { km: 20000, months: 24 }, // Pastilhas
+        sparkPlugs: { km: 40000, months: 48 }, // Velas de ignição
+        timingBelt: { km: 60000, months: 60 } // Correia dentada (exemplo)
     };
 
     let userVehicles = [];
@@ -305,17 +306,9 @@ document.addEventListener('DOMContentLoaded', () => {
             kmStandard = maintenanceStandards[typeKey].km;
             monthsStandard = maintenanceStandards[typeKey].months;
         } else {
-            // Fallback para tipos de manutenção não explicitamente definidos
-            // ou onde subTypeKey não se aplica/não é encontrado
-            // Verifique se maintenanceStandards[typeKey] existe antes de acessar .km/.months
-            if (maintenanceStandards[typeKey]) {
-                 kmStandard = maintenanceStandards[typeKey].km || 10000;
-                 monthsStandard = maintenanceStandards[typeKey].months || 12;
-            } else {
-                console.warn(`Padrão de manutenção para ${typeKey}${subTypeKey ? '.' + subTypeKey : ''} não encontrado. Usando padrão genérico (10k km, 12 meses).`);
-                kmStandard = 10000; // Padrão genérico
-                monthsStandard = 12; // Padrão genérico
-            }
+            console.warn(`Padrão de manutenção para ${typeKey}${subTypeKey ? '.' + subTypeKey : ''} não encontrado. Usando padrão genérico.`);
+            kmStandard = 10000;
+            monthsStandard = 12;
         }
 
         let suggestedNextKm = (lastKm > 0) ? lastKm + kmStandard : 0;
@@ -351,11 +344,11 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (isFinite(daysUntilSuggestedDate) && daysUntilSuggestedDate <= 0) {
                  displayString = `VENCIDO (Data)! Sug.: ${formatDateForDisplay(suggestedNextDate)}`;
             } else {
-                // A lógica original não fazia uma distinção clara aqui
-                // Poderíamos adicionar uma lógica para priorizar o que chegar primeiro (KM ou Data)
-                // Por enquanto, mantém a exibição de ambos como estava no else final.
-                // Se a intenção era mostrar um ou outro, precisaria de mais clareza na regra.
-                 displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
+                if (daysUntilSuggestedDate < (kmDiff / 100)) {
+                     displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
+                } else {
+                     displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
+                }
             }
         } else if (suggestedNextKm > 0) {
             displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km`;
@@ -455,15 +448,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const today = new Date();
             const nextDateObj = nextDate ? new Date(nextDate + 'T00:00:00') : null;
 
-            const isKmOverdue = (nextKm !== 0 && currentKm >= nextKm && currentKm > 0); // Considera vencido por KM se o KM atual for maior ou igual ao KM sugerido e KM atual for maior que 0
+            const isKmOverdue = (nextKm !== 0 && currentKm >= nextKm);
             const isDateOverdue = (nextDateObj && today >= nextDateObj);
 
-            // Se não há KM ou data informada, não é "overdue" de forma direta, mas "não calculado"
-            if ((nextKm === 0 || isNaN(nextKm)) && (!nextDate || !nextDateObj)) {
-                return ''; // Ou uma classe específica para "não calculado" se desejado
-            }
-
-            // Atenção: se estiver próximo de vencer por KM (ex: 1000km antes) ou por data (ex: 30 dias antes)
             const kmDifference = nextKm - currentKm;
             const daysDifference = nextDateObj ? Math.ceil((nextDateObj.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : Infinity;
 
@@ -547,7 +534,6 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.innerHTML = `<i class="icon fas ${getToastIcon(type)}"></i> <span>${message}</span>`;
         toastContainer.appendChild(toast);
 
-        // Força o reflow para garantir que a transição funcione
         void toast.offsetWidth;
         toast.classList.add('show');
 
@@ -580,7 +566,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modalInputGroup.style.display = 'block';
             modalInputLabel.textContent = inputLabel || '';
             modalInput.type = inputType;
-            modalInput.value = (typeof inputValue === 'number' || inputType === 'text' || inputType === 'email' || inputType === 'date') ? inputValue.toString() : ''; // Ajustado para handle diferentes tipos
+            modalInput.value = (typeof inputValue === 'number' || inputType === 'text') ? inputValue.toString() : inputValue;
             modalInput.focus();
             if (inputType !== 'date') {
                 modalInput.select();
@@ -589,7 +575,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         customModal.classList.add('show');
         
-        // Remove event listeners antigos para evitar duplicação
         modalSaveBtn.onclick = null;
         modalCancelBtn.onclick = null;
 
@@ -614,7 +599,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const editButtons = document.querySelectorAll('.maintenance-item .edit-btn');
 
         editButtons.forEach(button => {
-            // Remove o listener anterior se ele existia para evitar duplicação
             if (button._listenerFn) {
                 button.removeEventListener('click', button._listenerFn);
             }
@@ -623,10 +607,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const fieldName = button.dataset.fieldName;
             const label = button.dataset.label;
             
-            // Cria a nova função de listener e armazena-a no elemento
             const listenerFn = (e) => handleMaintenanceEdit(maintenanceType, fieldName, label);
             button.addEventListener('click', listenerFn);
-            button._listenerFn = listenerFn; // Armazena a referência da função
+            button._listenerFn = listenerFn;
         });
     };
 
@@ -779,11 +762,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     case 'filterOil': displayType = 'Troca Filtro de Óleo'; break;
                     case 'filterFuel': displayType = 'Troca Filtro de Combustível'; break;
                     case 'filterAir': displayType = 'Troca Filtro de Ar'; break;
-                    // case 'brakes': displayType = 'Manutenção de Freios'; break; // Removido: Não existe mais em maintenanceStandards
-                    // case 'sparkPlugs': displayType = 'Troca de Velas'; break; // Removido: Não existe mais em maintenanceStandards
-                    // case 'timingBelt': displayType = 'Troca de Correia Dentada'; break; // Removido: Não existe mais em maintenanceStandards
-                    // case 'coolant': displayType = 'Troca Fluido de Arrefecimento'; break; // Removido: Não existe mais em maintenanceStandards
-                    default: break; // Adicionado default para evitar warnings se 'type' não corresponder
+                    case 'brakes': displayType = 'Manutenção de Freios'; break;
+                    case 'sparkPlugs': displayType = 'Troca de Velas'; break;
+                    case 'timingBelt': displayType = 'Troca de Correia Dentada'; break;
+                    case 'coolant': displayType = 'Troca Fluido de Arrefecimento'; break;
                 }
 
                 historyCard.innerHTML = `
@@ -1160,7 +1142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'schedule-screen':
                     screenToShow = scheduleScreen;
                     break;
-                case 'services-screen':
+                case 'services-screen': // Adiciona o caso para services-screen
                     screenToShow = servicesScreen;
                     break;
                 case 'history-screen':
