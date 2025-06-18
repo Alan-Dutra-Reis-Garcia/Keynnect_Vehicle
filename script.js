@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentKmDetailsSpan = document.getElementById('current-km-details');
     const editKmDetailsBtn = document.getElementById('edit-km-details-btn');
     const kmDisplayDetailsContainer = document.querySelector('.km-display-details');
-    const maintenanceSectionsContainer = document.querySelector('.maintenance-sections'); // Referência ao contêiner das manutenções
     const summaryCardsDynamic = document.getElementById('summary-cards-dynamic');
 
     // Elementos da Aba Histórico
@@ -439,6 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
             filterAir: { lastKm: vehicle.maintenances.filterAir.lastKm, nextKm: filterAirCalc.nextKm, nextDate: filterAirCalc.nextDate }
         });
 
+        attachMaintenanceEditListeners();
     };
 
     const renderMaintenanceSummaryCards = (currentVehicleKm, calculatedMaintenances) => {
@@ -595,6 +595,23 @@ document.addEventListener('DOMContentLoaded', () => {
         modalInput.value = '';
     };
 
+    const attachMaintenanceEditListeners = () => {
+        const editButtons = document.querySelectorAll('.maintenance-item .edit-btn');
+
+        editButtons.forEach(button => {
+            if (button._listenerFn) {
+                button.removeEventListener('click', button._listenerFn);
+            }
+            
+            const maintenanceType = button.dataset.maintenanceType;
+            const fieldName = button.dataset.fieldName;
+            const label = button.dataset.label;
+            
+            const listenerFn = (e) => handleMaintenanceEdit(maintenanceType, fieldName, label);
+            button.addEventListener('click', listenerFn);
+            button._listenerFn = listenerFn;
+        });
+    };
 
 
     const handleMaintenanceEdit = async (maintenanceType, fieldName, displayLabel) => {
@@ -1289,19 +1306,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    // Event Delegation para os botões de edição de manutenção
-    if (maintenanceSectionsContainer) {
-        maintenanceSectionsContainer.addEventListener('click', (event) => {
-            const editButton = event.target.closest('.edit-btn');
-            if (editButton) {
-                const maintenanceType = editButton.dataset.maintenanceType;
-                const fieldName = editButton.dataset.fieldName;
-                const label = editButton.dataset.label;
-                handleMaintenanceEdit(maintenanceType, fieldName, label);
-            }
-        });
-    }
 
 
     // --- Inicialização ---
