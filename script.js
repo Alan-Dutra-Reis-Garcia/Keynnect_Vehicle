@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signup-form');
     const showSignupLink = document.getElementById('show-signup');
     const showLoginLink = document.getElementById('show-login');
-    const googleLoginBtn = document.querySelector('.google-btn');
+    const googleLoginBtn = document.querySelector('.google-btn'); // Referência ao botão Google Login
 
-    // Referências dos elementos do cabeçalho
+    // Referências dos elementos do cabeçalho (agora fixos no DOM dentro de #main-app)
     const mainAppHeader = document.getElementById('main-app-header');
     const toggleThemeBtn = document.getElementById('toggle-theme-btn');
     const topNavItemsContainer = mainAppHeader.querySelector('.top-nav-items');
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Elementos das seções de conteúdo (para navegação interna do main-app)
     const dashboardScreen = document.getElementById('dashboard-screen');
     const scheduleScreen = document.getElementById('schedule-screen');
-    const servicesScreen = document.getElementById('services-screen');
+    const servicesScreen = document.getElementById('services-screen'); // Nova referência
     const historyScreen = document.getElementById('history-screen');
     const profileScreen = document.getElementById('profile-screen');
     const vehicleDetailsScreen = document.getElementById('vehicle-details-screen');
@@ -48,9 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Elementos da Tela de Detalhes do Veículo
     const detailsVehicleName = document.getElementById('details-vehicle-name');
-    const editVehicleNameBtn = document.getElementById('edit-vehicle-name-btn');
+    const editVehicleNameBtn = document.getElementById('edit-vehicle-name-btn'); // Nova referência
     const detailsVehicleModel = document.getElementById('details-vehicle-model');
-    const editVehicleModelBtn = document.getElementById('edit-vehicle-model-btn');
+    const editVehicleModelBtn = document.getElementById('edit-vehicle-model-btn'); // Nova referência
     const currentKmDetailsSpan = document.getElementById('current-km-details');
     const editKmDetailsBtn = document.getElementById('edit-km-details-btn');
     const kmDisplayDetailsContainer = document.querySelector('.km-display-details');
@@ -65,7 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const editProfileBtn = document.getElementById('edit-profile-btn');
 
     // Referência ao link "Esqueceu a senha?"
-    const forgotPasswordLink = document.getElementById('forgot-password-link');
+    const forgotPasswordLink = document.getElementById('forgot-password-link'); // Nova referência
+
 
     // Referência ao container de toasts
     const toastContainer = document.getElementById('toast-container');
@@ -156,15 +157,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${day}/${month}/${year}`;
     };
 
-    // Função auxiliar para capitalizar a primeira letra
-    const capitalizeFirstLetter = (string) => {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-
 
     // --- Funções de UI/Navegação ---
 
-    // Mostra uma tela principal (login, cadastro, main-app)
     const showScreen = (screenToShow) => {
         const allScreens = [loginScreen, signupScreen, mainApp];
         allScreens.forEach(screen => {
@@ -178,10 +173,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Mostra uma seção de conteúdo dentro do main-app
+
     const showContentSection = (sectionToShow) => {
-        // Ajustado o seletor para pegar as sections dentro da tag <main>
-        const contentSections = document.querySelectorAll('#main-app > main > section');
+        const contentSections = document.querySelectorAll('#main-app > .screen');
         contentSections.forEach(section => {
             if (section === sectionToShow) {
                 section.classList.add('active-content');
@@ -200,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Controla a visibilidade do KM atual na tela de detalhes
         if (kmDisplayDetailsContainer) {
             if (sectionToShow === vehicleDetailsScreen && currentSelectedVehicle) {
                 kmDisplayDetailsContainer.style.display = 'flex';
@@ -209,7 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Lógica para carregar histórico e serviços quando as telas são ativadas
         if (sectionToShow === historyScreen) {
             if (currentSelectedVehicle) {
                 loadMaintenanceHistory(currentSelectedVehicle.id);
@@ -218,12 +210,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (sectionToShow === servicesScreen) {
+        if (sectionToShow === servicesScreen) { // Adiciona lógica para servicesScreen
             renderServiceProviders();
         }
     };
 
-    // Carrega os veículos do usuário do Firestore
     const loadUserVehicles = async (userId) => {
         if (!userId) {
             userVehicles = [];
@@ -243,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Renderiza os cards de veículos no Dashboard
+
     const renderVehicles = () => {
         vehicleList.innerHTML = '';
         if (userVehicles.length === 0) {
@@ -261,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>${vehicle.model}</p>
                     <p>${vehicle.km.toLocaleString('pt-BR')} km</p>
                 </div>
-                <button class="delete-btn" data-vehicle-id="${vehicle.id}" aria-label="Remover ${vehicle.name}"><i class="fas fa-trash-alt"></i></button>
+                <button class="delete-btn" data-vehicle-id="${vehicle.id}"><i class="fas fa-trash-alt"></i></button>
             `;
             vehicleCard.querySelector('.vehicle-info').addEventListener('click', () => {
                 currentSelectedVehicle = vehicle;
@@ -283,7 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Remove um veículo do Firestore
     const deleteVehicle = async (vehicleId, vehicleName) => {
         if (!currentUserId) {
             showToast('Erro: Você precisa estar logado para remover um veículo.', 'error');
@@ -304,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Calcula a próxima manutenção com base nos padrões
+
     const calculateNextMaintenance = (typeKey, lastKm, lastDate, subTypeKey = null) => {
         let kmStandard = 0;
         let monthsStandard = 0;
@@ -379,20 +369,17 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    // Atualiza a tela de detalhes do veículo
     const updateVehicleDetailsScreen = (vehicle) => {
         detailsVehicleName.textContent = vehicle.name;
         detailsVehicleModel.textContent = vehicle.model;
         currentKmDetailsSpan.textContent = vehicle.km.toLocaleString('pt-BR');
 
-        // Calcula e exibe informações da troca de óleo
         const oilChangeCalc = calculateNextMaintenance('oilChange', vehicle.maintenances.oilChange.lastKm, vehicle.maintenances.oilChange.lastDate, vehicle.maintenances.oilChange.oilType);
         document.getElementById('oil-last-km').textContent = vehicle.maintenances.oilChange.lastKm !== 0 ? `${vehicle.maintenances.oilChange.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
         document.getElementById('oil-last-date').textContent = vehicle.maintenances.oilChange.lastDate ? formatDateForDisplay(vehicle.maintenances.oilChange.lastDate) : 'Não informado';
         document.getElementById('oil-type-brand').textContent = vehicle.maintenances.oilChange.oilType ? `${capitalizeFirstLetter(vehicle.maintenances.oilChange.oilType)}` : 'Não informado';
         document.getElementById('oil-next-change').textContent = oilChangeCalc.display;
 
-        // Calcula e exibe informações dos pneus
         const tiresRotationCalc = calculateNextMaintenance('tires', vehicle.maintenances.tires.lastKm, vehicle.maintenances.tires.lastDate, 'rotation');
         const tiresChangeCalc = calculateNextMaintenance('tires', vehicle.maintenances.tires.lastKm, vehicle.maintenances.tires.lastDate, 'change');
         document.getElementById('pneus-last-km').textContent = vehicle.maintenances.tires.lastKm !== 0 ? `${vehicle.maintenances.tires.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
@@ -400,7 +387,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('pneus-rotation-suggested').textContent = tiresRotationCalc.display;
         document.getElementById('pneus-next-change').textContent = tiresChangeCalc.display + ' (Troca Geral)';
 
-        // Calcula e exibe informações de alinhamento e balanceamento
         const alignmentCalc = calculateNextMaintenance('alignment', vehicle.maintenances.alignment.lastKm, vehicle.maintenances.alignment.lastDate);
         const balanceamentoCalc = calculateNextMaintenance('balanceamento', vehicle.maintenances.balanceamento.lastKm, vehicle.maintenances.balanceamento.lastDate);
         document.getElementById('alignment-last-km').textContent = vehicle.maintenances.alignment.lastKm !== 0 ? `${vehicle.maintenances.alignment.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
@@ -410,7 +396,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('balanceamento-last-date').textContent = vehicle.maintenances.balanceamento.lastDate !== 0 ? `${formatDateForDisplay(vehicle.maintenances.balanceamento.lastDate)}` : 'Não informado';
         document.getElementById('balanceamento-next').textContent = balanceamentoCalc.display;
 
-        // Calcula e exibe informações dos filtros
         const filterOilCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterOil.lastKm, vehicle.maintenances.filterOil.lastDate, 'oil');
         const filterFuelCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterFuel.lastKm, vehicle.maintenances.filterFuel.lastDate, 'fuel');
         const filterAirCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterAir.lastKm, vehicle.maintenances.filterAir.lastDate, 'air');
@@ -446,7 +431,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('filter-air-next').textContent = filterAirCalc.display;
 
     
-        // Renderiza os cards de resumo de manutenção
         renderMaintenanceSummaryCards(vehicle.km, {
             oilChange: { lastKm: vehicle.maintenances.oilChange.lastKm, nextKm: oilChangeCalc.nextKm, nextDate: oilChangeCalc.nextDate },
             tires: { lastKm: vehicle.maintenances.tires.lastKm, rotationSuggestedKm: tiresRotationCalc.nextKm, rotationSuggestedDate: tiresRotationCalc.nextDate },
@@ -457,7 +441,6 @@ document.addEventListener('DOMContentLoaded', () => {
         attachMaintenanceEditListeners();
     };
 
-    // Renderiza os cards de resumo de manutenção (óleo, pneus, etc.)
     const renderMaintenanceSummaryCards = (currentVehicleKm, calculatedMaintenances) => {
         summaryCardsDynamic.innerHTML = '';
 
@@ -545,14 +528,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Exibe um toast (notificação flutuante)
     const showToast = (message, type, duration = 3000) => {
         const toast = document.createElement('div');
         toast.classList.add('toast', type);
         toast.innerHTML = `<i class="icon fas ${getToastIcon(type)}"></i> <span>${message}</span>`;
         toastContainer.appendChild(toast);
 
-        void toast.offsetWidth; // Força reflow para a transição
+        void toast.offsetWidth;
         toast.classList.add('show');
 
         setTimeout(() => {
@@ -574,7 +556,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Mostra o modal customizado com opções de input/confirmação
     const showCustomModal = ({ title, message, inputType = 'text', inputLabel, inputValue = '', onSave, onCancel }) => {
         modalTitle.textContent = title;
         modalMessage.textContent = message || '';
@@ -614,12 +595,10 @@ document.addEventListener('DOMContentLoaded', () => {
         modalInput.value = '';
     };
 
-    // Anexa listeners de edição para as manutenções detalhadas
     const attachMaintenanceEditListeners = () => {
         const editButtons = document.querySelectorAll('.maintenance-item .edit-btn');
 
         editButtons.forEach(button => {
-            // Remove listener anterior para evitar duplicidade
             if (button._listenerFn) {
                 button.removeEventListener('click', button._listenerFn);
             }
@@ -630,11 +609,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const listenerFn = (e) => handleMaintenanceEdit(maintenanceType, fieldName, label);
             button.addEventListener('click', listenerFn);
-            button._listenerFn = listenerFn; // Armazena a função para remoção futura
+            button._listenerFn = listenerFn;
         });
     };
 
-    // Lida com a edição de um campo de manutenção via modal
+
     const handleMaintenanceEdit = async (maintenanceType, fieldName, displayLabel) => {
         if (!currentSelectedVehicle || !currentUserId) {
             showToast('Erro: Você precisa estar logado e ter um veículo selecionado para atualizar.', 'error');
@@ -710,7 +689,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Mapeia códigos de erro do Firebase para mensagens amigáveis
     const getFirebaseErrorMessage = (errorCode) => {
         switch (errorCode) {
             case 'auth/invalid-email': return 'Email inválido.';
@@ -724,7 +702,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Carrega e exibe o histórico de manutenções para um veículo específico
+
     const loadMaintenanceHistory = async (vehicleId) => {
         maintenanceHistoryList.innerHTML = '';
 
@@ -802,6 +780,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Erro ao carregar histórico de manutenções:', error);
             showToast('Erro ao carregar histórico. Tente novamente.', 'error');
         }
+    };
+
+    const capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
     // --- Services Screen Logic ---
@@ -898,7 +880,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Handlers ---
 
-    // Lida com o formulário de login
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('login-email').value;
@@ -917,7 +898,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Lida com o formulário de cadastro
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('signup-email').value;
@@ -945,7 +925,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Navegação entre telas de login e cadastro
     showSignupLink.addEventListener('click', (e) => {
         e.preventDefault();
         showScreen(signupScreen);
@@ -1014,6 +993,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
 
     // Event listener para o botão de edição do nome do veículo
     if (editVehicleNameBtn) {
@@ -1147,7 +1127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Lida com o clique nos itens de navegação superior
+
     const handleTopNavClick = (e) => {
         const targetItem = e.target.closest('.top-nav-item');
         if (targetItem) {
@@ -1162,7 +1142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'schedule-screen':
                     screenToShow = scheduleScreen;
                     break;
-                case 'services-screen':
+                case 'services-screen': // Adiciona o caso para services-screen
                     screenToShow = servicesScreen;
                     break;
                 case 'history-screen':
@@ -1178,7 +1158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Botão Voltar para o Dashboard na tela de detalhes do veículo
+
     backToDashboardBtn.addEventListener('click', () => {
         showContentSection(dashboardScreen);
         currentSelectedVehicle = null;
@@ -1187,18 +1167,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Botão Adicionar Novo Veículo no Dashboard
     addVehicleBtn.addEventListener('click', () => {
         showContentSection(addVehicleScreen);
         addVehicleForm.reset();
     });
 
-    // Botão Voltar do formulário de adicionar veículo
     backFromAddVehicleBtn.addEventListener('click', () => {
         showContentSection(dashboardScreen);
     });
 
-    // Lida com o formulário de adicionar veículo
     addVehicleForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -1251,7 +1228,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Lida com o cálculo de KM rodado
+
     calculateKmBtn.addEventListener('click', () => {
         const startDateStr = kmStartDateInput.value;
         const endDateStr = kmEndDateInput.value;
@@ -1286,7 +1263,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('Cálculo de KM rodado realizado!', 'success');
     });
 
-    // Lida com o cálculo de KM por Litro
     calculateKmlBtn.addEventListener('click', () => {
         const km = parseLocaleNumber(kmlKmInput.value);
         const liters = parseLocaleNumber(kmlLitersInput.value);
@@ -1307,7 +1283,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('Cálculo de KM/Litro realizado!', 'success');
     });
 
-    // Lida com o logout do usuário
     logoutBtn.addEventListener('click', () => {
         showCustomModal({
             title: 'Sair da Conta',
@@ -1334,7 +1309,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Inicialização ---
-    // Mantém o estado de login e popula o perfil
+    // Manter o estado de login e popular perfil
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             currentUserId = user.uid;
@@ -1353,13 +1328,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Esconde o display de KM inicial, pois só é visível na tela de detalhes do veículo
     if (kmDisplayDetailsContainer) {
         kmDisplayDetailsContainer.style.display = 'none';
     }
     
-    // Adiciona event listeners globais
     toggleThemeBtn.addEventListener('click', handleThemeToggle);
     topNavItemsContainer.addEventListener('click', handleTopNavClick);
-    updateThemeIcon(); // Define o ícone inicial do tema ao carregar
+    updateThemeIcon();
 });
