@@ -159,7 +159,7 @@ body {
     font-size: 2.5em;
     font-weight: 600;
     color: var(--primary-color);
-    margin-bottom: 30px;
+    margin-bottom: 5px;
 }
 
 .app-logo i {
@@ -169,12 +169,12 @@ body {
 .login-card h2 {
     font-family: 'Poppins', sans-serif;
     font-size: 1.8em;
-    margin-bottom: 25px;
+    margin-bottom: 5px;
     color: var(--text-color);
 }
 
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     text-align: left;
 }
 
@@ -1015,7 +1015,7 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 /* Responsividade */
-@media (max-width: 768px) {
+@media (max-width: 40px) {
     /* Ajustes para as telas de Login/Cadastro */
     #login-screen, #signup-screen {
         padding: 0; /* Remove completamente o padding externo destas telas */
@@ -1042,17 +1042,17 @@ body:not(.dark-mode) .top-nav-item.active {
     /* Refinamento de fontes e espaçamentos dentro do login card para se aproximar do exemplo */
     .app-logo {
         font-size: 2.5em; /* Tamanho da fonte do logo */
-        margin-bottom: 30px; /* Espaço abaixo do logo */
+        margin-bottom: 5px; /* Espaço abaixo do logo */
     }
 
     .login-card h2 {
         font-size: 2em; /* Tamanho do título "Bem-vindo!" */
-        margin-bottom: 30px; /* Espaço abaixo do título */
+        margin-bottom: 10px; /* Espaço abaixo do título */
     }
 
     .input-group {
         width: 100%; /* Garante que o input group ocupe a largura total do card */
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     .input-group label {
@@ -1095,7 +1095,7 @@ body:not(.dark-mode) .top-nav-item.active {
 
     /* Ajustes para as telas de conteúdo (Dashboard, etc.) */
     .screen.active-content, .screen.hidden-content {
-        padding-top: 90px; /* Ajustar padding para o cabeçalho fixo */
+        padding-top: 25px; /* Ajustar padding para o cabeçalho fixo */
     }
     .container {
         padding: 0 10px; /* Reduzir padding lateral para aproveitar mais a tela */
@@ -1136,7 +1136,7 @@ body:not(.dark-mode) .top-nav-item.active {
 
     .toggle-theme-btn {
         margin-top: 5px;
-        margin-bottom: 15px;
+        margin-bottom: 5px;
         order: -1;
     }
 
@@ -1144,7 +1144,7 @@ body:not(.dark-mode) .top-nav-item.active {
     .section-title {
         font-size: 1.6em; /* Aumenta um pouco o título da seção */
         margin-top: 5px; /* Mais espaço acima */
-        margin-bottom: 20px; /* Mais espaço abaixo */
+        margin-bottom: 2px; /* Mais espaço abaixo */
     }
 
     .no-vehicles {
@@ -1156,12 +1156,12 @@ body:not(.dark-mode) .top-nav-item.active {
 
     .vehicle-list {
         grid-template-columns: 1fr; /* Garante que os cards de veículos fiquem em lista vertical */
-        gap: 15px; /* Espaçamento entre os cards de veículos */
+        gap: 10px; /* Espaçamento entre os cards de veículos */
     }
 
     .vehicle-card-item {
-        padding: 15px; /* Aumenta o preenchimento interno do card do veículo */
-        gap: 15px; /* Aumenta o espaçamento entre elementos internos do card */
+        padding: 10px; /* Aumenta o preenchimento interno do card do veículo */
+        gap: 10px; /* Aumenta o espaçamento entre elementos internos do card */
     }
 
     .vehicle-info h3 {
@@ -1177,7 +1177,7 @@ body:not(.dark-mode) .top-nav-item.active {
         grid-template-columns: 1fr; /* Garante que os cards de resumo fiquem em lista vertical */
         gap: 30px; /* Espaçamento entre os cards de resumo */
         margin-top: 5px; /* Um pouco menos de margem para cima */
-        margin-bottom: 40px; /* Mais espaço para a próxima seção */
+        margin-bottom: 20px; /* Mais espaço para a próxima seção */
         align-items: stretch; /* Faz os itens de grid terem a mesma altura */
     }
 
