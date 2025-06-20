@@ -1,267 +1,239 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- REFERÊNCIAS DE ELEMENTOS ---
-    const body = document.body;
-    // Telas principais
+    // Referências das telas principais
     const loginScreen = document.getElementById('login-screen');
     const signupScreen = document.getElementById('signup-screen');
     const mainApp = document.getElementById('main-app');
-    const contentScreens = document.querySelectorAll('#main-app > .screen');
-    // Navegação
-    const bottomNav = document.querySelector('.bottom-nav');
-    // Formulários
+
+    // Referências dos formulários de login/cadastro
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
-    const addVehicleForm = document.getElementById('add-vehicle-form');
-    // Botões
     const showSignupLink = document.getElementById('show-signup');
     const showLoginLink = document.getElementById('show-login');
-    const googleLoginBtn = document.querySelector('.google-btn');
-    const forgotPasswordLink = document.getElementById('forgot-password-link');
-    const addVehicleBtn = document.getElementById('add-vehicle-btn');
-    const backFromAddVehicleBtn = document.getElementById('back-from-add-vehicle');
-    const backToDashboardBtn = document.getElementById('back-to-dashboard');
-    const editVehicleDetailsBtn = document.getElementById('edit-vehicle-details-btn');
-    const editKmDetailsBtn = document.getElementById('edit-km-details-btn');
-    const logoutBtn = document.getElementById('logout-btn');
-    const editProfileBtn = document.getElementById('edit-profile-btn');
-    const dashboardThemeBtn = document.getElementById('toggle-theme-btn-dashboard');
-    const profileThemeBtn = document.getElementById('toggle-theme-btn-profile');
-    // Dashboard
+    const googleLoginBtn = document.querySelector('.google-btn'); // Referência ao botão Google Login
+
+    // Referências dos elementos do cabeçalho (agora fixos no DOM dentro de #main-app)
+    const mainAppHeader = document.getElementById('main-app-header');
+    const toggleThemeBtn = document.getElementById('toggle-theme-btn');
+    const topNavItemsContainer = mainAppHeader.querySelector('.top-nav-items');
+    const topNavItems = mainAppHeader.querySelectorAll('.top-nav-item');
+
+    const body = document.body;
+
+    // Elementos do Dashboard
     const vehicleList = document.getElementById('vehicle-list');
-    // Detalhes do Veículo
+    const addVehicleBtn = document.getElementById('add-vehicle-btn');
+
+    // Elementos das seções de conteúdo (para navegação interna do main-app)
+    const dashboardScreen = document.getElementById('dashboard-screen');
+    const scheduleScreen = document.getElementById('schedule-screen');
+    const servicesScreen = document.getElementById('services-screen'); // Nova referência
+    const historyScreen = document.getElementById('history-screen');
+    const profileScreen = document.getElementById('profile-screen');
+    const vehicleDetailsScreen = document.getElementById('vehicle-details-screen');
+    const backToDashboardBtn = document.getElementById('back-to-dashboard');
+    const addVehicleScreen = document.getElementById('add-vehicle-screen');
+    const backFromAddVehicleBtn = document.getElementById('back-from-add-vehicle');
+    const addVehicleForm = document.getElementById('add-vehicle-form');
+
+    // Referências para os campos do formulário de adicionar veículo
+    const newVehicleNameInput = document.getElementById('new-vehicle-name');
+    const newVehicleModelInput = document.getElementById('new-vehicle-model');
+    const newVehicleKmInput = document.getElementById('new-vehicle-km');
+    const newVehicleOilKmInput = document.getElementById('new-vehicle-oil-km');
+    const newVehicleOilDateInput = document.getElementById('new-vehicle-oil-date');
+    const newVehicleOilTypeSelect = document.getElementById('new-vehicle-oil-type');
+    const newVehicleTiresKmInput = document.getElementById('new-vehicle-tires-km');
+    const newVehicleTiresDateInput = document.getElementById('new-vehicle-tires-date');
+
+
+    // Elementos da Tela de Detalhes do Veículo
     const detailsVehicleName = document.getElementById('details-vehicle-name');
+    const editVehicleNameBtn = document.getElementById('edit-vehicle-name-btn'); // Nova referência
     const detailsVehicleModel = document.getElementById('details-vehicle-model');
+    const editVehicleModelBtn = document.getElementById('edit-vehicle-model-btn'); // Nova referência
     const currentKmDetailsSpan = document.getElementById('current-km-details');
+    const editKmDetailsBtn = document.getElementById('edit-km-details-btn');
+    const kmDisplayDetailsContainer = document.querySelector('.km-display-details');
     const summaryCardsDynamic = document.getElementById('summary-cards-dynamic');
-    const maintenanceSections = document.querySelector('.maintenance-sections');
-    // Histórico
+
+    // Elementos da Aba Histórico
     const maintenanceHistoryList = document.getElementById('maintenance-history-list');
-    // Perfil
+
+    // Elementos da Aba Perfil
     const profileDisplayName = document.getElementById('profile-display-name');
     const profileEmail = document.getElementById('profile-email');
-    // Calculadoras
-    const calculateKmlBtn = document.getElementById('calculate-kml-btn');
-    const kmlKmInput = document.getElementById('kml-km');
-    const kmlLitersInput = document.getElementById('kml-liters');
-    const kmlPriceInput = document.getElementById('kml-price');
-    const kmlResultDiv = document.getElementById('kml-result');
-    const calculateKmBtn = document.getElementById('calculate-km-btn');
-    const kmStartDateInput = document.getElementById('km-start-date');
-    const kmStartInput = document.getElementById('km-start');
-    const kmEndDateInput = document.getElementById('km-end-date');
-    const kmEndInput = document.getElementById('km-end');
-    const kmResultDiv = document.getElementById('km-result');
-    // Serviços
-    const serviceBranchFilter = document.getElementById('service-branch-filter');
-    const serviceCityFilter = document.getElementById('service-city-filter');
-    const serviceProvidersList = document.getElementById('service-providers-list');
-    const serviceDetailsModal = document.getElementById('service-details-modal');
-    const serviceDetailsCloseBtn = document.getElementById('service-details-close-btn');
-    // Modal Genérico
+    const editProfileBtn = document.getElementById('edit-profile-btn');
+
+    // Referência ao link "Esqueceu a senha?"
+    const forgotPasswordLink = document.getElementById('forgot-password-link'); // Nova referência
+
+
+    // Referência ao container de toasts
+    const toastContainer = document.getElementById('toast-container');
+
+    // Referências do Modal Customizado
     const customModal = document.getElementById('custom-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalMessage = document.getElementById('modal-message');
     const modalInputGroup = document.getElementById('modal-input-group');
     const modalInputLabel = document.getElementById('modal-input-label');
     const modalInput = document.getElementById('modal-input');
-    const modalSelect = document.getElementById('modal-select');
     const modalCancelBtn = document.getElementById('modal-cancel-btn');
     const modalSaveBtn = document.getElementById('modal-save-btn');
-    // Toast
-    const toastContainer = document.getElementById('toast-container');
 
-    // --- ESTADO DA APLICAÇÃO ---
+    // Botão Sair do Perfil
+    const logoutBtn = document.getElementById('logout-btn');
+
+
+    // Calculadoras
+    const calculateKmBtn = document.getElementById('calculate-km-btn');
+    const kmStartDateInput = document.getElementById('km-start-date');
+    const kmStartInput = document.getElementById('km-start');
+    const kmEndDateInput = document.getElementById('km-end-date');
+    const kmEndInput = document.getElementById('km-end');
+    const kmResultDiv = document.getElementById('km-result');
+
+    const calculateKmlBtn = document.getElementById('calculate-kml-btn');
+    const kmlKmInput = document.getElementById('kml-km');
+    const kmlLitersInput = document.getElementById('kml-liters');
+    const kmlPriceInput = document.getElementById('kml-price');
+    const kmlResultDiv = document.getElementById('kml-result');
+
+
+    // --- Dados de Referência de Manutenção (Padrões da Indústria) ---
+    // Valores de KM e Tempo (em meses)
+    const maintenanceStandards = {
+        oilChange: {
+            mineral: { km: 5000, months: 6 },
+            semisintetico: { km: 10000, months: 12 },
+            sintetico: { km: 15000, months: 12 }
+        },
+        tires: {
+            rotation: { km: 10000, months: 6 }, // Rodízio de pneus
+            change: { km: 60000, months: 60 } // Troca geral de pneus
+        },
+        alignment: { km: 10000, months: 6 }, // Alinhamento
+        balanceamento: { km: 10000, months: 6 }, // Balanceamento
+        filters: {
+            oil: { km: 10000, months: 12 }, // Geralmente junto com a troca de óleo
+            fuel: { km: 20000, months: 24 },
+            air: { km: 15000, months: 12 }
+        },
+        brakes: { km: 20000, months: 24 }, // Pastilhas
+        sparkPlugs: { km: 40000, months: 48 }, // Velas de ignição
+        timingBelt: { km: 60000, months: 60 } // Correia dentada (exemplo)
+    };
+
     let userVehicles = [];
     let currentSelectedVehicle = null;
     let currentUserId = null;
 
-    // --- DADOS E PADRÕES ---
-    const maintenanceStandards = {
-        oilChange: { mineral: { km: 5000, months: 6 }, semisintetico: { km: 10000, months: 12 }, sintetico: { km: 10000, months: 12 } },
-        tires: { rotation: { km: 10000, months: 6 }, change: { km: 50000, months: 60 } },
-        alignment: { km: 10000, months: 6 },
-        balanceamento: { km: 10000, months: 6 },
-        filters: { oil: { km: 10000, months: 12 }, fuel: { km: 15000, months: 12 }, air: { km: 15000, months: 12 } },
-    };
-    const serviceProviders = [
-        { name: "Borracharia Móvel do Neguinho", phone: "(44) 99949-6361", address: "Atendimento Móvel", hours: "08:00 - 18:00", website: null, whatsapp: "5544999496361", image: "https://i.imgur.com/g2a0gq3.jpeg", type: "Móvel", branch: "Borracharia", city: "Maringá", state: "PR" },
-        { name: "Mecânica Auto Forte", phone: "(44) 3030-4040", address: "Av. Brasil, 1234", hours: "08:00 - 18:30", website: "autoforte.com.br", whatsapp: "5544987654321", image: "https://i.imgur.com/U41238a.jpeg", type: "Fixo", branch: "Mecânica", city: "Maringá", state: "PR" },
-        { name: "Lava Rápido Brilho Total", phone: "(44) 91234-5678", address: "R. das Flores, 56", hours: "09:00 - 17:00", website: null, whatsapp: "5544912345678", image: "https://i.imgur.com/rSCTqCo.jpeg", type: "Fixo", branch: "Lava Jato", city: "Sarandi", state: "PR" },
-        { name: "Estética Veicular Premium", phone: "(44) 99999-8888", address: "Atendimento a domicílio", hours: "Sob agendamento", website: "studiopremium.com.br", whatsapp: "5544999998888", image: "https://i.imgur.com/Jd34e9C.jpeg", type: "Móvel", branch: "Estética", city: "Maringá", state: "PR" },
-    ];
-    const maintTypeLabels = {
-        oilChange: { title: "Troca de Óleo", fields: { lastKm: "KM da Última Troca", lastDate: "Data da Última Troca", oilType: "Tipo de Óleo" } },
-        tires: { title: "Pneus", fields: { lastKm: "KM da Última Manutenção", lastDate: "Data da Última Manutenção" } },
-        alignment: { title: "Alinhamento", fields: { lastKm: "KM do Último Alinhamento", lastDate: "Data do Último Alinhamento" } },
-        balanceamento: { title: "Balanceamento", fields: { lastKm: "KM do Último Balanceamento", lastDate: "Data do Último Balanceamento" } },
-        filters: { title: "Filtros", fields: { lastDate: "Data da Última Troca" } } // Simplificado para data
+
+    // --- Funções Auxiliares de Tratamento de Números e Datas ---
+
+    const parseLocaleNumber = (stringNumber) => {
+        if (typeof stringNumber !== 'string') return NaN;
+        let cleanedNumber = stringNumber.replace(/\./g, '');
+        cleanedNumber = cleanedNumber.replace(/,/g, '.');
+        return parseFloat(cleanedNumber);
     };
 
-    // --- FUNÇÕES AUXILIARES ---
-    const parseLocaleNumber = (str) => parseFloat(String(str).replace(/\./g, '').replace(/,/g, '.'));
-    const addMonthsToDate = (dateStr, months) => {
-        if (!dateStr) return null;
-        const d = new Date(dateStr + 'T00:00:00Z');
-        if (isNaN(d.getTime())) return null;
-        d.setMonth(d.getMonth() + months);
-        return d.toISOString().split('T')[0];
-    };
-    const formatDate = (dateStr) => {
-        if (!dateStr || dateStr.length < 10) return 'N/I';
-        const [y, m, d] = dateStr.substring(0, 10).split('-');
-        return `${d}/${m}/${y}`;
-    };
-    const capitalize = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+    const addMonthsToDate = (dateString, monthsToAdd) => {
+        if (!dateString) return null;
+        const date = new Date(dateString + 'T00:00:00');
+        if (isNaN(date.getTime())) return null;
 
-    // --- UI E NAVEGAÇÃO ---
+        date.setMonth(date.getMonth() + monthsToAdd);
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const formatDateForDisplay = (dateString) => {
+        if (!dateString) return 'N/I';
+        const [year, month, day] = dateString.split('-');
+        return `${day}/${month}/${year}`;
+    };
+
+
+    // --- Funções de UI/Navegação ---
+
     const showScreen = (screenToShow) => {
-        [loginScreen, signupScreen, mainApp].forEach(s => {
-            s.classList.toggle('active', s === screenToShow);
-            s.classList.toggle('hidden', s !== screenToShow);
+        const allScreens = [loginScreen, signupScreen, mainApp];
+        allScreens.forEach(screen => {
+            if (screen === screenToShow) {
+                screen.classList.add('active');
+                screen.classList.remove('hidden');
+            } else {
+                screen.classList.remove('active');
+                screen.classList.add('hidden');
+            }
         });
     };
 
-    const showContentSection = (screenId) => {
-        contentScreens.forEach(s => {
-            s.classList.toggle('active-content', s.id === screenId);
-            s.classList.toggle('hidden-content', s.id !== screenId);
+
+    const showContentSection = (sectionToShow) => {
+        const contentSections = document.querySelectorAll('#main-app > .screen');
+        contentSections.forEach(section => {
+            if (section === sectionToShow) {
+                section.classList.add('active-content');
+                section.classList.remove('hidden-content');
+            } else {
+                section.classList.remove('active-content');
+                section.classList.add('hidden-content');
+            }
         });
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.toggle('active', item.dataset.screen === screenId);
+
+        topNavItems.forEach(item => {
+            if (item.dataset.screen === sectionToShow.id) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
         });
-        // Lógica específica ao mostrar tela
-        if (screenId === 'services-screen') renderServiceProviders();
-        if (screenId === 'history-screen') {
+
+        if (kmDisplayDetailsContainer) {
+            if (sectionToShow === vehicleDetailsScreen && currentSelectedVehicle) {
+                kmDisplayDetailsContainer.style.display = 'flex';
+            } else {
+                kmDisplayDetailsContainer.style.display = 'none';
+            }
+        }
+
+        if (sectionToShow === historyScreen) {
             if (currentSelectedVehicle) {
                 loadMaintenanceHistory(currentSelectedVehicle.id);
             } else {
-                maintenanceHistoryList.innerHTML = '<p class="no-vehicles">Selecione um veículo no dashboard para ver o histórico.</p>';
+                maintenanceHistoryList.innerHTML = '<p class="no-vehicles">Selecione um veículo no Dashboard para ver seu histórico de manutenções.</p>';
             }
         }
-    };
-    
-    const showToast = (message, type = 'attention', duration = 3000) => {
-        const toast = document.createElement('div');
-        const icon = { success: 'fa-check-circle', error: 'fa-times-circle', attention: 'fa-exclamation-triangle' }[type] || 'fa-info-circle';
-        toast.className = `toast ${type}`;
-        toast.innerHTML = `<i class="icon fas ${icon}"></i> <span>${message}</span>`;
-        toastContainer.appendChild(toast);
-        setTimeout(() => toast.classList.add('show'), 10);
-        setTimeout(() => {
-            toast.classList.remove('show');
-            toast.addEventListener('transitionend', () => toast.remove(), { once: true });
-        }, duration);
-    };
 
-    const showCustomModal = ({ title, message, inputType = 'text', inputLabel, inputValue = '', options = [], onSave }) => {
-        modalTitle.textContent = title;
-        modalMessage.textContent = message || '';
-        modalInput.classList.toggle('hidden', inputType === 'select');
-        modalSelect.classList.toggle('hidden', inputType !== 'select');
-        modalInputGroup.style.display = inputType === 'none' ? 'none' : 'block';
-        modalInputLabel.textContent = inputLabel || '';
-
-        if (inputType === 'select') {
-            modalSelect.innerHTML = '';
-            options.forEach(opt => {
-                const optionEl = document.createElement('option');
-                optionEl.value = opt.value;
-                optionEl.textContent = opt.text;
-                optionEl.selected = opt.value === inputValue;
-                modalSelect.appendChild(optionEl);
-            });
-        } else {
-            modalInput.type = inputType;
-            modalInput.value = inputValue;
-            setTimeout(() => modalInput.focus(), 150);
+        if (sectionToShow === servicesScreen) { // Adiciona lógica para servicesScreen
+            renderServiceProviders();
         }
-        
-        customModal.classList.add('show');
-        modalSaveBtn.onclick = () => {
-            const value = inputType === 'select' ? modalSelect.value : modalInput.value;
-            hideCustomModal();
-            onSave(value);
-        };
     };
-    const hideCustomModal = () => customModal.classList.remove('show');
 
-    // --- AUTENTICAÇÃO E PERFIL ---
-    auth.onAuthStateChanged(async (user) => {
-        if (user) {
-            currentUserId = user.uid;
-            profileEmail.textContent = user.email || 'Não informado';
-            profileDisplayName.textContent = user.displayName || user.email.split('@')[0];
-            showScreen(mainApp);
-            await loadUserVehicles(currentUserId);
-            showContentSection('dashboard-screen');
-        } else {
-            currentUserId = null;
-            userVehicles = [];
-            currentSelectedVehicle = null;
-            showScreen(loginScreen);
-        }
-    });
-
-    const getFirebaseErrorMessage = (code) => ({
-        'auth/invalid-email': 'Email inválido.', 'auth/user-disabled': 'Usuário desabilitado.', 'auth/user-not-found': 'Usuário não encontrado.', 'auth/wrong-password': 'Senha incorreta.', 'auth/email-already-in-use': 'Este email já está em uso.', 'auth/weak-password': 'Senha fraca (mínimo 6 caracteres).',
-    })[code] || 'Ocorreu um erro. Tente novamente.';
-
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = loginForm['login-email'].value, password = loginForm['login-password'].value;
-        auth.signInWithEmailAndPassword(email, password)
-            .then(() => showToast('Login bem-sucedido!', 'success'))
-            .catch(err => showToast(getFirebaseErrorMessage(err.code), 'error'));
-    });
-
-    signupForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = signupForm['signup-email'].value, password = signupForm['signup-password'].value;
-        if (password !== signupForm['signup-confirm-password'].value) return showToast('As senhas não coincidem!', 'error');
-        auth.createUserWithEmailAndPassword(email, password)
-            .then(cred => db.collection('users').doc(cred.user.uid).set({ email, createdAt: firebase.firestore.FieldValue.serverTimestamp() }))
-            .then(() => { showToast('Cadastro realizado!', 'success'); showScreen(loginScreen); })
-            .catch(err => showToast(getFirebaseErrorMessage(err.code), 'error'));
-    });
-
-    googleLoginBtn.addEventListener('click', async () => {
-        try {
-            const cred = await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-            const userDoc = await db.collection('users').doc(cred.user.uid).get();
-            if (!userDoc.exists) {
-                await db.collection('users').doc(cred.user.uid).set({
-                    email: cred.user.email, displayName: cred.user.displayName, createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            }
-            showToast('Login com Google bem-sucedido!', 'success');
-        } catch (err) { showToast(getFirebaseErrorMessage(err.code), 'error'); }
-    });
-    
-    forgotPasswordLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        showCustomModal({
-            title: 'Recuperar Senha', message: 'Insira seu e-mail para receber o link de redefinição.', inputLabel: 'E-mail:', inputType: 'email',
-            onSave: async (email) => {
-                if (!email.trim()) return showToast('Por favor, insira um e-mail.', 'attention');
-                try {
-                    await auth.sendPasswordResetEmail(email.trim());
-                    showToast('Link de redefinição enviado!', 'success');
-                } catch (err) { showToast(getFirebaseErrorMessage(err.code), 'error'); }
-            }
-        });
-    });
-
-    logoutBtn.addEventListener('click', () => showCustomModal({ title: 'Sair da Conta', message: 'Tem certeza que deseja sair?', inputType: 'none', onSave: () => auth.signOut() }));
-
-    // --- VEÍCULOS ---
     const loadUserVehicles = async (userId) => {
-        if (!userId) return;
-        try {
-            const snapshot = await db.collection('users').doc(userId).collection('vehicles').orderBy('name').get();
-            userVehicles = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        if (!userId) {
+            userVehicles = [];
             renderVehicles();
-        } catch(error) { showToast('Erro ao carregar veículos.', 'error'); }
+            return;
+        }
+        try {
+            const vehiclesSnapshot = await db.collection('users').doc(userId).collection('vehicles').orderBy('name').get();
+            userVehicles = vehiclesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderVehicles();
+            if (userVehicles.length === 0) {
+                showToast('Adicione seu primeiro veículo!', 'attention');
+            }
+        } catch (error) {
+            console.error('Erro ao carregar veículos:', error);
+            showToast('Erro ao carregar veículos. Tente novamente.', 'error');
+        }
     };
+
 
     const renderVehicles = () => {
         vehicleList.innerHTML = '';
@@ -269,320 +241,1098 @@ document.addEventListener('DOMContentLoaded', () => {
             vehicleList.innerHTML = '<p class="no-vehicles">Nenhum veículo cadastrado. Adicione um para começar!</p>';
             return;
         }
+
         userVehicles.forEach(vehicle => {
-            const card = document.createElement('div');
-            card.className = 'card vehicle-card-item';
-            card.innerHTML = `
+            const vehicleCard = document.createElement('div');
+            vehicleCard.classList.add('vehicle-card-item');
+            vehicleCard.dataset.vehicleId = vehicle.id;
+            vehicleCard.innerHTML = `
                 <div class="vehicle-info">
                     <h3>${vehicle.name}</h3>
                     <p>${vehicle.model}</p>
-                    <p><strong>${(vehicle.km || 0).toLocaleString('pt-BR')} km</strong></p>
+                    <p>${vehicle.km.toLocaleString('pt-BR')} km</p>
                 </div>
-                <button class="delete-btn"><i class="fas fa-trash-alt"></i></button>`;
-            card.querySelector('.vehicle-info').onclick = () => {
+                <button class="delete-btn" data-vehicle-id="${vehicle.id}"><i class="fas fa-trash-alt"></i></button>
+            `;
+            vehicleCard.querySelector('.vehicle-info').addEventListener('click', () => {
                 currentSelectedVehicle = vehicle;
                 updateVehicleDetailsScreen(vehicle);
-                showContentSection('vehicle-details-screen');
-            };
-            card.querySelector('.delete-btn').onclick = (e) => {
+                showContentSection(vehicleDetailsScreen);
+            });
+            vehicleCard.querySelector('.delete-btn').addEventListener('click', (e) => {
                 e.stopPropagation();
-                showCustomModal({ title: 'Excluir Veículo', message: `Remover "${vehicle.name}" permanentemente?`, inputType: 'none', onSave: () => deleteVehicle(vehicle.id) });
-            };
-            vehicleList.appendChild(card);
+                showCustomModal({
+                    title: 'Confirmar Exclusão',
+                    message: `Tem certeza que deseja remover o veículo "${vehicle.name}"?`,
+                    inputType: 'none',
+                    onSave: () => {
+                        deleteVehicle(vehicle.id, vehicle.name);
+                    }
+                });
+            });
+            vehicleList.appendChild(vehicleCard);
         });
     };
-    
-    addVehicleForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const { value: name } = addVehicleForm['new-vehicle-name'];
-        const { value: model } = addVehicleForm['new-vehicle-model'];
-        const km = parseInt(addVehicleForm['new-vehicle-km'].value);
-        if (!name || !model || isNaN(km)) return showToast('Preencha nome, modelo e KM.', 'attention');
-        
-        const { value: oilKm } = addVehicleForm['new-vehicle-oil-km'];
-        const { value: oilDate } = addVehicleForm['new-vehicle-oil-date'];
-        const { value: oilType } = addVehicleForm['new-vehicle-oil-type'];
-        const { value: tiresKm } = addVehicleForm['new-vehicle-tires-km'];
-        const { value: tiresDate } = addVehicleForm['new-vehicle-tires-date'];
 
-        const data = {
-            name, model, km, createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            maintenances: {
-                oilChange: { lastKm: parseInt(oilKm) || 0, lastDate: oilDate || '', oilType: oilType || '' },
-                tires: { lastKm: parseInt(tiresKm) || 0, lastDate: tiresDate || '' },
-                alignment: { lastKm: 0, lastDate: '' }, balanceamento: { lastKm: 0, lastDate: '' },
-                filters: { lastDate: '' } // Simplificado
-            }
-        };
-        try {
-            await db.collection('users').doc(currentUserId).collection('vehicles').add(data);
-            showToast('Veículo adicionado!', 'success');
-            addVehicleForm.reset();
-            await loadUserVehicles(currentUserId);
-            showContentSection('dashboard-screen');
-        } catch { showToast('Erro ao salvar veículo.', 'error'); }
-    });
-
-    const deleteVehicle = async (vehicleId) => {
+    const deleteVehicle = async (vehicleId, vehicleName) => {
+        if (!currentUserId) {
+            showToast('Erro: Você precisa estar logado para remover um veículo.', 'error');
+            return;
+        }
         try {
             await db.collection('users').doc(currentUserId).collection('vehicles').doc(vehicleId).delete();
-            if (currentSelectedVehicle?.id === vehicleId) currentSelectedVehicle = null;
-            showToast('Veículo removido.', 'success');
-            await loadUserVehicles(currentUserId);
-            showContentSection('dashboard-screen');
-        } catch { showToast('Erro ao remover veículo.', 'error'); }
+            userVehicles = userVehicles.filter(v => v.id !== vehicleId);
+            renderVehicles();
+            showToast(`${vehicleName} removido com sucesso!`, 'success');
+            if (currentSelectedVehicle && currentSelectedVehicle.id === vehicleId) {
+                showContentSection(dashboardScreen);
+                currentSelectedVehicle = null;
+            }
+        } catch (error) {
+            console.error('Erro ao remover veículo:', error);
+            showToast('Erro ao remover veículo: ' + error.message, 'error');
+        }
     };
-    
-    const handleMainFieldEdit = (field, currentValue) => {
-        const labels = { name: 'Apelido do Veículo', model: 'Modelo do Veículo', km: 'KM Atual' };
-        showCustomModal({
-            title: `Editar ${labels[field]}`, inputType: field === 'km' ? 'number' : 'text', inputLabel: `Novo valor:`, inputValue: currentValue,
-            onSave: async (newValue) => {
-                const parsedValue = field === 'km' ? parseInt(newValue) : newValue.trim();
-                if ((field !== 'km' && !parsedValue) || (field === 'km' && (isNaN(parsedValue) || parsedValue < (currentSelectedVehicle?.km || 0)))) {
-                    return showToast('Valor inválido. O KM não pode ser menor que o atual.', 'error');
+
+
+    const calculateNextMaintenance = (typeKey, lastKm, lastDate, subTypeKey = null) => {
+        let kmStandard = 0;
+        let monthsStandard = 0;
+
+        if (subTypeKey && maintenanceStandards[typeKey] && maintenanceStandards[typeKey][subTypeKey]) {
+            kmStandard = maintenanceStandards[typeKey][subTypeKey].km;
+            monthsStandard = maintenanceStandards[typeKey][subTypeKey].months;
+        } else if (maintenanceStandards[typeKey] && maintenanceStandards[typeKey].km) {
+            kmStandard = maintenanceStandards[typeKey].km;
+            monthsStandard = maintenanceStandards[typeKey].months;
+        } else {
+            console.warn(`Padrão de manutenção para ${typeKey}${subTypeKey ? '.' + subTypeKey : ''} não encontrado. Usando padrão genérico.`);
+            kmStandard = 10000;
+            monthsStandard = 12;
+        }
+
+        let suggestedNextKm = (lastKm > 0) ? lastKm + kmStandard : 0;
+        let suggestedNextDate = (lastDate && lastDate !== '') ? addMonthsToDate(lastDate, monthsStandard) : null;
+        
+        let displayString = '';
+        let finalNextKm = suggestedNextKm;
+        let finalNextDate = suggestedNextDate;
+
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth();
+        const currentDay = today.getDate();
+
+        if (lastKm === 0 && (!lastDate || lastDate === '')) {
+            return { nextKm: 0, nextDate: null, display: 'Não calculado (N/I)' };
+        }
+
+        if (suggestedNextKm > 0 && suggestedNextDate) {
+            const dateObj = new Date(suggestedNextDate + 'T00:00:00');
+            const kmDiff = suggestedNextKm - currentSelectedVehicle.km;
+            
+            const msPerDay = 1000 * 60 * 60 * 24;
+            const todayMs = Date.UTC(currentYear, currentMonth, currentDay);
+            const suggestedDateMs = Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+
+            const daysUntilSuggestedDate = Math.ceil((suggestedDateMs - todayMs) / msPerDay);
+
+            if (isFinite(kmDiff) && kmDiff <= 0 && isFinite(daysUntilSuggestedDate) && daysUntilSuggestedDate <= 0) {
+                displayString = `VENCIDO (KM e Data)! Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
+            } else if (isFinite(kmDiff) && kmDiff <= 0) {
+                 displayString = `VENCIDO (KM)! Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km`;
+            } else if (isFinite(daysUntilSuggestedDate) && daysUntilSuggestedDate <= 0) {
+                 displayString = `VENCIDO (Data)! Sug.: ${formatDateForDisplay(suggestedNextDate)}`;
+            } else {
+                if (daysUntilSuggestedDate < (kmDiff / 100)) {
+                     displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
+                } else {
+                     displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
                 }
-                try {
-                    await db.collection('users').doc(currentUserId).collection('vehicles').doc(currentSelectedVehicle.id).update({ [field]: parsedValue });
-                    currentSelectedVehicle[field] = parsedValue;
-                    updateVehicleDetailsScreen(currentSelectedVehicle);
-                    renderVehicles(); // Atualiza card na lista
-                    showToast(`${labels[field]} atualizado!`, 'success');
-                } catch { showToast(`Erro ao atualizar.`, 'error'); }
             }
-        });
+        } else if (suggestedNextKm > 0) {
+            displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km`;
+            finalNextDate = null;
+        } else if (suggestedNextDate) {
+            displayString = `Sug.: ${formatDateForDisplay(suggestedNextDate)}`;
+            finalNextKm = 0;
+        } else {
+            displayString = 'Não calculado (N/I)';
+            finalNextKm = 0;
+            finalNextDate = null;
+        }
+
+        return {
+            nextKm: finalNextKm,
+            nextDate: finalNextDate,
+            display: displayString
+        };
     };
 
-    const handleMaintenanceEdit = (maintType, field, currentValue) => {
-        const typeLabel = maintTypeLabels[maintType]?.title || capitalize(maintType);
-        const fieldLabel = maintTypeLabels[maintType]?.fields[field] || capitalize(field);
-        
-        showCustomModal({
-            title: `Editar ${typeLabel}`, message: `Alterando: ${fieldLabel}`,
-            inputType: field === 'lastKm' ? 'number' : (field === 'oilType' ? 'select' : 'date'),
-            inputLabel: 'Novo valor:', inputValue: currentValue,
-            options: field === 'oilType' ? [
-                {value: '', text: 'Nenhum'}, {value: 'mineral', text: 'Mineral'}, {value: 'semisintetico', text: 'Semissintético'}, {value: 'sintetico', text: 'Sintético'}
-            ] : [],
-            onSave: async (newValue) => {
-                const parsedValue = field === 'lastKm' ? parseInt(newValue) : newValue;
-                const path = `maintenances.${maintType}.${field}`;
-                try {
-                    await db.collection('users').doc(currentUserId).collection('vehicles').doc(currentSelectedVehicle.id).update({ [path]: parsedValue });
-                    currentSelectedVehicle.maintenances[maintType][field] = parsedValue;
-                    updateVehicleDetailsScreen(currentSelectedVehicle);
-                    showToast('Manutenção atualizada!', 'success');
-                } catch { showToast('Erro ao atualizar.', 'error'); }
-            }
-        });
-    };
+    const updateVehicleDetailsScreen = (vehicle) => {
+        detailsVehicleName.textContent = vehicle.name;
+        detailsVehicleModel.textContent = vehicle.model;
+        currentKmDetailsSpan.textContent = vehicle.km.toLocaleString('pt-BR');
 
-    // --- DETALHES DO VEÍCULO E MANUTENÇÕES ---
-    const calculateNextMaintenance = (type, lastKm, lastDate, subType = null) => {
-        const standard = subType ? (maintenanceStandards[type]?.[subType] || maintenanceStandards[type]) : maintenanceStandards[type];
-        if (!standard || (!lastKm && !lastDate)) return { display: 'N/I', nextKm: 0, nextDate: null };
-        
-        const nextKm = lastKm ? lastKm + standard.km : 0;
-        const nextDate = lastDate ? addMonthsToDate(lastDate, standard.months) : null;
-        let displayParts = [];
-        if (nextKm > 0) displayParts.push(`${nextKm.toLocaleString('pt-BR')} km`);
-        if (nextDate) displayParts.push(formatDate(nextDate));
-        return { nextKm, nextDate, display: displayParts.length > 0 ? displayParts.join(' ou ') : 'N/I' };
-    };
-
-    const updateVehicleDetailsScreen = (v) => {
-        if (!v) return;
-        const m = v.maintenances || {};
-        const getVal = (path, fn) => { const val = path.split('.').reduce((o, i) => o?.[i], m); return (val || val === 0) ? (fn ? fn(val) : val) : 'N/I'; };
-
-        detailsVehicleName.textContent = v.name;
-        detailsVehicleModel.textContent = v.model;
-        currentKmDetailsSpan.textContent = (v.km || 0).toLocaleString('pt-BR');
-
-        const oilChangeCalc = calculateNextMaintenance('oilChange', m.oilChange?.lastKm, m.oilChange?.lastDate, m.oilChange?.oilType);
-        const tiresRotationCalc = calculateNextMaintenance('tires', m.tires?.lastKm, m.tires?.lastDate, 'rotation');
-        const tiresChangeCalc = calculateNextMaintenance('tires', m.tires?.lastKm, m.tires?.lastDate, 'change');
-        const alignmentCalc = calculateNextMaintenance('alignment', m.alignment?.lastKm, m.alignment?.lastDate);
-        const balanceamentoCalc = calculateNextMaintenance('balanceamento', m.balanceamento?.lastKm, m.balanceamento?.lastDate);
-        const filtersCalc = calculateNextMaintenance('filters', null, m.filters?.lastDate, 'air'); // Filtros baseados apenas na data
-        
-        document.getElementById('oil-last-km').textContent = getVal('oilChange.lastKm', v => v.toLocaleString('pt-BR') + ' km');
-        document.getElementById('oil-last-date').textContent = getVal('oilChange.lastDate', formatDate);
-        document.getElementById('oil-type-brand').textContent = getVal('oilChange.oilType', capitalize);
+        const oilChangeCalc = calculateNextMaintenance('oilChange', vehicle.maintenances.oilChange.lastKm, vehicle.maintenances.oilChange.lastDate, vehicle.maintenances.oilChange.oilType);
+        document.getElementById('oil-last-km').textContent = vehicle.maintenances.oilChange.lastKm !== 0 ? `${vehicle.maintenances.oilChange.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
+        document.getElementById('oil-last-date').textContent = vehicle.maintenances.oilChange.lastDate ? formatDateForDisplay(vehicle.maintenances.oilChange.lastDate) : 'Não informado';
+        document.getElementById('oil-type-brand').textContent = vehicle.maintenances.oilChange.oilType ? `${capitalizeFirstLetter(vehicle.maintenances.oilChange.oilType)}` : 'Não informado';
         document.getElementById('oil-next-change').textContent = oilChangeCalc.display;
 
-        document.getElementById('pneus-last-km').textContent = getVal('tires.lastKm', v => v.toLocaleString('pt-BR') + ' km');
-        document.getElementById('pneus-last-date').textContent = getVal('tires.lastDate', formatDate);
+        const tiresRotationCalc = calculateNextMaintenance('tires', vehicle.maintenances.tires.lastKm, vehicle.maintenances.tires.lastDate, 'rotation');
+        const tiresChangeCalc = calculateNextMaintenance('tires', vehicle.maintenances.tires.lastKm, vehicle.maintenances.tires.lastDate, 'change');
+        document.getElementById('pneus-last-km').textContent = vehicle.maintenances.tires.lastKm !== 0 ? `${vehicle.maintenances.tires.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
+        document.getElementById('pneus-last-date').textContent = vehicle.maintenances.tires.lastDate ? formatDateForDisplay(vehicle.maintenances.tires.lastDate) : 'Não informado';
         document.getElementById('pneus-rotation-suggested').textContent = tiresRotationCalc.display;
-        document.getElementById('pneus-next-change').textContent = tiresChangeCalc.display;
+        document.getElementById('pneus-next-change').textContent = tiresChangeCalc.display + ' (Troca Geral)';
 
-        document.getElementById('alignment-last-km').textContent = getVal('alignment.lastKm', v => v.toLocaleString('pt-BR') + ' km');
-        document.getElementById('alignment-last-date').textContent = getVal('alignment.lastDate', formatDate);
+        const alignmentCalc = calculateNextMaintenance('alignment', vehicle.maintenances.alignment.lastKm, vehicle.maintenances.alignment.lastDate);
+        const balanceamentoCalc = calculateNextMaintenance('balanceamento', vehicle.maintenances.balanceamento.lastKm, vehicle.maintenances.balanceamento.lastDate);
+        document.getElementById('alignment-last-km').textContent = vehicle.maintenances.alignment.lastKm !== 0 ? `${vehicle.maintenances.alignment.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
+        document.getElementById('alignment-last-date').textContent = vehicle.maintenances.alignment.lastDate ? `${formatDateForDisplay(vehicle.maintenances.alignment.lastDate)}` : 'Não informado';
         document.getElementById('alignment-next').textContent = alignmentCalc.display;
-        
-        document.getElementById('balanceamento-last-km').textContent = getVal('balanceamento.lastKm', v => v.toLocaleString('pt-BR') + ' km');
-        document.getElementById('balanceamento-last-date').textContent = getVal('balanceamento.lastDate', formatDate);
+        document.getElementById('balanceamento-last-km').textContent = vehicle.maintenances.balanceamento.lastKm !== 0 ? `${vehicle.maintenances.balanceamento.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
+        document.getElementById('balanceamento-last-date').textContent = vehicle.maintenances.balanceamento.lastDate !== 0 ? `${formatDateForDisplay(vehicle.maintenances.balanceamento.lastDate)}` : 'Não informado';
         document.getElementById('balanceamento-next').textContent = balanceamentoCalc.display;
 
-        document.getElementById('filter-oil-last-date').textContent = getVal('filters.lastDate', formatDate);
-        document.getElementById('filter-fuel-last-date').textContent = getVal('filters.lastDate', formatDate);
-        document.getElementById('filter-air-last-date').textContent = getVal('filters.lastDate', formatDate);
-        document.getElementById('filter-oil-next').textContent = filtersCalc.display;
-        document.getElementById('filter-fuel-next').textContent = filtersCalc.display;
-        document.getElementById('filter-air-next').textContent = filtersCalc.display;
+        const filterOilCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterOil.lastKm, vehicle.maintenances.filterOil.lastDate, 'oil');
+        const filterFuelCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterFuel.lastKm, vehicle.maintenances.filterFuel.lastDate, 'fuel');
+        const filterAirCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterAir.lastKm, vehicle.maintenances.filterAir.lastDate, 'air');
 
-        renderMaintenanceSummaryCards(v.km, { oilChangeCalc, tiresRotationCalc, alignmentCalc, filtersCalc });
+        document.getElementById('filter-oil-last-km').textContent =
+            vehicle.maintenances.filterOil.lastKm !== 0
+                ? `${vehicle.maintenances.filterOil.lastKm.toLocaleString('pt-BR')} km`
+                : 'Não informado';
+        document.getElementById('filter-oil-last-date').textContent =
+            vehicle.maintenances.filterOil.lastDate
+                ? formatDateForDisplay(vehicle.maintenances.filterOil.lastDate)
+                : 'Não informado';
+        document.getElementById('filter-oil-next').textContent = filterOilCalc.display;
+
+        document.getElementById('filter-fuel-last-km').textContent =
+            vehicle.maintenances.filterFuel.lastKm !== 0
+                ? `${vehicle.maintenances.filterFuel.lastKm.toLocaleString('pt-BR')} km`
+                : 'Não informado';
+        document.getElementById('filter-fuel-last-date').textContent =
+            vehicle.maintenances.filterFuel.lastDate
+                ? formatDateForDisplay(vehicle.maintenances.filterFuel.lastDate)
+                : 'Não informado';
+        document.getElementById('filter-fuel-next').textContent = filterFuelCalc.display;
+
+        document.getElementById('filter-air-last-km').textContent =
+            vehicle.maintenances.filterAir.lastKm !== 0
+                ? `${vehicle.maintenances.filterAir.lastKm.toLocaleString('pt-BR')} km`
+                : 'Não informado';
+        document.getElementById('filter-air-last-date').textContent =
+            vehicle.maintenances.filterAir.lastDate
+                ? formatDateForDisplay(vehicle.maintenances.filterAir.lastDate)
+                : 'Não informado';
+        document.getElementById('filter-air-next').textContent = filterAirCalc.display;
+
+    
+        renderMaintenanceSummaryCards(vehicle.km, {
+            oilChange: { lastKm: vehicle.maintenances.oilChange.lastKm, nextKm: oilChangeCalc.nextKm, nextDate: oilChangeCalc.nextDate },
+            tires: { lastKm: vehicle.maintenances.tires.lastKm, rotationSuggestedKm: tiresRotationCalc.nextKm, rotationSuggestedDate: tiresRotationCalc.nextDate },
+            alignment: { lastKm: vehicle.maintenances.alignment.lastKm, nextKm: alignmentCalc.nextKm, nextDate: alignmentCalc.nextDate },
+            filterAir: { lastKm: vehicle.maintenances.filterAir.lastKm, nextKm: filterAirCalc.nextKm, nextDate: filterAirCalc.nextDate }
+        });
+
+        attachMaintenanceEditListeners();
     };
 
-    const renderMaintenanceSummaryCards = (currentKm, calcs) => {
+    const renderMaintenanceSummaryCards = (currentVehicleKm, calculatedMaintenances) => {
         summaryCardsDynamic.innerHTML = '';
-        const getStatus = (currentKm, nextKm, nextDate) => {
-            const today = new Date(); today.setHours(0,0,0,0);
-            const nextDateObj = nextDate ? new Date(nextDate + 'T00:00:00Z') : null;
-            if ((nextKm && currentKm >= nextKm) || (nextDateObj && today >= nextDateObj)) return 'status-overdue';
-            if ((nextKm && nextKm - currentKm <= 1000) || (nextDateObj && (nextDateObj - today) / 864e5 <= 30)) return 'status-attention';
+
+        const getStatusClass = (currentKm, nextKm, nextDate) => {
+            const today = new Date();
+            const nextDateObj = nextDate ? new Date(nextDate + 'T00:00:00') : null;
+
+            const isKmOverdue = (nextKm !== 0 && currentKm >= nextKm);
+            const isDateOverdue = (nextDateObj && today >= nextDateObj);
+
+            const kmDifference = nextKm - currentKm;
+            const daysDifference = nextDateObj ? Math.ceil((nextDateObj.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : Infinity;
+
+            const isKmAttention = (nextKm !== 0 && kmDifference <= 1000 && kmDifference > 0);
+            const isDateAttention = (nextDateObj && daysDifference <= 30 && daysDifference > 0);
+
+            if (isKmOverdue || isDateOverdue) {
+                return 'status-overdue';
+            }
+            if (isKmAttention || isDateAttention) {
+                return 'status-attention';
+            }
             return 'status-ok';
         };
+        
+        const getNextDisplayValue = (nextKm, nextDate) => {
+            let display = [];
+            if (nextKm > 0) {
+                display.push(`${nextKm.toLocaleString('pt-BR')} km`);
+            }
+            if (nextDate && nextDate !== '') {
+                display.push(formatDateForDisplay(nextDate));
+            }
+            if (display.length === 0) return 'Não calculado';
+            return `Próxima: ${display.join(' ou ')}`;
+        };
 
-        const items = [
-            { type: 'Troca de Óleo', icon: 'fas fa-oil-can', calc: calcs.oilChangeCalc },
-            { type: 'Pneus (Rodízio)', icon: 'fas fa-tire', calc: calcs.tiresRotationCalc },
-            { type: 'Alinhamento', icon: 'fas fa-align-center', calc: calcs.alignmentCalc },
-            { type: 'Filtros', icon: 'fas fa-filter', calc: calcs.filtersCalc }
+        const maintenanceItems = [
+            {
+                type: 'Troca de Óleo',
+                icon: 'fas fa-oil-can',
+                lastValue: calculatedMaintenances.oilChange.lastKm,
+                nextKm: calculatedMaintenances.oilChange.nextKm,
+                nextDate: calculatedMaintenances.oilChange.nextDate,
+                unit: 'km'
+            },
+            {
+                type: 'Pneus (Rodízio)',
+                icon: 'fas fa-tire',
+                lastValue: calculatedMaintenances.tires.lastKm,
+                nextKm: calculatedMaintenances.tires.rotationSuggestedKm,
+                nextDate: calculatedMaintenances.tires.rotationSuggestedDate,
+                unit: 'km'
+            },
+            {
+                type: 'Alinhamento',
+                icon: 'fas fa-align-center',
+                lastValue: calculatedMaintenances.alignment.lastKm,
+                nextKm: calculatedMaintenances.alignment.nextKm,
+                nextDate: calculatedMaintenances.alignment.nextDate,
+                unit: 'km'
+            },
+            {
+                type: 'Filtro de Ar',
+                icon: 'fas fa-filter',
+                lastValue: calculatedMaintenances.filterAir.lastKm,
+                nextKm: calculatedMaintenances.filterAir.nextKm,
+                nextDate: calculatedMaintenances.filterAir.nextDate,
+                unit: 'km'
+            }
         ];
 
-        items.forEach(({ type, icon, calc }) => {
-            const statusClass = getStatus(currentKm, calc.nextKm, calc.nextDate);
-            summaryCardsDynamic.innerHTML += `<div class="card summary-card ${statusClass}"><i class="${icon} icon"></i><h3>${type}</h3><p>${calc.display}</p></div>`;
+        maintenanceItems.forEach(item => {
+            const statusClass = getStatusClass(currentVehicleKm, item.nextKm, item.nextDate);
+            summaryCardsDynamic.innerHTML += `
+                <div class="card summary-card ${statusClass}">
+                    <i class="${item.icon} icon"></i>
+                    <div class="card-content">
+                        <h3>${item.type}</h3>
+                        <p>Última: ${item.lastValue !== 0 ? item.lastValue.toLocaleString('pt-BR') + ' ' + item.unit : 'N/I'}</p>
+                        <p>${getNextDisplayValue(item.nextKm, item.nextDate)}</p>
+                    </div>
+                </div>
+            `;
         });
     };
 
-    // --- HISTÓRICO ---
+    const showToast = (message, type, duration = 3000) => {
+        const toast = document.createElement('div');
+        toast.classList.add('toast', type);
+        toast.innerHTML = `<i class="icon fas ${getToastIcon(type)}"></i> <span>${message}</span>`;
+        toastContainer.appendChild(toast);
+
+        void toast.offsetWidth;
+        toast.classList.add('show');
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.classList.add('hide');
+
+            toast.addEventListener('transitionend', () => {
+                toast.remove();
+            }, { once: true });
+        }, duration);
+    };
+
+    const getToastIcon = (type) => {
+        switch (type) {
+            case 'success': return 'fa-check-circle';
+            case 'error': return 'fa-times-circle';
+            case 'attention': return 'fa-exclamation-triangle';
+            default: return 'fa-info-circle';
+        }
+    };
+
+    const showCustomModal = ({ title, message, inputType = 'text', inputLabel, inputValue = '', onSave, onCancel }) => {
+        modalTitle.textContent = title;
+        modalMessage.textContent = message || '';
+
+        if (inputType === 'none') {
+            modalInputGroup.style.display = 'none';
+        } else {
+            modalInputGroup.style.display = 'block';
+            modalInputLabel.textContent = inputLabel || '';
+            modalInput.type = inputType;
+            modalInput.value = (typeof inputValue === 'number' || inputType === 'text') ? inputValue.toString() : inputValue;
+            modalInput.focus();
+            if (inputType !== 'date') {
+                modalInput.select();
+            }
+        }
+
+        customModal.classList.add('show');
+        
+        modalSaveBtn.onclick = null;
+        modalCancelBtn.onclick = null;
+
+        modalSaveBtn.onclick = () => {
+            const inputValueFromModal = (inputType === 'none') ? true : modalInput.value;
+            hideCustomModal();
+            onSave(inputValueFromModal);
+        };
+
+        modalCancelBtn.onclick = () => {
+            hideCustomModal();
+            if (onCancel) onCancel();
+        };
+    };
+
+    const hideCustomModal = () => {
+        customModal.classList.remove('show');
+        modalInput.value = '';
+    };
+
+    const attachMaintenanceEditListeners = () => {
+        const editButtons = document.querySelectorAll('.maintenance-item .edit-btn');
+
+        editButtons.forEach(button => {
+            if (button._listenerFn) {
+                button.removeEventListener('click', button._listenerFn);
+            }
+            
+            const maintenanceType = button.dataset.maintenanceType;
+            const fieldName = button.dataset.fieldName;
+            const label = button.dataset.label;
+            
+            const listenerFn = (e) => handleMaintenanceEdit(maintenanceType, fieldName, label);
+            button.addEventListener('click', listenerFn);
+            button._listenerFn = listenerFn;
+        });
+    };
+
+
+    const handleMaintenanceEdit = async (maintenanceType, fieldName, displayLabel) => {
+        if (!currentSelectedVehicle || !currentUserId) {
+            showToast('Erro: Você precisa estar logado e ter um veículo selecionado para atualizar.', 'error');
+            return;
+        }
+
+        let currentMaintenanceValue = currentSelectedVehicle.maintenances[maintenanceType][fieldName];
+        let inputModality = 'text';
+        let currentInputValue = currentMaintenanceValue || '';
+
+        if (fieldName.toLowerCase().includes('km')) {
+            inputModality = 'number';
+            currentInputValue = currentMaintenanceValue !== 0 ? currentMaintenanceValue : '';
+        } else if (fieldName.toLowerCase().includes('date')) {
+            inputModality = 'date';
+            currentInputValue = currentMaintenanceValue || '';
+        } else {
+            inputModality = 'text';
+            currentInputValue = currentMaintenanceValue || '';
+        }
+        
+        const editableFields = ['lastKm', 'lastDate', 'oilType'];
+        if (!editableFields.includes(fieldName)) {
+            showToast(`"${displayLabel}" é calculado automaticamente e não pode ser editado diretamente.`, 'attention');
+            return;
+        }
+
+        showCustomModal({
+            title: `Editar ${displayLabel}`,
+            inputLabel: 'Valor:',
+            inputType: inputModality,
+            inputValue: currentInputValue,
+            onSave: async (newValue) => {
+                let isValid = true;
+                let parsedValue = newValue;
+
+                if (inputModality === 'number') {
+                    parsedValue = parseInt(newValue);
+                    if (isNaN(parsedValue) || parsedValue < 0) {
+                        isValid = false;
+                        showToast(`Valor inválido para ${displayLabel}. Por favor, insira um número inteiro válido (positivo).`, 'error');
+                    }
+                } else if (inputModality === 'date') {
+                    if (!/^\d{4}-\d{2}-\d{2}$/.test(newValue)) {
+                        isValid = false;
+                        showToast(`Data inválida para ${displayLabel}. Use o formato AAAA-MM-DD.`, 'error');
+                    }
+                }
+                if (maintenanceType === 'oilChange' && fieldName === 'oilType' && newValue.trim() === '') {
+                    isValid = false;
+                    showToast(`O tipo de óleo não pode ser vazio.`, 'error');
+                }
+
+
+                if (isValid) {
+                    try {
+                        const updatePath = `maintenances.${maintenanceType}.${fieldName}`;
+                        await db.collection('users').doc(currentUserId).collection('vehicles').doc(currentSelectedVehicle.id).update({
+                            [updatePath]: parsedValue
+                        });
+                        currentSelectedVehicle.maintenances[maintenanceType][fieldName] = parsedValue;
+                        updateVehicleDetailsScreen(currentSelectedVehicle);
+                        showToast(`${displayLabel} atualizado!`, 'success');
+                    } catch (error) {
+                        console.error('Erro ao atualizar manutenção:', error);
+                        showToast('Erro ao atualizar manutenção: ' + error.message, 'error');
+                    }
+                }
+            },
+            onCancel: () => {
+                showToast(`Edição de ${displayLabel} cancelada.`, 'attention');
+            }
+        });
+    };
+
+    const getFirebaseErrorMessage = (errorCode) => {
+        switch (errorCode) {
+            case 'auth/invalid-email': return 'Email inválido.';
+            case 'auth/user-disabled': return 'Usuário desabilitado.';
+            case 'auth/user-not-found': return 'Usuário não encontrado. Crie uma conta.';
+            case 'auth/wrong-password': return 'Senha incorreta.';
+            case 'auth/email-already-in-use': return 'Este email já está em uso.';
+            case 'auth/weak-password': return 'Senha muito fraca. Mínimo de 6 caracteres.';
+            case 'auth/operation-not-allowed': return 'Operação não permitida.';
+            default: return 'Ocorreu um erro. Tente novamente.';
+        }
+    };
+
+
     const loadMaintenanceHistory = async (vehicleId) => {
         maintenanceHistoryList.innerHTML = '';
-        if (!currentUserId || !vehicleId) return;
+
+        if (!currentUserId || !vehicleId) {
+            maintenanceHistoryList.innerHTML = '<p class="no-vehicles">Selecione um veículo para ver seu histórico.</p>';
+            return;
+        }
+
         try {
             const vehicleDoc = await db.collection('users').doc(currentUserId).collection('vehicles').doc(vehicleId).get();
-            if (!vehicleDoc.exists) return;
+            if (!vehicleDoc.exists) {
+                maintenanceHistoryList.innerHTML = '<p class="no-vehicles">Veículo não encontrado.</p>';
+                return;
+            }
 
-            const m = vehicleDoc.data().maintenances || {};
-            let historyItems = [];
-            for (const type in m) {
-                if (m[type].lastDate) {
+            const vehicleData = vehicleDoc.data();
+            const maintenances = vehicleData.maintenances || {};
+            const historyItems = [];
+
+            for (const type in maintenances) {
+                const maintenance = maintenances[type];
+                if ((maintenance.lastKm && maintenance.lastKm !== 0) || (maintenance.lastDate && maintenance.lastDate !== '')) {
                     let details = [];
-                    if (m[type].lastKm) details.push(`KM: ${m[type].lastKm.toLocaleString('pt-BR')}`);
-                    if (m[type].oilType) details.push(`Tipo: ${capitalize(m[type].oilType)}`);
-                    historyItems.push({ date: m[type].lastDate, type: maintTypeLabels[type]?.title || type, details: details.join(', ') });
+                    if (maintenance.lastKm && maintenance.lastKm !== 0) {
+                        details.push(`KM: ${maintenance.lastKm.toLocaleString('pt-BR')}`);
+                    }
+                    if (maintenance.oilType) {
+                        details.push(`Tipo de Óleo: ${capitalizeFirstLetter(maintenance.oilType)}`);
+                    }
+
+                    const eventDate = maintenance.lastDate || '2000-01-01'; // Fallback para ordenação se não houver data
+
+                    historyItems.push({
+                        date: eventDate,
+                        type: type,
+                        details: details.join(', ')
+                    });
                 }
             }
-            if (historyItems.length === 0) {
-                 maintenanceHistoryList.innerHTML = '<p class="no-vehicles">Nenhum histórico de manutenção encontrado.</p>'; return;
-            }
-            historyItems.sort((a, b) => new Date(b.date) - new Date(a.date));
-            historyItems.forEach(item => {
-                maintenanceHistoryList.innerHTML += `<div class="card history-item"><span class="history-date">${formatDate(item.date)}</span><span class="history-type">${item.type}</span><span class="history-details">${item.details}</span></div>`;
-            });
-        } catch { showToast('Erro ao carregar histórico.', 'error'); }
-    };
-    
-    // --- CALCULADORAS ---
-    calculateKmlBtn.addEventListener('click', () => {
-        const km = parseLocaleNumber(kmlKmInput.value), consumption = parseLocaleNumber(kmlLitersInput.value), price = parseLocaleNumber(kmlPriceInput.value);
-        if (isNaN(km) || isNaN(consumption) || isNaN(price) || consumption <= 0) return showToast('Preencha todos os campos com valores válidos.', 'attention');
-        const litersNeeded = km / consumption, totalCost = litersNeeded * price;
-        kmlResultDiv.innerHTML = `Litros Necessários: <strong>${litersNeeded.toFixed(2)} L</strong><br>Custo Total: <strong>R$ ${totalCost.toFixed(2)}</strong>`;
-    });
-    
-    calculateKmBtn.addEventListener('click', () => {
-        const startKm = parseLocaleNumber(kmStartInput.value), endKm = parseLocaleNumber(kmEndInput.value);
-        const startDate = new Date(kmStartDateInput.value + 'T00:00:00Z'), endDate = new Date(kmEndDateInput.value + 'T00:00:00Z');
-        if(isNaN(startKm) || isNaN(endKm) || !kmStartDateInput.value || !kmEndDateInput.value || startKm >= endKm || startDate >= endDate) return showToast('Preencha os campos com valores válidos.', 'attention');
-        const diffDays = Math.ceil((endDate - startDate) / 864e5), kmRodado = endKm - startKm;
-        const dailyAvg = diffDays > 0 ? kmRodado / diffDays : 0, monthlyAvg = dailyAvg * 30.44;
-        kmResultDiv.innerHTML = `KM Rodados: <strong>${kmRodado.toLocaleString('pt-BR')} km</strong><br>Média Diária: <strong>${dailyAvg.toFixed(2)} km</strong><br>Média Mensal: <strong>${monthlyAvg.toFixed(2)} km</strong>`;
-    });
 
-    // --- SERVIÇOS ---
+            if (historyItems.length === 0) {
+                maintenanceHistoryList.innerHTML = '<p class="no-vehicles">Nenhum histórico de manutenção encontrado para este veículo.</p>';
+                return;
+            }
+
+            historyItems.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            historyItems.forEach(item => {
+                const historyCard = document.createElement('div');
+                historyCard.classList.add('history-item', 'card');
+                let displayType = capitalizeFirstLetter(item.type.replace(/([A-Z])/g, ' $1'));
+                switch (item.type) {
+                    case 'oilChange': displayType = 'Troca de Óleo'; break;
+                    case 'tires': displayType = 'Manutenção de Pneus'; break;
+                    case 'alignment': displayType = 'Alinhamento'; break;
+                    case 'balanceamento': displayType = 'Balanceamento'; break;
+                    case 'filterOil': displayType = 'Troca Filtro de Óleo'; break;
+                    case 'filterFuel': displayType = 'Troca Filtro de Combustível'; break;
+                    case 'filterAir': displayType = 'Troca Filtro de Ar'; break;
+                    case 'brakes': displayType = 'Manutenção de Freios'; break;
+                    case 'sparkPlugs': displayType = 'Troca de Velas'; break;
+                    case 'timingBelt': displayType = 'Troca de Correia Dentada'; break;
+                    case 'coolant': displayType = 'Troca Fluido de Arrefecimento'; break;
+                }
+
+                historyCard.innerHTML = `
+                    <span class="history-date">${formatDateForDisplay(item.date)}</span>
+                    <span class="history-type">${displayType}</span>
+                    <span class="history-details">${item.details}</span>
+                `;
+                maintenanceHistoryList.appendChild(historyCard);
+            });
+
+        } catch (error) {
+            console.error('Erro ao carregar histórico de manutenções:', error);
+            showToast('Erro ao carregar histórico. Tente novamente.', 'error');
+        }
+    };
+
+    const capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
+    // --- Services Screen Logic ---
+    const serviceProviders = [
+        {
+            name: "Borracharia Móvel do Neguinho",
+            phone: "(44) 99949-6361",
+            address: "Atendimento Móvel em Maringá - PR",
+            hours: "08:00 às 18:00",
+            website: null,
+            whatsapp: "5544999496361",
+            image: "https://iili.io/FnTQzOB.png",
+            type: "Móvel",
+            branch: "Borracharia",
+            city: "Maringá",
+            state: "PR"
+        },
+        // Adicionar mais prestadores de serviço aqui
+    ];
+
+    const serviceTypeFilter = document.getElementById('service-type-filter');
+    const serviceBranchFilter = document.getElementById('service-branch-filter');
+    const serviceStateFilter = document.getElementById('service-state-filter');
+    const serviceCityFilter = document.getElementById('service-city-filter');
+    const serviceProvidersList = document.getElementById('service-providers-list');
+    const serviceDetailsModal = document.getElementById('service-details-modal');
+    const serviceDetailsCloseBtn = document.getElementById('service-details-close-btn');
+
     const renderServiceProviders = () => {
-        const branch = serviceBranchFilter.value, city = serviceCityFilter.value.toLowerCase();
-        const filtered = serviceProviders.filter(p => (!branch || p.branch === branch) && (!city || p.city.toLowerCase().includes(city)));
-        serviceProvidersList.innerHTML = filtered.length === 0 ? '<p class="no-vehicles">Nenhum prestador encontrado.</p>' : '';
-        filtered.forEach(p => {
-            const card = document.createElement('div');
-            card.className = 'card service-card';
-            card.innerHTML = `<img src="${p.image}" alt="${p.name}" class="service-card-image"><h3>${p.name}</h3><p>${p.city}, ${p.state}</p><div class="service-card-tags"><span class="tag">${p.branch}</span>${p.type === 'Móvel' ? '<span class="tag">Atendimento Móvel</span>' : ''}</div>`;
-            card.onclick = () => showServiceDetails(p);
-            serviceProvidersList.appendChild(card);
+        const filteredProviders = serviceProviders.filter(provider => {
+            const matchesType = !serviceTypeFilter.value || provider.type === serviceTypeFilter.value;
+            const matchesBranch = !serviceBranchFilter.value || provider.branch === serviceBranchFilter.value;
+            const matchesState = !serviceStateFilter.value || provider.state.toLowerCase().includes(serviceStateFilter.value.toLowerCase());
+            const matchesCity = !serviceCityFilter.value || provider.city.toLowerCase().includes(serviceCityFilter.value.toLowerCase());
+            return matchesType && matchesBranch && matchesState && matchesCity;
+        });
+
+        serviceProvidersList.innerHTML = '';
+        if (filteredProviders.length === 0) {
+            serviceProvidersList.innerHTML = '<p class="no-vehicles">Nenhum prestador de serviço encontrado com os filtros selecionados.</p>';
+            return;
+        }
+
+        filteredProviders.forEach(provider => {
+            const serviceCard = document.createElement('div');
+            serviceCard.classList.add('service-card');
+            serviceCard.innerHTML = `
+                <img src="${provider.image}" alt="${provider.name}">
+                <h3>${provider.name}</h3>
+                <p>${provider.branch} - ${provider.city}, ${provider.state}</p>
+            `;
+            serviceCard.addEventListener('click', () => showServiceDetails(provider));
+            serviceProvidersList.appendChild(serviceCard);
         });
     };
-    
-    const showServiceDetails = (p) => {
-        document.getElementById('service-details-image').src = p.image;
-        document.getElementById('service-details-name').textContent = p.name;
-        document.getElementById('service-details-branch').textContent = p.branch;
-        document.getElementById('service-details-phone').textContent = p.phone;
-        document.getElementById('service-details-address').textContent = p.address;
-        document.getElementById('service-details-hours').textContent = p.hours;
+
+    const showServiceDetails = (provider) => {
+        document.getElementById('service-details-name').textContent = provider.name;
+        document.getElementById('service-details-phone').textContent = provider.phone;
+        document.getElementById('service-details-address').textContent = provider.address;
+        document.getElementById('service-details-hours').textContent = provider.hours;
+
         const websiteLink = document.getElementById('service-details-website');
-        websiteLink.textContent = p.website || 'Não informado';
-        websiteLink.href = p.website ? `https://${p.website.replace(/^https?:\/\//, '')}` : '#';
-        document.getElementById('service-details-whatsapp').href = p.whatsapp ? `https://wa.me/${p.whatsapp}` : '#';
+        if (provider.website) {
+            websiteLink.textContent = provider.website;
+            websiteLink.href = provider.website.startsWith('http') ? provider.website : `http://${provider.website}`;
+            websiteLink.style.display = 'inline';
+        } else {
+            websiteLink.textContent = 'Não tem';
+            websiteLink.href = '#';
+            websiteLink.style.display = 'inline'; // Manter visível mesmo se não houver site
+        }
+
+        const whatsappLink = document.getElementById('service-details-whatsapp');
+        if (provider.whatsapp) {
+            whatsappLink.href = `https://wa.me/${provider.whatsapp}`;
+            whatsappLink.style.display = 'inline-flex';
+        } else {
+            whatsappLink.style.display = 'none';
+        }
         serviceDetailsModal.classList.add('show');
     };
-    
-    // --- EVENT LISTENERS GERAIS ---
-    showSignupLink.addEventListener('click', (e) => { e.preventDefault(); showScreen(signupScreen); });
-    showLoginLink.addEventListener('click', (e) => { e.preventDefault(); showScreen(loginScreen); });
-    bottomNav.addEventListener('click', (e) => {
-        const target = e.target.closest('.nav-item');
-        if (target) { e.preventDefault(); showContentSection(target.dataset.screen); }
+
+    serviceDetailsCloseBtn.addEventListener('click', () => {
+        serviceDetailsModal.classList.remove('show');
     });
-    addVehicleBtn.addEventListener('click', () => showContentSection('add-vehicle-screen'));
-    backFromAddVehicleBtn.addEventListener('click', () => showContentSection('dashboard-screen'));
-    backToDashboardBtn.addEventListener('click', () => { currentSelectedVehicle = null; showContentSection('dashboard-screen'); });
-    editVehicleDetailsBtn.addEventListener('click', () => handleMainFieldEdit('name', currentSelectedVehicle?.name));
-    editKmDetailsBtn.addEventListener('click', () => handleMainFieldEdit('km', currentSelectedVehicle?.km));
-    maintenanceSections.addEventListener('click', (e) => {
-        const card = e.target.closest('.maintenance-item');
-        if (!card || !currentSelectedVehicle) return;
-        const maintType = card.dataset.maintType;
-        if (!maintType) return;
-        const fields = Object.keys(maintTypeLabels[maintType]?.fields || {});
-        if (fields.length === 1) { // Ação direta se houver só um campo editável
-            handleMaintenanceEdit(maintType, fields[0], currentSelectedVehicle.maintenances[maintType]?.[fields[0]] || '');
-        } else { // Abre um seletor se houver múltiplos campos
-            showCustomModal({
-                title: `Editar ${maintTypeLabels[maintType]?.title}`, message: 'Qual informação deseja alterar?', inputType: 'select',
-                options: fields.map(f => ({ value: f, text: maintTypeLabels[maintType].fields[f] })),
-                onSave: (fieldToEdit) => handleMaintenanceEdit(maintType, fieldToEdit, currentSelectedVehicle.maintenances[maintType]?.[fieldToEdit] || '')
-            });
+
+    // Event listeners para os filtros
+    serviceTypeFilter.addEventListener('change', renderServiceProviders);
+    serviceBranchFilter.addEventListener('change', renderServiceProviders);
+    serviceStateFilter.addEventListener('input', renderServiceProviders);
+    serviceCityFilter.addEventListener('input', renderServiceProviders);
+
+
+    // --- Event Handlers ---
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+
+        try {
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            currentUserId = userCredential.user.uid;
+            showToast('Login bem-sucedido!', 'success');
+            showScreen(mainApp);
+            showContentSection(dashboardScreen);
+            loadUserVehicles(currentUserId);
+        } catch (error) {
+            console.error('Erro no login:', error);
+            showToast('Erro no login: ' + getFirebaseErrorMessage(error.code), 'error');
         }
     });
-    [serviceBranchFilter, serviceCityFilter].forEach(el => el.addEventListener('input', renderServiceProviders));
-    serviceDetailsCloseBtn.addEventListener('click', () => serviceDetailsModal.classList.remove('show'));
-    modalCancelBtn.addEventListener('click', hideCustomModal);
-    editProfileBtn.addEventListener('click', () => showToast('Funcionalidade em desenvolvimento.', 'attention'));
 
-    // --- TEMA ---
-    const updateThemeIcon = (isDark) => {
-        const icon = isDark ? 'fa-sun' : 'fa-moon';
-        if (dashboardThemeBtn) dashboardThemeBtn.innerHTML = `<i class="fas ${icon}"></i>`;
-        if (profileThemeBtn) profileThemeBtn.innerHTML = `<i class="fas ${icon}"></i>`;
-    };
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm-password').value;
+
+        if (password !== confirmPassword) {
+            showToast('As senhas não coincidem!', 'error');
+            return;
+        }
+
+        try {
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            currentUserId = userCredential.user.uid;
+            await db.collection('users').doc(currentUserId).set({
+                email: email,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            showToast('Cadastro realizado com sucesso! Faça login.', 'success');
+            showScreen(loginScreen);
+        } catch (error) {
+            console.error('Erro no cadastro:', error);
+            showToast('Erro no cadastro: ' + getFirebaseErrorMessage(error.code), 'error');
+        }
+    });
+
+    showSignupLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showScreen(signupScreen);
+    });
+
+    showLoginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showScreen(loginScreen);
+    });
+
+    // Login com Google
+    if (googleLoginBtn) {
+        googleLoginBtn.addEventListener('click', async () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                const userCredential = await auth.signInWithPopup(provider);
+                currentUserId = userCredential.user.uid;
+                const userDocRef = db.collection('users').doc(currentUserId);
+                const userDoc = await userDocRef.get();
+                if (!userDoc.exists) {
+                    await userDocRef.set({
+                        email: userCredential.user.email,
+                        displayName: userCredential.user.displayName,
+                        photoURL: userCredential.user.photoURL,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                showToast('Login com Google bem-sucedido!', 'success');
+                showScreen(mainApp);
+                showContentSection(dashboardScreen);
+                loadUserVehicles(currentUserId);
+            } catch (error) {
+                console.error('Erro no login com Google:', error);
+                showToast('Erro no login com Google: ' + getFirebaseErrorMessage(error.code), 'error');
+            }
+        });
+    }
+
+    // Event listener para o link "Esqueceu a senha?"
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showCustomModal({
+                title: 'Recuperar Senha',
+                message: 'Por favor, insira seu e-mail cadastrado para receber um link de redefinição de senha.',
+                inputLabel: 'E-mail:',
+                inputType: 'email',
+                inputValue: '',
+                onSave: async (email) => {
+                    const trimmedEmail = email.trim();
+                    if (trimmedEmail) {
+                        try {
+                            await auth.sendPasswordResetEmail(trimmedEmail);
+                            showToast('Se o e-mail estiver cadastrado, um link de redefinição de senha foi enviado.', 'success');
+                        } catch (error) {
+                            console.error('Erro ao enviar e-mail de redefinição:', error);
+                            showToast('Erro ao tentar enviar e-mail de redefinição. Por favor, verifique o e-mail e tente novamente.', 'error');
+                        }
+                    } else {
+                        showToast('Por favor, insira um e-mail.', 'attention');
+                    }
+                },
+                onCancel: () => {
+                    showToast('Recuperação de senha cancelada.', 'attention');
+                }
+            });
+        });
+    }
+
+
+    // Event listener para o botão de edição do nome do veículo
+    if (editVehicleNameBtn) {
+        editVehicleNameBtn.addEventListener('click', () => {
+            if (!currentSelectedVehicle || !currentUserId) {
+                showToast('Erro: Nenhum veículo selecionado ou usuário não logado.', 'error');
+                return;
+            }
+
+            showCustomModal({
+                title: 'Editar Nome do Veículo',
+                inputLabel: 'Novo nome:',
+                inputType: 'text',
+                inputValue: currentSelectedVehicle.name,
+                onSave: async (newName) => {
+                    const trimmedName = newName.trim();
+                    if (trimmedName) {
+                        try {
+                            await db.collection('users').doc(currentUserId).collection('vehicles').doc(currentSelectedVehicle.id).update({
+                                name: trimmedName
+                            });
+                            currentSelectedVehicle.name = trimmedName;
+                            updateVehicleDetailsScreen(currentSelectedVehicle);
+                            renderVehicles(); // Atualiza o card no dashboard
+                            showToast('Nome do veículo atualizado com sucesso!', 'success');
+                        } catch (error) {
+                            console.error('Erro ao atualizar nome do veículo:', error);
+                            showToast('Erro ao atualizar nome: ' + error.message, 'error');
+                        }
+                    } else {
+                        showToast('O nome do veículo não pode ser vazio.', 'attention');
+                    }
+                },
+                onCancel: () => {
+                    showToast('Edição do nome do veículo cancelada.', 'attention');
+                }
+            });
+        });
+    }
+
+    // Event listener para o botão de edição do modelo do veículo
+    if (editVehicleModelBtn) {
+        editVehicleModelBtn.addEventListener('click', () => {
+            if (!currentSelectedVehicle || !currentUserId) {
+                showToast('Erro: Nenhum veículo selecionado ou usuário não logado.', 'error');
+                return;
+            }
+
+            showCustomModal({
+                title: 'Editar Modelo do Veículo',
+                inputLabel: 'Novo modelo:',
+                inputType: 'text',
+                inputValue: currentSelectedVehicle.model,
+                onSave: async (newModel) => {
+                    const trimmedModel = newModel.trim();
+                    if (trimmedModel) {
+                        try {
+                            await db.collection('users').doc(currentUserId).collection('vehicles').doc(currentSelectedVehicle.id).update({
+                                model: trimmedModel
+                            });
+                            currentSelectedVehicle.model = trimmedModel;
+                            updateVehicleDetailsScreen(currentSelectedVehicle);
+                            renderVehicles(); // Atualiza o card no dashboard
+                            showToast('Modelo do veículo atualizado com sucesso!', 'success');
+                        } catch (error) {
+                            console.error('Erro ao atualizar modelo do veículo:', error);
+                            showToast('Erro ao atualizar modelo: ' + error.message, 'error');
+                        }
+                    } else {
+                        showToast('O modelo do veículo não pode ser vazio.', 'attention');
+                    }
+                },
+                onCancel: () => {
+                    showToast('Edição do modelo do veículo cancelada.', 'attention');
+                }
+            });
+        });
+    }
+
+    // Atualizar KM no cabeçalho de detalhes do veículo
+    editKmDetailsBtn.addEventListener('click', () => {
+        if (!currentSelectedVehicle || !currentUserId) {
+            showToast('Erro: Você precisa estar logado e ter um veículo selecionado para atualizar o KM.', 'error');
+            return;
+        }
+
+        showCustomModal({
+            title: `Atualizar KM do ${currentSelectedVehicle.name}`,
+            inputLabel: 'Novo KM atual:',
+            inputType: 'number',
+            inputValue: currentSelectedVehicle.km,
+            onSave: async (newKmValue) => {
+                const parsedKm = parseInt(newKmValue);
+                if (!isNaN(parsedKm) && parsedKm >= 0) {
+                    try {
+                        await db.collection('users').doc(currentUserId).collection('vehicles').doc(currentSelectedVehicle.id).update({
+                            km: parsedKm
+                        });
+                        currentSelectedVehicle.km = parsedKm;
+                        updateVehicleDetailsScreen(currentSelectedVehicle);
+                        renderVehicles();
+                        showToast('KM atualizado para: ' + parsedKm.toLocaleString('pt-BR'), 'success');
+                    } catch (error) {
+                        console.error('Erro ao atualizar KM:', error);
+                        showToast('Erro ao atualizar KM: ' + error.message, 'error');
+                    }
+                } else {
+                    showToast('KM inválido. Por favor, insira um número inteiro válido (apenas dígitos).', 'error');
+                }
+            },
+            onCancel: () => {
+                showToast('Atualização de KM cancelada.', 'attention');
+            }
+        });
+    });
+
+    // Alternar tema
     const handleThemeToggle = () => {
         body.classList.toggle('dark-mode');
-        const isDark = body.classList.contains('dark-mode');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        updateThemeIcon(isDark);
+        localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+        updateThemeIcon();
     };
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if ((savedTheme === 'dark') || (!savedTheme && prefersDark)) {
-        body.classList.add('dark-mode');
-        updateThemeIcon(true);
-    } else {
-        updateThemeIcon(false);
+
+    const updateThemeIcon = () => {
+        if (toggleThemeBtn) {
+            if (body.classList.contains('dark-mode')) {
+                toggleThemeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                toggleThemeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+    };
+
+
+    const handleTopNavClick = (e) => {
+        const targetItem = e.target.closest('.top-nav-item');
+        if (targetItem) {
+            e.preventDefault();
+            const screenId = targetItem.dataset.screen;
+            let screenToShow;
+
+            switch (screenId) {
+                case 'dashboard-screen':
+                    screenToShow = dashboardScreen;
+                    break;
+                case 'schedule-screen':
+                    screenToShow = scheduleScreen;
+                    break;
+                case 'services-screen': // Adiciona o caso para services-screen
+                    screenToShow = servicesScreen;
+                    break;
+                case 'history-screen':
+                    screenToShow = historyScreen;
+                    break;
+                case 'profile-screen':
+                    screenToShow = profileScreen;
+                    break;
+                default:
+                    screenToShow = dashboardScreen;
+            }
+            showContentSection(screenToShow);
+        }
+    };
+
+
+    backToDashboardBtn.addEventListener('click', () => {
+        showContentSection(dashboardScreen);
+        currentSelectedVehicle = null;
+        if (kmDisplayDetailsContainer) {
+             kmDisplayDetailsContainer.style.display = 'none';
+        }
+    });
+
+    addVehicleBtn.addEventListener('click', () => {
+        showContentSection(addVehicleScreen);
+        addVehicleForm.reset();
+    });
+
+    backFromAddVehicleBtn.addEventListener('click', () => {
+        showContentSection(dashboardScreen);
+    });
+
+    addVehicleForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!currentUserId) {
+            showToast('Erro: Você precisa estar logado para adicionar um veículo.', 'error');
+            return;
+        }
+
+        const vehicleName = newVehicleNameInput.value.trim();
+        const vehicleModel = newVehicleModelInput.value.trim();
+        const vehicleKm = parseInt(newVehicleKmInput.value);
+
+        if (!vehicleName || !vehicleModel || isNaN(vehicleKm) || vehicleKm < 0) {
+            showToast('Por favor, preencha o nome, modelo e KM atual do veículo.', 'attention');
+            return;
+        }
+
+        const oilKm = newVehicleOilKmInput.value ? parseInt(newVehicleOilKmInput.value) : 0;
+        const oilDate = newVehicleOilDateInput.value || '';
+        const oilType = newVehicleOilTypeSelect.value || '';
+
+        const tiresKm = newVehicleTiresKmInput.value ? parseInt(newVehicleTiresKmInput.value) : 0;
+        const tiresDate = newVehicleTiresDateInput.value || '';
+
+        const newVehicleData = {
+            name: vehicleName,
+            model: vehicleModel,
+            km: vehicleKm,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            maintenances: {
+                oilChange: { lastKm: oilKm, lastDate: oilDate, oilType: oilType },
+                tires: { lastKm: tiresKm, lastDate: tiresDate },
+                alignment: { lastKm: 0, lastDate: '' },
+                balanceamento: { lastKm: 0, lastDate: '' },
+                filterOil: { lastKm: 0, lastDate: '' },
+                filterFuel: { lastKm: 0, lastDate: '' },
+                filterAir: { lastKm: 0, lastDate: '' }
+            }
+        };
+
+        try {
+            await db.collection('users').doc(currentUserId).collection('vehicles').add(newVehicleData);
+            showToast('Veículo adicionado com sucesso!', 'success');
+            addVehicleForm.reset();
+            showContentSection(dashboardScreen);
+            loadUserVehicles(currentUserId);
+        } catch (error) {
+            console.error('Erro ao adicionar veículo:', error);
+            showToast('Erro ao adicionar veículo: ' + error.message, 'error');
+        }
+    });
+
+
+    calculateKmBtn.addEventListener('click', () => {
+        const startDateStr = kmStartDateInput.value;
+        const endDateStr = kmEndDateInput.value;
+        const startKm = parseLocaleNumber(kmStartInput.value);
+        const endKm = parseLocaleNumber(kmEndInput.value);
+
+        if (!startDateStr || !endDateStr || isNaN(startKm) || isNaN(endKm) || startKm < 0 || endKm < 0 || startKm >= endKm) {
+            showToast('Por favor, preencha todos os campos corretamente (KM válidos e final maior que inicial).', 'attention');
+            return;
+        }
+
+        const startDate = new Date(startDateStr + 'T00:00:00');
+        const endDate = new Date(endDateStr + 'T00:00:00');
+
+        const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const kmRodado = endKm - startKm;
+
+        let dailyAvg = 0;
+        let monthlyAvg = 0;
+
+        if (diffDays > 0) {
+            dailyAvg = kmRodado / diffDays;
+            monthlyAvg = dailyAvg * (365.25 / 12);
+        }
+
+        kmResultDiv.innerHTML = `
+            KM Rodados: ${kmRodado.toLocaleString('pt-BR')} km<br>
+            Média Diária: ${dailyAvg.toFixed(2).toLocaleString('pt-BR')} km<br>
+            Média Mensal: ${monthlyAvg.toFixed(2).toLocaleString('pt-BR')} km
+        `;
+        showToast('Cálculo de KM rodado realizado!', 'success');
+    });
+
+    calculateKmlBtn.addEventListener('click', () => {
+        const km = parseLocaleNumber(kmlKmInput.value);
+        const liters = parseLocaleNumber(kmlLitersInput.value);
+        const pricePerLiter = parseLocaleNumber(kmlPriceInput.value);
+
+        if (isNaN(km) || isNaN(liters) || isNaN(pricePerLiter) || km < 0 || liters <= 0 || pricePerLiter <= 0) {
+            showToast('Por favor, preencha todos os campos corretamente com números válidos e positivos.', 'attention');
+            return;
+        }
+
+        const kml = km / liters;
+        const costPerKm = pricePerLiter / kml;
+
+        kmlResultDiv.innerHTML = `
+            Consumo: ${kml.toFixed(2).toLocaleString('pt-BR')} km/litro<br>
+            Custo por KM: R$ ${costPerKm.toFixed(2).toLocaleString('pt-BR')}
+        `;
+        showToast('Cálculo de KM/Litro realizado!', 'success');
+    });
+
+    logoutBtn.addEventListener('click', () => {
+        showCustomModal({
+            title: 'Sair da Conta',
+            message: 'Tem certeza que deseja sair?',
+            inputType: 'none',
+            onSave: async () => {
+                try {
+                    await auth.signOut();
+                    currentUserId = null;
+                    userVehicles = [];
+                    currentSelectedVehicle = null;
+                    showScreen(loginScreen);
+                    showToast('Você saiu da sua conta.', 'success');
+                } catch (error) {
+                    console.error('Erro ao fazer logout:', error);
+                    showToast('Erro ao sair: ' + error.message, 'error');
+                }
+            },
+            onCancel: () => {
+                showToast('Ação de sair cancelada.', 'attention');
+            }
+        });
+    });
+
+
+    // --- Inicialização ---
+    // Manter o estado de login e popular perfil
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            currentUserId = user.uid;
+            profileEmail.textContent = user.email || 'Não Informado';
+            profileDisplayName.textContent = user.displayName || 'Não Informado';
+            showScreen(mainApp);
+            showContentSection(dashboardScreen);
+            await loadUserVehicles(currentUserId);
+        } else {
+            currentUserId = null;
+            userVehicles = [];
+            currentSelectedVehicle = null;
+            profileEmail.textContent = 'Não Informado';
+            profileDisplayName.textContent = 'Não Informado';
+            showScreen(loginScreen);
+        }
+    });
+
+    if (kmDisplayDetailsContainer) {
+        kmDisplayDetailsContainer.style.display = 'none';
     }
-    dashboardThemeBtn?.addEventListener('click', handleThemeToggle);
-    profileThemeBtn?.addEventListener('click', handleThemeToggle);
+    
+    toggleThemeBtn.addEventListener('click', handleThemeToggle);
+    topNavItemsContainer.addEventListener('click', handleTopNavClick);
+    updateThemeIcon();
 });
