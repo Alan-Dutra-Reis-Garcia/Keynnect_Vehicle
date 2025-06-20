@@ -14,7 +14,7 @@
     --status-ok-light: #28a745;
     --status-attention-light: #ffc107;
     --status-overdue-light: #dc3545;
-    --primary-color-light: #0c5f8f; /* Azul para botões e links */
+    --primary-color-light: #007bff; /* Azul para botões e links */
 
     /* Cores do Toast */
     --toast-success: #28a745;
@@ -30,11 +30,11 @@
 
 /* Modo Escuro */
 body.dark-mode {
-    --background-color: #000701; /* Verde escuro profundo */
+    --background-color: #1a1a2e; /* Azul escuro profundo */
     --text-color: #e0e0e0; /* Cinza claro para texto */
-    --card-background: #252525; /* Cinza mais escuro para cards */
-    --header-background: #252525; /* Cinza ainda mais escuro para o cabeçalho */
-    --border-color: #1d1d1d; /* Cor da borda baseada no cabeçalho */
+    --card-background: #16213e; /* Azul mais escuro para cards */
+    --header-background: #0f3460; /* Azul ainda mais escuro para o cabeçalho */
+    --border-color: #0f3460; /* Cor da borda baseada no cabeçalho */
     --primary-color: #27ae60; /* Verde esmeralda escuro para botões e links */
     --button-background: var(--primary-color);
     --button-text: #fff;
@@ -52,7 +52,7 @@ body.dark-mode {
 
     /* Cores do Modal no Dark Mode */
     --modal-overlay-bg: rgba(0, 0, 0, 0.8);
-    --modal-background: #252525; /* Mesma cor dos cards */
+    --modal-background: #16213e; /* Mesma cor dos cards */
     --modal-text-color: #e0e0e0;
 }
 
@@ -127,7 +127,7 @@ body {
     opacity: 1;
     visibility: visible;
     padding-top: 100px; /* Mais espaço para o novo cabeçalho superior com navegação */
-    padding-bottom: 5px; /* Padding padrão para baixo */
+    padding-bottom: 20px; /* Padding padrão para baixo */
     justify-content: flex-start; /* Alinha o conteúdo ao topo */
 }
 
@@ -137,7 +137,7 @@ body {
 
 
 .container {
-    max-width: 500px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 0 15px;
     width: 100%; /* Para que o container se ajuste */
@@ -150,7 +150,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     width: 100%;
-    max-width: 1000px;
+    max-width: 400px;
     text-align: center;
 }
 
@@ -159,7 +159,7 @@ body {
     font-size: 2.5em;
     font-weight: 600;
     color: var(--primary-color);
-    margin-bottom: 5px;
+    margin-bottom: 30px;
 }
 
 .app-logo i {
@@ -169,12 +169,12 @@ body {
 .login-card h2 {
     font-family: 'Poppins', sans-serif;
     font-size: 1.8em;
-    margin-bottom: 5px;
+    margin-bottom: 25px;
     color: var(--text-color);
 }
 
 .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     text-align: left;
 }
 
@@ -222,7 +222,7 @@ body {
     font-weight: 600;
     width: 100%;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    margin-top:5px;
+    margin-top: 10px;
 }
 
 .btn:hover {
@@ -243,12 +243,12 @@ body {
 
 .full-width-btn {
     display: block;
-    margin-top: 5px;
+    margin-top: 25px;
 }
 
 .forgot-password {
     display: block;
-    margin-top: 5px;
+    margin-top: 15px;
     color: var(--primary-color);
     text-decoration: none;
     font-size: 0.9em;
@@ -283,7 +283,7 @@ body {
     background-color: var(--header-background); /* Uma cor que se destaque mas não seja primária */
     color: var(--text-color);
     border: 1px solid var(--border-color);
-    margin-top: 5px;
+    margin-top: 20px;
     padding: 12px 20px;
     display: flex;
     align-items: center;
@@ -305,7 +305,7 @@ body {
 
 
 .signup-text {
-    margin-top: 5px;
+    margin-top: 25px;
     color: var(--text-color);
 }
 
@@ -423,8 +423,8 @@ body:not(.dark-mode) .top-nav-item.active {
 .section-title {
     font-family: 'Poppins', sans-serif;
     font-size: 1.6em;
-    margin-top: 5px;
-    margin-bottom: 15px;
+    margin-top: 30px;
+    margin-bottom: 20px;
     color: var(--text-color);
     text-align: center;
 }
@@ -433,19 +433,19 @@ body:not(.dark-mode) .top-nav-item.active {
     text-align: center;
     font-style: italic;
     color: var(--text-color);
-    margin-top: 5px;
+    margin-top: 30px;
 }
 
 .vehicle-list {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 15px;
-    margin-top: 5px;
+    gap: 20px;
+    margin-top: 20px;
 }
 
 .vehicle-card-item {
     background-color: var(--card-background);
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -482,7 +482,7 @@ body:not(.dark-mode) .top-nav-item.active {
 .vehicle-info {
     flex-grow: 1;
     text-align: left; /* Garante que o texto esteja alinhado à esquerda */
-    padding-right: 15px; /* Espaço para o botão de exclusão */
+    padding-right: 30px; /* Espaço para o botão de exclusão */
 }
 
 .vehicle-info h3 {
@@ -501,15 +501,15 @@ body:not(.dark-mode) .top-nav-item.active {
 /* Cards de Resumo - DENTRO DA TELA DE DETALHES DO VEÍCULO */
 .summary-cards-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    margin-bottom: 10px;
-    margin-top: 2px; /* Espaço após o cabeçalho de detalhes */
+    margin-bottom: 30px;
+    margin-top: 20px; /* Espaço após o cabeçalho de detalhes */
 }
 
 .card {
     background-color: var(--card-background);
-    padding: 30px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
@@ -527,19 +527,19 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 .summary-card .icon {
-    font-size: 2.8em;
+    font-size: 2.5em;
     color: var(--primary-color);
 }
 
 .summary-card h3 {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.7em;
+    font-size: 1.3em;
     margin-bottom: 5px;
     color: var(--text-color);
 }
 
 .summary-card p {
-    font-size: 1.2em;
+    font-size: 0.9em;
     margin: 0;
     color: var(--text-color);
 }
@@ -557,30 +557,23 @@ body:not(.dark-mode) .top-nav-item.active {
 /* Detalhes do Veículo (Vehicle Details Screen) */
 .vehicle-details-header {
     text-align: center;
-    margin-bottom: 15px;
-    padding-top: 5px; /* Espaço após o botão voltar */
+    margin-bottom: 30px;
+    padding-top: 20px; /* Espaço após o botão voltar */
     display: flex; /* Para centralizar o conteúdo do cabeçalho */
     flex-direction: column;
     align-items: center;
-}
-
-.detail-group {
-    display: flex;
-    align-items: center; /* Alinha o texto e o ícone verticalmente */
-    justify-content: center;
-    gap: 8px; /* Adiciona um pequeno espaço entre o texto e o botão */
 }
 
 .back-btn {
     background: none;
     border: none;
     color: var(--text-color);
-    font-size: 1.2rem;
+    font-size: 1.1em;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 5px;
+    margin-bottom: 20px;
     transition: color 0.2s ease;
     align-self: flex-start; /* Alinha o botão à esquerda dentro do container flex */
 }
@@ -597,16 +590,16 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 .vehicle-details-header p {
-    font-size: 1.7em;
+    font-size: 1.1em;
     color: var(--text-color);
 }
 
 .km-display-details { /* Novo estilo para o KM dentro da tela de detalhes */
     font-family: 'PT Sans', sans-serif;
-    font-size: 1.7em;
+    font-size: 1.2em;
     font-weight: 600;
     color: var(--primary-color);
-    margin-top: 5px;
+    margin-top: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -621,15 +614,15 @@ body:not(.dark-mode) .top-nav-item.active {
     border: none;
     color: var(--edit-button-color);
     cursor: pointer;
-    font-size: 1.0rem; /* Um pouco menor aqui */
-    margin-left: 12px;
+    font-size: 1.0em; /* Um pouco menor aqui */
+    margin-left: 5px;
     transition: color 0.2s ease;
 }
 .edit-btn:hover {
     color: var(--primary-color);
 }
 .small-edit-btn {
-    font-size: 1.0rem;
+    font-size: 0.9em;
 }
 
 
@@ -653,7 +646,7 @@ body:not(.dark-mode) .top-nav-item.active {
 
 .maintenance-item p {
     margin-bottom: 8px;
-    font-size: 1.0rem;
+    font-size: 0.95em;
     color: var(--text-color);
 }
 
@@ -704,7 +697,7 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 .result {
-    margin-top: 5px;
+    margin-top: 15px;
     padding: 10px;
     background-color: var(--header-background);
     border-radius: 5px;
@@ -717,7 +710,7 @@ body:not(.dark-mode) .top-nav-item.active {
 /* Histórico de Manutenções (já existia) */
 .history-section h2 {
     font-family: 'Poppins', sans-serif;
-    font-size: 2.5em;
+    font-size: 2em;
     margin-bottom: 20px;
     text-align: center;
     color: var(--text-color);
@@ -737,7 +730,7 @@ body:not(.dark-mode) .top-nav-item.active {
     padding: 15px;
     display: flex;
     flex-direction: column;
-    font-size: 1.1rem;
+    font-size: 0.95em;
     border-left: 5px solid var(--primary-color);
 }
 
@@ -778,7 +771,7 @@ body:not(.dark-mode) .top-nav-item.active {
 
 .logout-btn {
     background-color: #dc3545; /* Vermelho para sair */
-    margin-top: 5px;
+    margin-top: 30px;
 }
 .logout-btn:hover {
     background-color: #c82333;
@@ -922,7 +915,7 @@ body:not(.dark-mode) .top-nav-item.active {
     display: flex;
     justify-content: space-around;
     gap: 15px;
-    margin-top: 5px;
+    margin-top: 20px;
 }
 
 .modal-buttons .btn {
@@ -1003,7 +996,7 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 #service-details-modal .modal-buttons {
-    margin-top: 5px;
+    margin-top: 30px;
     justify-content: center;
     gap: 20px;
 }
@@ -1015,7 +1008,7 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 /* Responsividade */
-@media (max-width: 40px) {
+@media (max-width: 768px) {
     /* Ajustes para as telas de Login/Cadastro */
     #login-screen, #signup-screen {
         padding: 0; /* Remove completamente o padding externo destas telas */
@@ -1042,17 +1035,17 @@ body:not(.dark-mode) .top-nav-item.active {
     /* Refinamento de fontes e espaçamentos dentro do login card para se aproximar do exemplo */
     .app-logo {
         font-size: 2.5em; /* Tamanho da fonte do logo */
-        margin-bottom: 5px; /* Espaço abaixo do logo */
+        margin-bottom: 30px; /* Espaço abaixo do logo */
     }
 
     .login-card h2 {
         font-size: 2em; /* Tamanho do título "Bem-vindo!" */
-        margin-bottom: 10px; /* Espaço abaixo do título */
+        margin-bottom: 30px; /* Espaço abaixo do título */
     }
 
     .input-group {
         width: 100%; /* Garante que o input group ocupe a largura total do card */
-        margin-bottom: 10px;
+        margin-bottom: 20px;
     }
 
     .input-group label {
@@ -1069,13 +1062,13 @@ body:not(.dark-mode) .top-nav-item.active {
     .btn {
         padding: 15px 20px; /* Padding dos botões */
         font-size: 1.2em; /* Tamanho da fonte dos botões */
-        margin-top: 5px;
+        margin-top: 15px;
         margin-bottom: 5px; /* Espaço para o link de 'esqueceu a senha' */
     }
 
     .forgot-password {
         font-size: 1em; /* Tamanho da fonte "Esqueceu a senha?" */
-        margin-top: 5px;
+        margin-top: 10px;
     }
 
     .divider {
@@ -1085,17 +1078,17 @@ body:not(.dark-mode) .top-nav-item.active {
     .social-btn {
         padding: 15px 20px;
         font-size: 1.1em;
-        margin-top: 5px; /* Espaço acima dos botões sociais */
+        margin-top: 20px; /* Espaço acima dos botões sociais */
     }
 
     .signup-text {
         font-size: 1em;
-        margin-top: 5px; /* Espaço abaixo dos botões sociais */
+        margin-top: 25px; /* Espaço abaixo dos botões sociais */
     }
 
     /* Ajustes para as telas de conteúdo (Dashboard, etc.) */
     .screen.active-content, .screen.hidden-content {
-        padding-top: 25px; /* Ajustar padding para o cabeçalho fixo */
+        padding-top: 90px; /* Ajustar padding para o cabeçalho fixo */
     }
     .container {
         padding: 0 10px; /* Reduzir padding lateral para aproveitar mais a tela */
@@ -1119,7 +1112,7 @@ body:not(.dark-mode) .top-nav-item.active {
         flex-wrap: wrap;
         justify-content: space-around;
         width: 100%;
-        margin-top: 5px;
+        margin-top: 10px;
         gap: 0px;
     }
 
@@ -1135,33 +1128,33 @@ body:not(.dark-mode) .top-nav-item.active {
     }
 
     .toggle-theme-btn {
-        margin-top: 5px;
-        margin-bottom: 5px;
+        margin-top: 10px;
+        margin-bottom: 15px;
         order: -1;
     }
 
     /* Ajustes para Dashboard e Detalhes do Veículo */
     .section-title {
         font-size: 1.6em; /* Aumenta um pouco o título da seção */
-        margin-top: 5px; /* Mais espaço acima */
-        margin-bottom: 2px; /* Mais espaço abaixo */
+        margin-top: 25px; /* Mais espaço acima */
+        margin-bottom: 20px; /* Mais espaço abaixo */
     }
 
     .no-vehicles {
         text-align: center;
         font-style: italic;
         color: var(--text-color);
-        margin-top: 5px;
+        margin-top: 30px;
     }
 
     .vehicle-list {
         grid-template-columns: 1fr; /* Garante que os cards de veículos fiquem em lista vertical */
-        gap: 10px; /* Espaçamento entre os cards de veículos */
+        gap: 15px; /* Espaçamento entre os cards de veículos */
     }
 
     .vehicle-card-item {
-        padding: 10px; /* Aumenta o preenchimento interno do card do veículo */
-        gap: 10px; /* Aumenta o espaçamento entre elementos internos do card */
+        padding: 15px; /* Aumenta o preenchimento interno do card do veículo */
+        gap: 15px; /* Aumenta o espaçamento entre elementos internos do card */
     }
 
     .vehicle-info h3 {
@@ -1176,8 +1169,8 @@ body:not(.dark-mode) .top-nav-item.active {
     .summary-cards-section {
         grid-template-columns: 1fr; /* Garante que os cards de resumo fiquem em lista vertical */
         gap: 30px; /* Espaçamento entre os cards de resumo */
-        margin-top: 5px; /* Um pouco menos de margem para cima */
-        margin-bottom: 20px; /* Mais espaço para a próxima seção */
+        margin-top: 30px; /* Um pouco menos de margem para cima */
+        margin-bottom: 40px; /* Mais espaço para a próxima seção */
         align-items: stretch; /* Faz os itens de grid terem a mesma altura */
     }
 
@@ -1269,7 +1262,7 @@ body:not(.dark-mode) .top-nav-item.active {
     /* KM Display na tela de Detalhes do Veículo */
     .km-display-details {
         font-size: 1.4em; /* KM display maior */
-        margin-top: 5px;
+        margin-top: 15px;
     }
     .km-display-details .edit-btn {
         font-size: 1.2em; /* Ícone de edição para KM maior */
