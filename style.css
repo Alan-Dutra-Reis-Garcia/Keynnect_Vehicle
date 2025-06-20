@@ -361,7 +361,7 @@ body {
     justify-content: space-between; /* Espaça os itens */
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    height: 80px; /* Altura fixa para o cabeçalho com navegação */
+    height: 95px; /* Altura fixa para o cabeçalho com navegação */
     /* Estas propriedades serão controladas pelo #main-app.hidden / #main-app.active */
     /* visibility: inherit; opacity: inherit; */
 }
