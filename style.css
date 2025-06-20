@@ -111,7 +111,7 @@ h1, h2, h3, h4, h5, h6 {
     left: 0;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.2s ease;
     background-color: var(--bg-color);
     z-index: 1;
 }
@@ -126,29 +126,38 @@ h1, h2, h3, h4, h5, h6 {
 .container {
     width: 100%;
     max-width: 900px;
-    padding: 0 16px;
+    padding: 16px;
     margin: 0 auto;
 }
 
 /* Telas de Conteúdo Pós-Login */
-#main-app {
-    padding-bottom: 80px; /* Espaço para a nav-bar inferior */
+#main-app .screen {
+    padding-bottom: 85px; /* Espaço para a nav-bar inferior */
+}
+#main-app.active {
+    position: relative;
+    z-index: 10;
 }
 
 .screen.active-content {
     display: flex;
     position: relative;
-    min-height: calc(100vh - 80px); /* Ajusta a altura da tela de conteúdo */
+    min-height: calc(100vh - 85px);
+    opacity: 1;
+    visibility: visible;
 }
 
 .screen.hidden-content {
     display: none;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .screen-subtitle {
     text-align: center;
     color: var(--secondary-color);
     margin: -10px 0 20px 0;
+    padding: 0 16px;
 }
 
 /* Telas de Login/Cadastro */
@@ -224,7 +233,7 @@ h1, h2, h3, h4, h5, h6 {
 .input-group select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(var(--primary-color), 0.2);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 20%, transparent);
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -253,7 +262,7 @@ h3.form-section-title {
     gap: 8px;
     border: none;
     padding: 12px 20px;
-    border-radius: 8px;
+    border-radius: 25px;
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
@@ -350,6 +359,9 @@ body.dark-mode .page-header {
 .page-header h1 {
     font-size: 1.5rem;
     margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .back-btn, .header-action-btn, .theme-toggle-btn {
@@ -365,9 +377,10 @@ body.dark-mode .page-header {
     justify-content: center;
     border-radius: 50%;
     transition: background-color 0.2s;
+    z-index: 2;
 }
 .back-btn:hover, .header-action-btn:hover, .theme-toggle-btn:hover {
-    background-color: rgba(128, 128, 128, 0.1);
+    background-color: color-mix(in srgb, var(--text-color) 10%, transparent);
 }
 
 .header-vehicle-info {
@@ -382,14 +395,6 @@ body.dark-mode .page-header {
     font-size: 0.9rem;
     color: var(--secondary-color);
     margin: 0;
-}
-/* Esconde botões de ação e voltar por padrão */
-.page-header .back-btn, .page-header .header-action-btn {
-    visibility: hidden;
-}
-/* Mostra de volta se tiverem ID */
-#back-from-add-vehicle, #back-to-dashboard, #edit-vehicle-details-btn {
-    visibility: visible;
 }
 
 /* Navegação Inferior */
@@ -458,6 +463,7 @@ body.dark-mode .card {
     font-style: italic;
     color: var(--secondary-color);
     margin-top: 40px;
+    padding: 20px;
 }
 
 .vehicle-card-item {
@@ -487,6 +493,7 @@ body.dark-mode .card {
     cursor: pointer;
     opacity: 0.7;
     transition: color 0.2s ease, opacity 0.2s ease;
+    padding: 10px;
 }
 .delete-btn:hover {
     color: var(--status-overdue);
@@ -562,6 +569,9 @@ body.dark-mode .card {
 .status-attention .icon { color: var(--status-attention); }
 .status-overdue .icon { color: var(--status-overdue); }
 
+.maintenance-item {
+    cursor: pointer;
+}
 .maintenance-item h3 {
     font-size: 1.1rem;
     display: flex;
@@ -578,7 +588,7 @@ body.dark-mode .card {
     font-weight: 500;
     color: var(--secondary-color);
 }
-.maintenance-item .next-maintenance span {
+.maintenance-item .next-maintenance, .maintenance-item .next-maintenance span {
     color: var(--primary-color);
     font-weight: 600;
 }
@@ -658,6 +668,7 @@ hr.maintenance-divider {
     border-radius: 8px;
     font-weight: 500;
     text-align: center;
+    line-height: 1.8;
 }
 
 /* Histórico */
@@ -803,7 +814,7 @@ hr.maintenance-divider {
     position: absolute;
     top: 8px;
     right: 8px;
-    background-color: rgba(128,128,128,0.2);
+    background-color: color-mix(in srgb, var(--text-color) 10%, transparent);
     border: none;
     color: var(--text-color);
     width: 32px;
@@ -855,6 +866,9 @@ hr.maintenance-divider {
     background-color: #25D366;
     color: white;
 }
+.whatsapp-btn:hover {
+    filter: brightness(1.1);
+}
 
 /* Responsividade para Telas Maiores */
 @media (min-width: 768px) {
@@ -863,6 +877,9 @@ hr.maintenance-divider {
         grid-template-columns: 240px 1fr; /* Sidebar + Conteúdo */
         grid-template-rows: 1fr;
         padding-bottom: 0;
+    }
+    #main-app .screen {
+        padding-bottom: 16px;
     }
     .bottom-nav {
         flex-direction: column;
@@ -900,13 +917,13 @@ hr.maintenance-divider {
     .page-header {
         justify-content: center; /* Centraliza o título no desktop */
     }
-    .page-header .back-btn, .page-header .theme-toggle-btn, .page-header .header-action-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+    .page-header h1 {
+        position: static;
+        transform: none;
     }
-    .page-header .back-btn { left: 16px; }
-    .page-header .theme-toggle-btn, .page-header .header-action-btn { right: 16px; }
+    .page-header .back-btn { position: absolute; left: 16px; }
+    .page-header .header-action-btn { position: absolute; right: 68px; }
+    .page-header .theme-toggle-btn { position: absolute; right: 16px; }
 
     #toast-container {
         bottom: auto;
@@ -916,11 +933,21 @@ hr.maintenance-divider {
         transform: none;
     }
     .vehicle-list, .service-providers-list {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     }
-    .maintenance-sections, .calculators-section {
+    .maintenance-sections {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 20px;
+    }
+    .container {
+        padding: 24px;
+    }
+    .calculators-section {
+        display: flex;
+        gap: 24px;
+    }
+    .calculators-section .card {
+        flex: 1;
     }
 }

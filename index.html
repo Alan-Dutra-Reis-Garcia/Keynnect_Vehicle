@@ -64,7 +64,7 @@
 
         <div id="main-app" class="hidden">
 
-            <section id="dashboard-screen" class="screen active-content">
+            <section id="dashboard-screen" class="screen hidden-content">
                 <header class="page-header">
                     <h1>Meus Veículos</h1>
                     <button id="toggle-theme-btn-dashboard" class="theme-toggle-btn"><i class="fas fa-sun"></i></button>
@@ -130,14 +130,14 @@
                 <header class="page-header">
                     <button class="back-btn" id="back-to-dashboard"><i class="fas fa-arrow-left"></i></button>
                     <div class="header-vehicle-info">
-                        <h2 id="details-vehicle-name"></h2>
-                        <p id="details-vehicle-model"></p>
+                        <h2 id="details-vehicle-name">Nome Veículo</h2>
+                        <p id="details-vehicle-model">Modelo</p>
                     </div>
                     <button id="edit-vehicle-details-btn" class="header-action-btn"><i class="fas fa-pen"></i></button>
                 </header>
                 <div class="container">
                     <div class="km-display-details">
-                        <span id="current-km-details"></span> KM
+                        <span id="current-km-details">0</span> KM
                         <button id="edit-km-details-btn" class="edit-btn-inline"><i class="fas fa-pen-to-square"></i></button>
                     </div>
 
@@ -146,43 +146,39 @@
 
                     <h3 class="section-title">Manutenções Detalhadas</h3>
                     <div class="maintenance-sections">
-                        <div class="maintenance-item card">
+                        <div class="maintenance-item card" data-maint-type="oilChange">
                             <h3><i class="fas fa-oil-can"></i> Troca de Óleo</h3>
                             <p>Última troca (KM): <span id="oil-last-km"></span></p>
                             <p>Última troca (Data): <span id="oil-last-date"></span></p>
                             <p>Tipo do óleo: <span id="oil-type-brand"></span></p>
                             <p class="next-maintenance">Próxima troca: <span id="oil-next-change"></span></p>
                         </div>
-                        <div class="maintenance-item card">
+                        <div class="maintenance-item card" data-maint-type="tires">
                             <h3><i class="fas fa-tire"></i> Pneus</h3>
                             <p>Última manutenção (KM): <span id="pneus-last-km"></span></p>
                             <p>Última manutenção (Data): <span id="pneus-last-date"></span></p>
                             <p class="next-maintenance">Rodízio Sugerido: <span id="pneus-rotation-suggested"></span></p>
                             <p class="next-maintenance">Próxima troca: <span id="pneus-next-change"></span></p>
                         </div>
-                        <div class="maintenance-item card">
-                            <h3><i class="fas fa-align-center"></i> Alinhamento & Balanceamento</h3>
-                            <p>Último alinhamento (KM): <span id="alignment-last-km"></span></p>
-                            <p>Último alinhamento (Data): <span id="alignment-last-date"></span></p>
+                        <div class="maintenance-item card" data-maint-type="alignment">
+                            <h3><i class="fas fa-align-center"></i> Alinhamento</h3>
+                            <p>Último (KM): <span id="alignment-last-km"></span></p>
+                            <p>Último (Data): <span id="alignment-last-date"></span></p>
                             <p class="next-maintenance">Próximo sugerido: <span id="alignment-next"></span></p>
-                             <hr class="maintenance-divider">
-                            <p>Último balanceamento (KM): <span id="balanceamento-last-km"></span></p>
-                            <p>Último balanceamento (Data): <span id="balanceamento-last-date"></span></p>
+                        </div>
+                         <div class="maintenance-item card" data-maint-type="balanceamento">
+                            <h3><i class="fas fa-dot-circle"></i> Balanceamento</h3>
+                            <p>Último (KM): <span id="balanceamento-last-km"></span></p>
+                            <p>Último (Data): <span id="balanceamento-last-date"></span></p>
                             <p class="next-maintenance">Próximo sugerido: <span id="balanceamento-next"></span></p>
                         </div>
-                        <div class="maintenance-item card">
+                        <div class="maintenance-item card" data-maint-type="filters">
                             <h3><i class="fas fa-filter"></i> Filtros</h3>
-                            <p>Filtro de Óleo (KM): <span id="filter-oil-last-km"></span></p>
-                            <p>Filtro de Óleo (Data): <span id="filter-oil-last-date"></span></p>
-                            <p class="next-maintenance">Próx. sugerida: <span id="filter-oil-next"></span></p>
+                            <p>Filtro de Óleo (Data): <span id="filter-oil-last-date"></span><span class="next-maintenance"> Próx.: <span id="filter-oil-next"></span></span></p>
+                             <hr class="maintenance-divider">
+                            <p>Filtro de Combustível (Data): <span id="filter-fuel-last-date"></span><span class="next-maintenance"> Próx.: <span id="filter-fuel-next"></span></span></p>
                             <hr class="maintenance-divider">
-                            <p>Filtro de Combustível (KM): <span id="filter-fuel-last-km"></span></p>
-                            <p>Filtro de Combustível (Data): <span id="filter-fuel-last-date"></span></p>
-                             <p class="next-maintenance">Próx. sugerida: <span id="filter-fuel-next"></span></p>
-                            <hr class="maintenance-divider">
-                            <p>Filtro de Ar (KM): <span id="filter-air-last-km"></span></p>
-                            <p>Filtro de Ar (Data): <span id="filter-air-last-date"></span></p>
-                             <p class="next-maintenance">Próx. sugerida: <span id="filter-air-next"></span></p>
+                            <p>Filtro de Ar (Data): <span id="filter-air-last-date"></span><span class="next-maintenance"> Próx.: <span id="filter-air-next"></span></span></p>
                         </div>
                     </div>
                 </div>
@@ -318,7 +314,7 @@
         <div class="modal-content">
             <h3 id="modal-title"></h3>
             <p id="modal-message"></p>
-            <div class="input-group" id="modal-input-group">
+            <div class="modal-input-group" id="modal-input-group">
                 <label for="modal-input" id="modal-input-label"></label>
                 <input type="text" id="modal-input" class="modal-input">
                  <select id="modal-select" class="modal-input hidden"></select>
