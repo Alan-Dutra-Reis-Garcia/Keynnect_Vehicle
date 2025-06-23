@@ -230,12 +230,10 @@ body {
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin-top: 10px;
 }
+
 .btn:hover {
     filter: brightness(0.9);
     transform: translateY(-2px);
-}
-.btn:active { /* Adicionado para feedback de toque em mobile */
-    transform: translateY(0);
 }
 
 .secondary-btn {
@@ -412,8 +410,6 @@ body:not(.dark-mode) .top-nav-item.active {
     border-radius: 50%;
     width: 40px;
     height: 40px;
- min-width: 44px; /* Aumentar área de clique */
- min-height: 44px; /* Aumentar área de clique */
     font-size: 1.2em;
     display: flex;
     justify-content: center;
@@ -423,9 +419,6 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 .toggle-theme-btn:hover {
-    transform: scale(1.05);
-}
-.toggle-theme-btn:active { /* Adicionado para feedback de toque em mobile */
     transform: scale(1.05);
     background-color: var(--primary-color);
     color: var(--button-text);
@@ -483,8 +476,6 @@ body:not(.dark-mode) .top-nav-item.active {
     color: var(--text-color);
     font-size: 1.2em;
     cursor: pointer;
- min-width: 44px; /* Aumentar área de clique */
- min-height: 44px; /* Aumentar área de clique */
     opacity: 0.6;
     transition: color 0.2s ease, opacity 0.2s ease;
 }
@@ -586,8 +577,6 @@ body:not(.dark-mode) .top-nav-item.active {
     font-size: 1.1em;
     cursor: pointer;
     display: flex;
- min-width: 44px; /* Aumentar área de clique */
- min-height: 44px; /* Aumentar área de clique */
     align-items: center;
     gap: 5px;
     margin-bottom: 20px;
@@ -631,8 +620,6 @@ body:not(.dark-mode) .top-nav-item.active {
     border: none;
     color: var(--edit-button-color);
     cursor: pointer;
- min-width: 44px; /* Aumentar área de clique */
- min-height: 44px; /* Aumentar área de clique */
     font-size: 1.0em; /* Um pouco menor aqui */
     margin-left: 5px;
     transition: color 0.2s ease;
