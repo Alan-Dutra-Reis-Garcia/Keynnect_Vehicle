@@ -170,40 +170,91 @@
 
                     <h3 class="section-title">Manutenções Acompanhadas</h3>
                     <div class="maintenance-sections">
-                        <div class="maintenance-item card">
-                            <h3><i class="fas fa-tire"></i> Pneus</h3>
-                            <p>Última troca (KM): <span id="pneus-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="tires" data-field-name="lastKm" data-label="Última troca de Pneus (KM)"><i class="fas fa-pen"></i></button></p>
-                            <p>Última troca (Data): <span id="pneus-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="tires" data-field-name="lastDate" data-label="Última troca de Pneus (Data)"><i class="fas fa-pen"></i></button></p>
-                            <p>Rodízio Sugerido: <span id="pneus-rotation-suggested"></span></p>
-                            <p>Próxima troca: <span id="pneus-next-change"></span></p>
+                        
+                        <div class="maintenance-card card">
+                            <h3 class="maintenance-card-title"><i class="fas fa-tire"></i> Pneus</h3>
+                            <div class="maintenance-card-body">
+                                <div class="maintenance-info-group">
+                                    <h4>Última Manutenção</h4>
+                                    <p><i class="fas fa-road"></i><span id="pneus-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="tires" data-field-name="lastKm" data-label="Última troca de Pneus (KM)"><i class="fas fa-pen"></i></button></p>
+                                    <p><i class="fas fa-calendar-alt"></i><span id="pneus-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="tires" data-field-name="lastDate" data-label="Última troca de Pneus (Data)"><i class="fas fa-pen"></i></button></p>
+                                </div>
+                                <div class="maintenance-info-group">
+                                    <h4>Próximas Sugestões</h4>
+                                    <p><strong>Rodízio:</strong> <span id="pneus-rotation-suggested"></span></p>
+                                    <p><strong>Troca Geral:</strong> <span id="pneus-next-change"></span></p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="maintenance-item card">
-                            <h3><i class="fas fa-align-center"></i> Alinhamento & Balanceamento</h3>
-                            <p>Último alinhamento (KM): <span id="alignment-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="alignment" data-field-name="lastKm" data-label="Último Alinhamento (KM)"><i class="fas fa-pen"></i></button></p>
-                            <p>Último alinhamento (Data): <span id="alignment-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="alignment" data-field-name="lastDate" data-label="Último Alinhamento (Data)"><i class="fas fa-pen"></i></button></p>
-                            <p>Próximo sugerido: <span id="alignment-next"></span></p>
-                            <p>Último balanceamento (KM): <span id="balanceamento-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="balanceamento" data-field-name="lastKm" data-label="Último Balanceamento (KM)"><i class="fas fa-pen"></i></button></p>
-                            <p>Último balanceamento (Data): <span id="balanceamento-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="balanceamento" data-field-name="lastDate" data-label="Último Balanceamento (Data)"><i class="fas fa-pen"></i></button></p>
-                            <p>Próximo sugerido: <span id="balanceamento-next"></span></p>
+                        
+                        <div class="maintenance-card card">
+                            <h3 class="maintenance-card-title"><i class="fas fa-align-center"></i> Alinhamento & Balanceamento</h3>
+                            <div class="maintenance-card-body">
+                                <div class="maintenance-info-group">
+                                    <h4>Último Alinhamento</h4>
+                                    <p><i class="fas fa-road"></i><span id="alignment-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="alignment" data-field-name="lastKm" data-label="Último Alinhamento (KM)"><i class="fas fa-pen"></i></button></p>
+                                    <p><i class="fas fa-calendar-alt"></i><span id="alignment-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="alignment" data-field-name="lastDate" data-label="Último Alinhamento (Data)"><i class="fas fa-pen"></i></button></p>
+                                    <p class="next-suggestion">Próximo: <span id="alignment-next"></span></p>
+                                </div>
+                                <div class="maintenance-info-group">
+                                    <h4>Último Balanceamento</h4>
+                                    <p><i class="fas fa-road"></i><span id="balanceamento-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="balanceamento" data-field-name="lastKm" data-label="Último Balanceamento (KM)"><i class="fas fa-pen"></i></button></p>
+                                    <p><i class="fas fa-calendar-alt"></i><span id="balanceamento-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="balanceamento" data-field-name="lastDate" data-label="Último Balanceamento (Data)"><i class="fas fa-pen"></i></button></p>
+                                    <p class="next-suggestion">Próximo: <span id="balanceamento-next"></span></p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="maintenance-item card">
-                            <h3><i class="fas fa-oil-can"></i> Troca de Óleo</h3>
-                            <p>Última troca (KM): <span id="oil-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="oilChange" data-field-name="lastKm" data-label="Última Troca de Óleo (KM)"><i class="fas fa-pen"></i></button></p>
-                            <p>Última troca (Data): <span id="oil-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="oilChange" data-field-name="lastDate" data-label="Última Troca de Óleo (Data)"><i class="fas fa-pen"></i></button></p>
-                            <p>Tipo/Marca do óleo: <span id="oil-type-brand"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="oilChange" data-field-name="oilType" data-label="Tipo/Marca do Óleo"><i class="fas fa-pen"></i></button></p>
-                            <p>Próxima troca: <span id="oil-next-change"></span></p>
+
+                        <div class="maintenance-card card">
+                            <h3 class="maintenance-card-title"><i class="fas fa-oil-can"></i> Troca de Óleo</h3>
+                            <div class="maintenance-card-body">
+                                <div class="maintenance-info-group">
+                                    <h4>Última Troca</h4>
+                                    <p><i class="fas fa-road"></i><span id="oil-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="oilChange" data-field-name="lastKm" data-label="Última Troca de Óleo (KM)"><i class="fas fa-pen"></i></button></p>
+                                    <p><i class="fas fa-calendar-alt"></i><span id="oil-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="oilChange" data-field-name="lastDate" data-label="Última Troca de Óleo (Data)"><i class="fas fa-pen"></i></button></p>
+                                    <p><i class="fas fa-tint"></i><span id="oil-type-brand"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="oilChange" data-field-name="oilType" data-label="Tipo/Marca do Óleo"><i class="fas fa-pen"></i></button></p>
+                                </div>
+                                <div class="maintenance-info-group">
+                                    <h4>Próxima Sugestão</h4>
+                                    <p class="next-suggestion-large"><span id="oil-next-change"></span></p>
+                                </div>
+                            </div>
                         </div>
+                        
                         <div class="maintenance-item card">
                             <h3><i class="fas fa-filter"></i> Filtros</h3>
-                            <p>Última troca de óleo (KM): <span id="filter-oil-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterOil" data-field-name="lastKm" data-label="Última Troca Filtro de Óleo (KM)"><i class="fas fa-pen"></i></button></p>
-                            <p>Última troca de óleo (Data): <span id="filter-oil-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterOil" data-field-name="lastDate" data-label="Última Troca Filtro de Óleo (Data)"><i class="fas fa-pen"></i></button></p>
-                            <p>Próxima sugerida: <span id="filter-oil-next"></span></p>
-                            <p>Última troca de combustível (KM): <span id="filter-fuel-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterFuel" data-field-name="lastKm" data-label="Última Troca Filtro de Combustível (KM)"><i class="fas fa-pen"></i></button></p>
-                            <p>Última troca de combustível (Data): <span id="filter-fuel-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterFuel" data-field-name="lastDate" data-label="Última Troca Filtro de Combustível (Data)"><i class="fas fa-pen"></i></button></p>
-                            <p>Próxima sugerida: <span id="filter-fuel-next"></span></p>
-                            <p>Última troca de ar (KM): <span id="filter-air-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterAir" data-field-name="lastKm" data-label="Última Troca Filtro de Ar (KM)"><i class="fas fa-pen"></i></button></p>
-                            <p>Última troca de ar (Data): <span id="filter-air-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterAir" data-field-name="lastDate" data-label="Última Troca Filtro de Ar (Data)"><i class="fas fa-pen"></i></button></p>
-                            <p>Próxima sugerida: <span id="filter-air-next"></span></p>
+                            <div class="filter-grid">
+                                <div class="grid-header">Tipo</div>
+                                <div class="grid-header">Última Manutenção</div>
+                                <div class="grid-header">Próxima Sugerida</div>
+                        
+                                <div class="filter-type-cell"><strong>De Óleo</strong></div>
+                                <div class="maintenance-cell">
+                                    <p><i class="fas fa-road"></i> <span id="filter-oil-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterOil" data-field-name="lastKm" data-label="Última Troca Filtro de Óleo (KM)"><i class="fas fa-pen"></i></button></p>
+                                    <p><i class="fas fa-calendar-alt"></i> <span id="filter-oil-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterOil" data-field-name="lastDate" data-label="Última Troca Filtro de Óleo (Data)"><i class="fas fa-pen"></i></button></p>
+                                </div>
+                                <div class="next-suggestion-cell">
+                                    <p id="filter-oil-next"></p>
+                                </div>
+
+                                <div class="filter-type-cell"><strong>De Combustível</strong></div>
+                                <div class="maintenance-cell">
+                                    <p><i class="fas fa-road"></i> <span id="filter-fuel-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterFuel" data-field-name="lastKm" data-label="Última Troca Filtro de Combustível (KM)"><i class="fas fa-pen"></i></button></p>
+                                    <p><i class="fas fa-calendar-alt"></i> <span id="filter-fuel-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterFuel" data-field-name="lastDate" data-label="Última Troca Filtro de Combustível (Data)"><i class="fas fa-pen"></i></button></p>
+                                </div>
+                                <div class="next-suggestion-cell">
+                                    <p id="filter-fuel-next"></p>
+                                </div>
+
+                                <div class="filter-type-cell"><strong>De Ar</strong></div>
+                                <div class="maintenance-cell">
+                                    <p><i class="fas fa-road"></i> <span id="filter-air-last-km"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterAir" data-field-name="lastKm" data-label="Última Troca Filtro de Ar (KM)"><i class="fas fa-pen"></i></button></p>
+                                    <p><i class="fas fa-calendar-alt"></i> <span id="filter-air-last-date"></span> <button class="edit-btn small-edit-btn" data-maintenance-type="filterAir" data-field-name="lastDate" data-label="Última Troca Filtro de Ar (Data)"><i class="fas fa-pen"></i></button></p>
+                                </div>
+                                <div class="next-suggestion-cell">
+                                    <p id="filter-air-next"></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -375,7 +426,6 @@
             storageBucket: "keynnect-vehicle.firebasestorage.app",
             messagingSenderId: "410654266678",
             appId: "1:410654266678:web:abf4207ebe18e69efa0f97"
-            // measurementId: "G-WDBL7HFKY6" // Opcional, se você for usar Analytics diretamente no cliente
         };
 
         // Inicialize o Firebase

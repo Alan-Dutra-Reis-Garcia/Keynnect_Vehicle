@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dashboardScreen = document.getElementById('dashboard-screen');
     const scheduleScreen = document.getElementById('schedule-screen');
     const servicesScreen = document.getElementById('services-screen'); // Nova referência
+    const calculatorsScreen = document.getElementById('calculators-screen');
     const historyScreen = document.getElementById('history-screen');
     const profileScreen = document.getElementById('profile-screen');
     const vehicleDetailsScreen = document.getElementById('vehicle-details-screen');
@@ -1144,6 +1145,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 case 'services-screen': // Adiciona o caso para services-screen
                     screenToShow = servicesScreen;
+                    break;
+                case 'calculators-screen':
+                    screenToShow = calculatorsScreen;
                     break;
                 case 'history-screen':
                     screenToShow = historyScreen;
