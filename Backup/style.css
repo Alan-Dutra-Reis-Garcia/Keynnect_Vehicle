@@ -85,7 +85,12 @@ body {
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
     line-height: 1.6;
+    font-size: 24px;
     width: 100%;
+    height: 100%;
+    margin: 0.5;
+    padding: 0;
+    overflow-y: auto;
     overflow-x: hidden; /* importante para evitar rolagem horizontal */
 }
 
@@ -137,9 +142,10 @@ body {
 
 
 .container {
-    max-width: 900px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 0 15px;
+    width: 100vw;
     width: 100%; /* Para que o container se ajuste */
 }
 
@@ -224,10 +230,12 @@ body {
     transition: background-color 0.3s ease, transform 0.2s ease;
     margin-top: 10px;
 }
-
 .btn:hover {
     filter: brightness(0.9);
     transform: translateY(-2px);
+}
+.btn:active { /* Adicionado para feedback de toque em mobile */
+    transform: translateY(0);
 }
 
 .secondary-btn {
@@ -355,7 +363,7 @@ body {
     justify-content: space-between; /* Espaça os itens */
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    height: 80px; /* Altura fixa para o cabeçalho com navegação */
+    height: 95px; /* Altura fixa para o cabeçalho com navegação */
     /* Estas propriedades serão controladas pelo #main-app.hidden / #main-app.active */
     /* visibility: inherit; opacity: inherit; */
 }
@@ -404,6 +412,8 @@ body:not(.dark-mode) .top-nav-item.active {
     border-radius: 50%;
     width: 40px;
     height: 40px;
+ min-width: 44px; /* Aumentar área de clique */
+ min-height: 44px; /* Aumentar área de clique */
     font-size: 1.2em;
     display: flex;
     justify-content: center;
@@ -413,6 +423,9 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 .toggle-theme-btn:hover {
+    transform: scale(1.05);
+}
+.toggle-theme-btn:active { /* Adicionado para feedback de toque em mobile */
     transform: scale(1.05);
     background-color: var(--primary-color);
     color: var(--button-text);
@@ -470,6 +483,8 @@ body:not(.dark-mode) .top-nav-item.active {
     color: var(--text-color);
     font-size: 1.2em;
     cursor: pointer;
+ min-width: 44px; /* Aumentar área de clique */
+ min-height: 44px; /* Aumentar área de clique */
     opacity: 0.6;
     transition: color 0.2s ease, opacity 0.2s ease;
 }
@@ -501,7 +516,7 @@ body:not(.dark-mode) .top-nav-item.active {
 /* Cards de Resumo - DENTRO DA TELA DE DETALHES DO VEÍCULO */
 .summary-cards-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
     gap: 20px;
     margin-bottom: 30px;
     margin-top: 20px; /* Espaço após o cabeçalho de detalhes */
@@ -558,7 +573,7 @@ body:not(.dark-mode) .top-nav-item.active {
 .vehicle-details-header {
     text-align: center;
     margin-bottom: 30px;
-    padding-top: 20px; /* Espaço após o botão voltar */
+    padding-top: 10px; /* Espaço após o botão voltar */
     display: flex; /* Para centralizar o conteúdo do cabeçalho */
     flex-direction: column;
     align-items: center;
@@ -571,6 +586,8 @@ body:not(.dark-mode) .top-nav-item.active {
     font-size: 1.1em;
     cursor: pointer;
     display: flex;
+ min-width: 44px; /* Aumentar área de clique */
+ min-height: 44px; /* Aumentar área de clique */
     align-items: center;
     gap: 5px;
     margin-bottom: 20px;
@@ -614,6 +631,8 @@ body:not(.dark-mode) .top-nav-item.active {
     border: none;
     color: var(--edit-button-color);
     cursor: pointer;
+ min-width: 44px; /* Aumentar área de clique */
+ min-height: 44px; /* Aumentar área de clique */
     font-size: 1.0em; /* Um pouco menor aqui */
     margin-left: 5px;
     transition: color 0.2s ease;
@@ -1008,7 +1027,7 @@ body:not(.dark-mode) .top-nav-item.active {
 }
 
 /* Responsividade */
-@media (max-width: 768px) {
+@media (max-width: 320px) {
     /* Ajustes para as telas de Login/Cadastro */
     #login-screen, #signup-screen {
         padding: 0; /* Remove completamente o padding externo destas telas */
