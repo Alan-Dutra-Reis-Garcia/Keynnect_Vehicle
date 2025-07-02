@@ -61,7 +61,6 @@
                 <p class="signup-text">Já tem uma conta? <a href="#" id="show-login">Entrar</a></p>
             </div>
         </section>
-
         <div id="main-app" class="hidden">
             <header class="main-app-header" id="main-app-header">
                 <div class="top-nav-items">
@@ -96,8 +95,7 @@
             <section id="dashboard-screen" class="screen active-content">
                 <div class="container">
                     <h1>Dashboard</h1>
-                    <div id="vehicle-list" class="vehicle-list">
-                        </div>
+                    <div id="vehicle-list" class="vehicle-list"></div>
                     <button id="add-vehicle-btn" class="btn secondary-btn full-width-btn"><i class="fas fa-plus"></i> Adicionar Novo Veículo</button>
                 </div>
             </section>
@@ -108,7 +106,7 @@
                     <h1>Adicionar Novo Veículo</h1>
                     <form id="add-vehicle-form" class="card">
                         <div class="input-group">
-                            <label for="new-vehicle-name">Nome do Veículo (ex: Meu Civic, Carro do Trabalho)</label>
+                            <label for="new-vehicle-name">Nome do Veículo (ex: Meu Civic)</label>
                             <input type="text" id="new-vehicle-name" placeholder="Ex: Honda Civic" required>
                         </div>
                         <div class="input-group">
@@ -129,7 +127,7 @@
                             <input type="date" id="new-vehicle-oil-date">
                         </div>
                         <div class="input-group">
-                            <label for="new-vehicle-oil-type">Tipo de Óleo (mineral, semisintetico, sintetico)</label>
+                            <label for="new-vehicle-oil-type">Tipo de Óleo</label>
                             <select id="new-vehicle-oil-type">
                                 <option value="">Selecione o tipo</option>
                                 <option value="mineral">Mineral</option>
@@ -154,10 +152,8 @@
                 <div class="container">
                     <button class="back-btn" id="back-to-dashboard"><i class="fas fa-arrow-left"></i> Voltar</button>
                     <div class="vehicle-details-header">
-                        <h2 id="details-vehicle-name"></h2>
-                        <button id="edit-vehicle-name-btn" class="edit-btn small-edit-btn"><i class="fas fa-edit"></i></button>
-                        <p id="details-vehicle-model"></p>
-                        <button id="edit-vehicle-model-btn" class="edit-btn small-edit-btn"><i class="fas fa-edit"></i></button>
+                        <h2 id="details-vehicle-name"></h2><button id="edit-vehicle-name-btn" class="edit-btn small-edit-btn"><i class="fas fa-edit"></i></button>
+                        <p id="details-vehicle-model"></p><button id="edit-vehicle-model-btn" class="edit-btn small-edit-btn"><i class="fas fa-edit"></i></button>
                         <div class="km-display-details">
                             <span id="current-km-details"></span> KM
                             <button id="edit-km-details-btn" class="edit-btn small-edit-btn"><i class="fas fa-edit"></i></button>
@@ -165,8 +161,7 @@
                     </div>
 
                     <h2 class="section-title">Manutenções Rápidas</h2>
-                    <div id="summary-cards-dynamic" class="summary-cards-section">
-                        </div>
+                    <div id="summary-cards-dynamic" class="summary-cards-section"></div>
 
                     <h3 class="section-title">Manutenções Acompanhadas</h3>
                     <div class="maintenance-sections">
@@ -222,7 +217,7 @@
                         </div>
                         
                         <div class="maintenance-item card">
-                            <h3><i class="fas fa-filter"></i> Filtros</h3>
+                            <h3 class="maintenance-card-title"><i class="fas fa-filter"></i> Filtros</h3>
                             <div class="filter-grid">
                                 <div class="grid-header">Tipo</div>
                                 <div class="grid-header">Última Manutenção</div>
@@ -263,7 +258,6 @@
             <section id="schedule-screen" class="screen hidden-content">
                 <div class="container">
                     <h1>Agendamento</h1>
-                    <p>Aqui você verá e gerenciará seus agendamentos de serviço.</p>
                     <div class="card placeholder-card">
                         <h3>Próximos Agendamentos</h3>
                         <p>Nenhum agendamento futuro no momento.</p>
@@ -351,24 +345,21 @@
                             <input type="text" id="service-city-filter" placeholder="Ex: Maringá">
                         </div>
                     </div>
-                    <div id="service-providers-list" class="service-providers-list">
-                        </div>
+                    <div id="service-providers-list" class="service-providers-list"></div>
                 </div>
             </section>
 
             <section id="history-screen" class="screen hidden-content">
                 <div class="container">
                     <h1>Histórico de Serviços</h1>
-                    <p>Visualize o histórico completo de manutenções e serviços para o veículo selecionado.</p>
-                    <div class="history-list" id="maintenance-history-list">
-                         </div>
+                    <p>Visualize o histórico completo de manutenções.</p>
+                    <div class="history-list" id="maintenance-history-list"></div>
                 </div>
             </section>
 
             <section id="profile-screen" class="screen hidden-content">
                 <div class="container">
                     <h1>Perfil</h1>
-                    <p>Gerencie suas informações de perfil e configurações do aplicativo.</p>
                     <div class="card placeholder-card">
                         <h3>Minhas Informações</h3>
                         <p>Nome: <span id="profile-display-name">Não Informado</span></p>
@@ -379,7 +370,7 @@
                 </div>
             </section>
         </div>
-    </div>
+        </div>
 
     <div id="toast-container"></div>
 
@@ -403,7 +394,7 @@
             <h3 id="service-details-name"></h3>
             <p><strong>Telefone:</strong> <span id="service-details-phone"></span></p>
             <p><strong>Endereço:</strong> <span id="service-details-address"></span></p>
-            <p><strong>Horário de Atendimento:</strong> <span id="service-details-hours"></span></p>
+            <p><strong>Horário:</strong> <span id="service-details-hours"></span></p>
             <p><strong>Site:</strong> <a id="service-details-website" href="#" target="_blank"></a></p>
             <div class="modal-buttons">
                 <a id="service-details-whatsapp" href="#" target="_blank" class="btn primary-btn whatsapp-btn">
@@ -418,17 +409,14 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
     <script>
-        // Sua configuração do projeto Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyByv-aqKWqDDaId6oZTKhghWs9aiJY8doQ",
             authDomain: "keynnect-vehicle.firebaseapp.com",
             projectId: "keynnect-vehicle",
-            storageBucket: "keynnect-vehicle.firebasestorage.app",
+            storageBucket: "keynnect-vehicle.appspot.com",
             messagingSenderId: "410654266678",
             appId: "1:410654266678:web:abf4207ebe18e69efa0f97"
         };
-
-        // Inicialize o Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
