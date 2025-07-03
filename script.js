@@ -455,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             {
                 type: 'Pneus (Rodízio)',
-                icon: 'fa-solid fa-tire',
+                icon: 'fa-solid fa-rotate',
                 lastValue: calculatedMaintenances.tires.lastKm,
                 nextKm: calculatedMaintenances.tires.rotationSuggestedKm,
                 nextDate: calculatedMaintenances.tires.rotationSuggestedDate,
