@@ -660,4 +660,47 @@ body:not(.dark-mode) .top-nav-item.active {
     .summary-cards-section {
         grid-template-columns: 1fr; /* Garante 1 coluna em telas muito pequenas */
     }
+
+/* ================================== */
+/* MEDIA QUERIES (OTIMIZAÇÃO MOBILE)  */
+/* ================================== */
+
+@media (max-width: 768px) {
+
+    .vehicle-info h3 {
+        font-size: 1.4em; /* Aumentado de 1.2em */
+    }
+
+    .vehicle-info p {
+        font-size: 1.1em; /* Aumentado de 0.9em */
+    }
+
+    .summary-card h3 {
+        font-size: 1.2em;
+    }
+
+    .summary-card p {
+        font-size: 1em; /* Tamanho de fonte maior para melhor leitura */
+    }
+
 }
+
+    .vehicle-info h3 {
+        font-size: 1.5em;
+    }
+
+    .vehicle-info p {
+        font-size: 1.2em;
+    }
+
+    .summary-card .icon {
+        font-size: 2.2em;
+    }
+
+    .summary-card h3 {
+        font-size: 1.3em;
+    }
+
+    .summary-card p {
+        font-size: 1.1em;
+}}

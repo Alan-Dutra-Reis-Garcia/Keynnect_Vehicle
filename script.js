@@ -352,12 +352,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const statusClass = getStatusClass(currentSelectedVehicle.km, suggestedNextKm, suggestedNextDate);
 
         if (suggestedNextKm > 0 && suggestedNextDate) {
-            displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
+            displayString = `${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
         } else if (suggestedNextKm > 0) {
-            displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km`;
+            displayString = `${suggestedNextKm.toLocaleString('pt-BR')} km`;
             finalNextDate = null;
         } else if (suggestedNextDate) {
-            displayString = `Sug.: ${formatDateForDisplay(suggestedNextDate)}`;
+            displayString = `${formatDateForDisplay(suggestedNextDate)}`;
             finalNextKm = 0;
         } else {
             displayString = 'Não calculado (N/I)';
