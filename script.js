@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         balanceamento: { km: 10000, months: 6 }, // Balanceamento
         filters: {
             oil: { km: 10000, months: 12 }, // Geralmente junto com a troca de óleo
-            fuel: { km: 20000, months: 24 },
+            fuel: { km: 15000, months: 12 }, // Filtro de combustível
             air: { km: 15000, months: 12 }
         },
         brakes: { km: 20000, months: 24 }, // Pastilhas
@@ -295,6 +295,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const getStatusClass = (currentKm, nextKm, nextDate) => {
+        const today = new Date();
+        const nextDateObj = nextDate ? new Date(nextDate + 'T00:00:00') : null;
+
+        const isKmOverdue = (nextKm !== 0 && currentKm >= nextKm);
+        const isDateOverdue = (nextDateObj && today >= nextDateObj);
+
+        const kmDifference = nextKm - currentKm;
+        const daysDifference = nextDateObj ? Math.ceil((nextDateObj.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : Infinity;
+
+        const isKmAttention = (nextKm !== 0 && kmDifference <= 1000 && kmDifference > 0);
+        const isDateAttention = (nextDateObj && daysDifference <= 30 && daysDifference > 0);
+
+        if (isKmOverdue || isDateOverdue) {
+            return 'status-overdue';
+        }
+        if (isKmAttention || isDateAttention) {
+            return 'status-attention';
+        }
+        return 'status-ok';
+    };
 
     const calculateNextMaintenance = (typeKey, lastKm, lastDate, subTypeKey = null) => {
         let kmStandard = 0;
@@ -325,32 +346,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentDay = today.getDate();
 
         if (lastKm === 0 && (!lastDate || lastDate === '')) {
-            return { nextKm: 0, nextDate: null, display: 'Não calculado (N/I)' };
+            return { nextKm: 0, nextDate: null, display: 'Não calculado (N/I)', statusClass: 'status-ok' };
         }
 
+        const statusClass = getStatusClass(currentSelectedVehicle.km, suggestedNextKm, suggestedNextDate);
+
         if (suggestedNextKm > 0 && suggestedNextDate) {
-            const dateObj = new Date(suggestedNextDate + 'T00:00:00');
-            const kmDiff = suggestedNextKm - currentSelectedVehicle.km;
-            
-            const msPerDay = 1000 * 60 * 60 * 24;
-            const todayMs = Date.UTC(currentYear, currentMonth, currentDay);
-            const suggestedDateMs = Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
-
-            const daysUntilSuggestedDate = Math.ceil((suggestedDateMs - todayMs) / msPerDay);
-
-            if (isFinite(kmDiff) && kmDiff <= 0 && isFinite(daysUntilSuggestedDate) && daysUntilSuggestedDate <= 0) {
-                displayString = `VENCIDO (KM e Data)! Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
-            } else if (isFinite(kmDiff) && kmDiff <= 0) {
-                 displayString = `VENCIDO (KM)! Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km`;
-            } else if (isFinite(daysUntilSuggestedDate) && daysUntilSuggestedDate <= 0) {
-                 displayString = `VENCIDO (Data)! Sug.: ${formatDateForDisplay(suggestedNextDate)}`;
-            } else {
-                if (daysUntilSuggestedDate < (kmDiff / 100)) {
-                     displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
-                } else {
-                     displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
-                }
-            }
+            displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km ou ${formatDateForDisplay(suggestedNextDate)}`;
         } else if (suggestedNextKm > 0) {
             displayString = `Sug.: ${suggestedNextKm.toLocaleString('pt-BR')} km`;
             finalNextDate = null;
@@ -366,7 +368,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return {
             nextKm: finalNextKm,
             nextDate: finalNextDate,
-            display: displayString
+            display: displayString,
+            statusClass: statusClass
         };
     };
 
@@ -380,6 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('oil-last-date').textContent = vehicle.maintenances.oilChange.lastDate ? formatDateForDisplay(vehicle.maintenances.oilChange.lastDate) : 'Não informado';
         document.getElementById('oil-type-brand').textContent = vehicle.maintenances.oilChange.oilType ? `${capitalizeFirstLetter(vehicle.maintenances.oilChange.oilType)}` : 'Não informado';
         document.getElementById('oil-next-change').textContent = oilChangeCalc.display;
+        document.querySelector('.maintenance-card:has(.fa-oil-can)').className = 'maintenance-card card ' + oilChangeCalc.statusClass;
 
         const tiresRotationCalc = calculateNextMaintenance('tires', vehicle.maintenances.tires.lastKm, vehicle.maintenances.tires.lastDate, 'rotation');
         const tiresChangeCalc = calculateNextMaintenance('tires', vehicle.maintenances.tires.lastKm, vehicle.maintenances.tires.lastDate, 'change');
@@ -387,6 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('pneus-last-date').textContent = vehicle.maintenances.tires.lastDate ? formatDateForDisplay(vehicle.maintenances.tires.lastDate) : 'Não informado';
         document.getElementById('pneus-rotation-suggested').textContent = tiresRotationCalc.display;
         document.getElementById('pneus-next-change').textContent = tiresChangeCalc.display + ' (Troca Geral)';
+        document.querySelector('.maintenance-card:has(.fa-tire)').className = 'maintenance-card card ' + tiresRotationCalc.statusClass;
 
         const alignmentCalc = calculateNextMaintenance('alignment', vehicle.maintenances.alignment.lastKm, vehicle.maintenances.alignment.lastDate);
         const balanceamentoCalc = calculateNextMaintenance('balanceamento', vehicle.maintenances.balanceamento.lastKm, vehicle.maintenances.balanceamento.lastDate);
@@ -396,47 +401,29 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('balanceamento-last-km').textContent = vehicle.maintenances.balanceamento.lastKm !== 0 ? `${vehicle.maintenances.balanceamento.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
         document.getElementById('balanceamento-last-date').textContent = vehicle.maintenances.balanceamento.lastDate !== 0 ? `${formatDateForDisplay(vehicle.maintenances.balanceamento.lastDate)}` : 'Não informado';
         document.getElementById('balanceamento-next').textContent = balanceamentoCalc.display;
-
+        document.querySelector('.maintenance-card:has(.fa-align-center)').className = 'maintenance-card card ' + alignmentCalc.statusClass;
+        
         const filterOilCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterOil.lastKm, vehicle.maintenances.filterOil.lastDate, 'oil');
         const filterFuelCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterFuel.lastKm, vehicle.maintenances.filterFuel.lastDate, 'fuel');
         const filterAirCalc = calculateNextMaintenance('filters', vehicle.maintenances.filterAir.lastKm, vehicle.maintenances.filterAir.lastDate, 'air');
 
-        document.getElementById('filter-oil-last-km').textContent =
-            vehicle.maintenances.filterOil.lastKm !== 0
-                ? `${vehicle.maintenances.filterOil.lastKm.toLocaleString('pt-BR')} km`
-                : 'Não informado';
-        document.getElementById('filter-oil-last-date').textContent =
-            vehicle.maintenances.filterOil.lastDate
-                ? formatDateForDisplay(vehicle.maintenances.filterOil.lastDate)
-                : 'Não informado';
+        document.getElementById('filter-oil-last-km').textContent = vehicle.maintenances.filterOil.lastKm !== 0 ? `${vehicle.maintenances.filterOil.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
+        document.getElementById('filter-oil-last-date').textContent = vehicle.maintenances.filterOil.lastDate ? formatDateForDisplay(vehicle.maintenances.filterOil.lastDate) : 'Não informado';
         document.getElementById('filter-oil-next').textContent = filterOilCalc.display;
-
-        document.getElementById('filter-fuel-last-km').textContent =
-            vehicle.maintenances.filterFuel.lastKm !== 0
-                ? `${vehicle.maintenances.filterFuel.lastKm.toLocaleString('pt-BR')} km`
-                : 'Não informado';
-        document.getElementById('filter-fuel-last-date').textContent =
-            vehicle.maintenances.filterFuel.lastDate
-                ? formatDateForDisplay(vehicle.maintenances.filterFuel.lastDate)
-                : 'Não informado';
+        document.getElementById('filter-fuel-last-km').textContent = vehicle.maintenances.filterFuel.lastKm !== 0 ? `${vehicle.maintenances.filterFuel.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
+        document.getElementById('filter-fuel-last-date').textContent = vehicle.maintenances.filterFuel.lastDate ? formatDateForDisplay(vehicle.maintenances.filterFuel.lastDate) : 'Não informado';
         document.getElementById('filter-fuel-next').textContent = filterFuelCalc.display;
-
-        document.getElementById('filter-air-last-km').textContent =
-            vehicle.maintenances.filterAir.lastKm !== 0
-                ? `${vehicle.maintenances.filterAir.lastKm.toLocaleString('pt-BR')} km`
-                : 'Não informado';
-        document.getElementById('filter-air-last-date').textContent =
-            vehicle.maintenances.filterAir.lastDate
-                ? formatDateForDisplay(vehicle.maintenances.filterAir.lastDate)
-                : 'Não informado';
+        document.getElementById('filter-air-last-km').textContent = vehicle.maintenances.filterAir.lastKm !== 0 ? `${vehicle.maintenances.filterAir.lastKm.toLocaleString('pt-BR')} km` : 'Não informado';
+        document.getElementById('filter-air-last-date').textContent = vehicle.maintenances.filterAir.lastDate ? formatDateForDisplay(vehicle.maintenances.filterAir.lastDate) : 'Não informado';
         document.getElementById('filter-air-next').textContent = filterAirCalc.display;
 
-    
         renderMaintenanceSummaryCards(vehicle.km, {
             oilChange: { lastKm: vehicle.maintenances.oilChange.lastKm, nextKm: oilChangeCalc.nextKm, nextDate: oilChangeCalc.nextDate },
             tires: { lastKm: vehicle.maintenances.tires.lastKm, rotationSuggestedKm: tiresRotationCalc.nextKm, rotationSuggestedDate: tiresRotationCalc.nextDate },
             alignment: { lastKm: vehicle.maintenances.alignment.lastKm, nextKm: alignmentCalc.nextKm, nextDate: alignmentCalc.nextDate },
-            filterAir: { lastKm: vehicle.maintenances.filterAir.lastKm, nextKm: filterAirCalc.nextKm, nextDate: filterAirCalc.nextDate }
+            filterAir: { lastKm: vehicle.maintenances.filterAir.lastKm, nextKm: filterAirCalc.nextKm, nextDate: filterAirCalc.nextDate },
+            filterOil: { lastKm: vehicle.maintenances.filterOil.lastKm, nextKm: filterOilCalc.nextKm, nextDate: filterOilCalc.nextDate },
+            filterFuel: { lastKm: vehicle.maintenances.filterFuel.lastKm, nextKm: filterFuelCalc.nextKm, nextDate: filterFuelCalc.nextDate }
         });
 
         attachMaintenanceEditListeners();
@@ -444,28 +431,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderMaintenanceSummaryCards = (currentVehicleKm, calculatedMaintenances) => {
         summaryCardsDynamic.innerHTML = '';
-
-        const getStatusClass = (currentKm, nextKm, nextDate) => {
-            const today = new Date();
-            const nextDateObj = nextDate ? new Date(nextDate + 'T00:00:00') : null;
-
-            const isKmOverdue = (nextKm !== 0 && currentKm >= nextKm);
-            const isDateOverdue = (nextDateObj && today >= nextDateObj);
-
-            const kmDifference = nextKm - currentKm;
-            const daysDifference = nextDateObj ? Math.ceil((nextDateObj.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : Infinity;
-
-            const isKmAttention = (nextKm !== 0 && kmDifference <= 1000 && kmDifference > 0);
-            const isDateAttention = (nextDateObj && daysDifference <= 30 && daysDifference > 0);
-
-            if (isKmOverdue || isDateOverdue) {
-                return 'status-overdue';
-            }
-            if (isKmAttention || isDateAttention) {
-                return 'status-attention';
-            }
-            return 'status-ok';
-        };
         
         const getNextDisplayValue = (nextKm, nextDate) => {
             let display = [];
@@ -490,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             {
                 type: 'Pneus (Rodízio)',
-                icon: 'fas fa-tire',
+                icon: 'fa-solid fa-tire',
                 lastValue: calculatedMaintenances.tires.lastKm,
                 nextKm: calculatedMaintenances.tires.rotationSuggestedKm,
                 nextDate: calculatedMaintenances.tires.rotationSuggestedDate,
@@ -506,10 +471,26 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             {
                 type: 'Filtro de Ar',
-                icon: 'fas fa-filter',
+                icon: 'fas fa-wind',
                 lastValue: calculatedMaintenances.filterAir.lastKm,
                 nextKm: calculatedMaintenances.filterAir.nextKm,
                 nextDate: calculatedMaintenances.filterAir.nextDate,
+                unit: 'km'
+            },
+            {
+                type: 'Filtro de Óleo',
+                icon: 'fas fa-filter',
+                lastValue: calculatedMaintenances.filterOil.lastKm,
+                nextKm: calculatedMaintenances.filterOil.nextKm,
+                nextDate: calculatedMaintenances.filterOil.nextDate,
+                unit: 'km'
+            },
+            {
+                type: 'Filtro de Combustível',
+                icon: 'fas fa-gas-pump',
+                lastValue: calculatedMaintenances.filterFuel.lastKm,
+                nextKm: calculatedMaintenances.filterFuel.nextKm,
+                nextDate: calculatedMaintenances.filterFuel.nextDate,
                 unit: 'km'
             }
         ];
@@ -597,7 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const attachMaintenanceEditListeners = () => {
-        const editButtons = document.querySelectorAll('.maintenance-item .edit-btn');
+        const editButtons = document.querySelectorAll('.maintenance-item .edit-btn, .maintenance-card .edit-btn');
 
         editButtons.forEach(button => {
             if (button._listenerFn) {
